@@ -1,0 +1,8 @@
+#!/usr/bin/env node
+
+try {
+  require('../dist/cli.js');
+} catch (e) {
+  e.message = `Could not load cli.js - did you build Apollo?`;
+  throw e;
+}

@@ -1,0 +1,49 @@
+{
+  "name": "apollo",
+  "version": "1.0.0",
+  "description": "Convert your downloaded media files into a structured directory for Plex",
+  "main": "./dist/index.js",
+  "repository": "http://github.com/NotSylver/apollo",
+  "author": "Ryan <ryan@sylver.me>",
+  "license": "GPL-3.0",
+  "private": false,
+  "scripts": {
+    "build": "tsc",
+    "link": "npm link && rm ./package-lock.json",
+    "test": "ava"
+  },
+  "devDependencies": {
+    "@types/meow": "^5.0.0",
+    "@types/node": "^12.12.14",
+    "@types/recursive-readdir": "^2.2.0",
+    "@types/string-similarity": "^3.0.0",
+    "@typescript-eslint/eslint-plugin": "^2.9.0",
+    "ava": "^2.4.0",
+    "eslint-config-airbnb-typescript": "^6.3.1",
+    "eslint-plugin-import": "^2.18.2",
+    "ts-node": "^8.5.2",
+    "typescript": "^3.7.2"
+  },
+  "bin": {
+    "apollo": "./bin/apollo"
+  },
+  "ava": {
+    "compileEnhancements": false,
+    "extensions": [
+      "ts"
+    ],
+    "require": [
+      "ts-node/register"
+    ]
+  },
+  "dependencies": {
+    "chalk": "^3.0.0",
+    "lnk": "^1.1.0",
+    "meow": "^5.0.0",
+    "prettier": "^1.19.1",
+    "recursive-readdir": "^2.2.2",
+    "rrdir": "^3.2.1",
+    "sanitize-filename": "^1.6.3",
+    "string-similarity": "^3.0.0"
+  }
+}
