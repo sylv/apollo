@@ -1,6 +1,6 @@
 # apollo
 
-Apollo helps you convert your downloads folder into a delicious structured library for Plex, your own viewing pleasure or really anything you want.
+Apollo converts your downloads folder into a delicious structured library for Plex or our own viewing pleasure.
 
 This is not a replacement for [filebot](filebot.net). If all you're doing is renaming your legally obtained media into a more usable directory structure, then Apollo should do the job. If you want better support, more features, more customisability, an actual community to help you and better reliability then you should at least try filebot first.
 

@@ -284,6 +284,48 @@ const titles: (ParsedName & { raw: string })[] = [
     seasonNumber: 17,
     episodeNumber: 1,
     episodeName: undefined
+  },
+  {
+    raw: 'Scrubs - [04x19] - My Best Laid Plans',
+    title: 'Scrubs',
+    type: FileType.EPISODE,
+    extension: undefined,
+    audio: undefined,
+    resolution: undefined,
+    year: undefined,
+    codec: undefined,
+    language: undefined,
+    seasonNumber: 4,
+    episodeNumber: 19,
+    episodeName: 'My Best Laid Plans'
+  },
+  {
+    raw: 'my.episode.s01e01',
+    title: 'My Episode',
+    type: FileType.EPISODE,
+    extension: undefined,
+    audio: undefined,
+    resolution: undefined,
+    year: undefined,
+    codec: undefined,
+    language: undefined,
+    seasonNumber: 1,
+    episodeNumber: 1,
+    episodeName: undefined
+  },
+  {
+    raw: 'my.episode.s01e01.episode.name',
+    title: 'My Episode',
+    type: FileType.EPISODE,
+    extension: undefined,
+    audio: undefined,
+    resolution: undefined,
+    year: undefined,
+    codec: undefined,
+    language: undefined,
+    seasonNumber: 1,
+    episodeNumber: 1,
+    episodeName: 'Episode Name'
   }
 ];
 
