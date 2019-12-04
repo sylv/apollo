@@ -16,6 +16,7 @@ import { ApolloOptions, File, GroupedFile, ParsedFile } from './types';
 
 export class Apollo {
   private log = this.options.logger;
+  private directories: string[] = [];
 
   constructor(readonly options: Partial<ApolloOptions> & { input: string; output: string; logger: Logger }) {}
 
@@ -34,12 +35,20 @@ export class Apollo {
     const groupedFiles = this.groupFiles(files.parsedMediaFiles, files.parsedSupportingFiles);
     for (let group of groupedFiles) {
       const location = this.getFileLocation(group);
-      await fs.promises.mkdir(location.dir, { recursive: true });
+      const lowerDir = location.dir.toLowerCase();
+      const existingDir = this.directories.find(name => name === lowerDir);
+      const locationDir = existingDir || location.dir;
+      if (!existingDir) {
+        await fs.promises.mkdir(locationDir, { recursive: true });
+        this.directories.push(lowerDir);
+      } else {
+        this.log.debug(`Skipping creation of directory "${locationDir}" as another one with the same case-insensitive name.`);
+      }
 
       for (let file of group.files) {
         const ext = path.extname(file.path);
         const fileName = location.name + ext;
-        const newFilePath = path.join(location.dir, fileName);
+        const newFilePath = path.join(locationDir, fileName);
 
         this.log.debug(`Linking "${file.path}" -> "${newFilePath}"`);
 

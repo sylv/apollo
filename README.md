@@ -49,3 +49,4 @@ See [src/parser/index.spec.ts](src/parser/index.spec.ts) for everything the pars
   - This would complicate the whole parsing process, so I'm personally against it.
 - [ ] Allow files to be renamed without duplicating them the next time Apollo runs
   - My approach would be to read the output directory structure, build a map with keys being file sizes and original paths or names. When writing, if the map contains a file with the same size and/or same original name/path, skip writing and assume the user intervened or the file already exists.
+- [ ] Subtitle files should have their language as an extension - e.g `Batman Begins (2005).eng.srt`
