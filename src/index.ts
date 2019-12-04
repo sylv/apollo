@@ -69,7 +69,9 @@ export class Apollo {
       case FileType.EPISODE:
         const seasonName = file.parsed.seasonNumber ? `Season ${file.parsed.seasonNumber}` : 'Unknown Season';
         const episodeName = file.parsed.episodeName ? ` - ${file.parsed.episodeName}` : '';
-        const seasonNumber = file.parsed.seasonNumber ? ` - ${file.parsed.seasonNumber}x${file.parsed.episodeNumber}` : '';
+        const seasonNumber = file.parsed.seasonNumber
+          ? ` - s${file.parsed.seasonNumber.toString().padStart(2, '0')}e${file.parsed.episodeNumber?.toString().padStart(2, '0')}`
+          : '';
 
         return {
           // "TV Shows/My Show/Season 1"
