@@ -35,12 +35,11 @@ export class Apollo {
     const groupedFiles = this.groupFiles(files.parsedMediaFiles, files.parsedSupportingFiles);
     for (let group of groupedFiles) {
       const location = this.getFileLocation(group);
-      const lowerDir = location.dir.toLowerCase();
-      const existingDir = this.directories.find(name => name === lowerDir);
+      const existingDir = this.directories.find(name => name.toLowerCase() === location.dir.toLowerCase());
       const locationDir = existingDir || location.dir;
       if (!existingDir) {
         await fs.promises.mkdir(locationDir, { recursive: true });
-        this.directories.push(lowerDir);
+        this.directories.push(locationDir);
       } else {
         this.log.debug(`Skipping creation of directory "${locationDir}" as another one with the same case-insensitive name.`);
       }
