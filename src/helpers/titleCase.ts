@@ -37,6 +37,7 @@ export function titleCase(input: string): string {
 
   return (
     input
+      .trim()
       // for something like "TRON: Legacy" this could destroy it if it's already
       // capitalised properly, turning it into like.. "Tron: Legacy"
       // .toLowerCase()
@@ -62,5 +63,6 @@ export function titleCase(input: string): string {
 
         return `${dot1}${char.toUpperCase()}${extraChar}${dot2}`;
       })
+      .trim()
   );
 }

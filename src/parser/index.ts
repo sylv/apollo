@@ -2,6 +2,7 @@ import { schema } from './schema';
 import { ParsedSchema, ParsedName, FileType } from './types';
 import { titleCase } from '../helpers/titleCase';
 import { stripNameTags, tagStart, tagEnd } from '../helpers/stripNameTags';
+import { mediaFileExtensions, fileExtensionRegex } from '../constants';
 
 const groupExtra = /[\-]{1,}[A-z0-9]{2,}$/;
 const randomShit = /dts|(dd)?((5|7)\.1(?:ch)?|ch|Atmos|nf|YIFY|Tigole|hc|Dolby|TrueHD|4k|HDR|Blu-?Ray|final cut|web-?[A-z]+|bd-?rip|dvd-?rip|UHD|ReEnc|(?:kor)?sub|[0-9]{1,2}bit)/;
@@ -16,7 +17,9 @@ export class NameParser {
   parse(fileName: string): ParsedName {
     const { cleanedFileName, extension, excess } = this.cleanFileName(fileName);
     const parsed = this.parseSchema(cleanedFileName);
-    const partMatch = !parsed.resolved.episodeNumber && cleanedFileName.match(partRegex);
+    // if the episode number already exists, it's probably apart of the episode name
+    // if the year exists, it's probably a movie (e.g, "The Mockingjay Part 1") instead of an episode
+    const partMatch = !parsed.resolved.episodeNumber && !parsed.resolved.year && cleanedFileName.match(partRegex);
     if (partMatch) {
       parsed.resolved.episodeNumber = +partMatch[1];
       parsed.matches.episodeNumber = partMatch;
@@ -24,7 +27,6 @@ export class NameParser {
         parsed.firstMatchIndex = partMatch.index;
       }
     }
-
     let title = this.cleanTitleName(cleanedFileName.substring(0, parsed.firstMatchIndex)) || undefined;
     const type = parsed.resolved.episodeNumber || parsed.resolved.seasonNumber ? FileType.EPISODE : FileType.MOVIE;
 
@@ -51,7 +53,7 @@ export class NameParser {
       }
 
       // fallback episode name resolver
-      if (!parsed.resolved.episodeName && title && title.includes('-')) {
+      if (!parsed.resolved.episodeName && title && / - /.test(title)) {
         const sepIndex = title.indexOf('-');
         // chances are we grabbed both by accident.
         // todo: this might be unreliable
@@ -185,12 +187,7 @@ export class NameParser {
     // specifically this is the handle "Avatar (TLA)" while also stripping the useless tag from "[pseudo] My Show S01E01"
     const input = this.removeStartTags(rawInput);
 
-    return titleCase(
-      input
-        .trim()
-        .replace(/((-|,|\]|\[|\(|\))$|^(-|,|\]|\[|\(|\)))/g, '')
-        .trim()
-    );
+    return titleCase(input.trim().replace(/((-|,|\]|\[|\(|\))$|^(-|,|\]|\[|\(|\)))/g, ''));
   }
 
   /**
@@ -202,7 +199,7 @@ export class NameParser {
    * @param fileName
    */
   private cleanFileName(fileName: string) {
-    const extensionMatch = fileName.match(/\.(mp4|3gp|[A-z]{3,4})$/);
+    const extensionMatch = fileName.match(fileExtensionRegex);
     const extension = extensionMatch && extensionMatch[0];
     if (extension) {
       fileName = fileName.slice(0, -extension.length);

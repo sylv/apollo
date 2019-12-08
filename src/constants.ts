@@ -19,6 +19,10 @@ export const mediaFileExtensions = ['mp4', '3gp', 'mkv', 'mov', 'wmv', 'ogg', 'f
  */
 export const supportingFileExtensions = ['srt', 'sub'];
 /**
+ * Matches supported extensions at the end of a string
+ */
+export const fileExtensionRegex = new RegExp(`\\.(${mediaFileExtensions.join('|')}|${supportingFileExtensions.join('|')})$`, 'i');
+/**
  * Files that we should ignore if the path includes this. E.g, this would ignore all files in a "Featurettes" directory
  */
 export const ignoreFilesIncluding = [

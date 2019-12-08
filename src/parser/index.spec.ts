@@ -326,6 +326,34 @@ const titles: (ParsedName & { raw: string })[] = [
     seasonNumber: 1,
     episodeNumber: 1,
     episodeName: 'Episode Name'
+  },
+  {
+    raw: 'Brooklyn.Nine-Nine.S01E22.1080p.5.1Ch.Web-DL.ReEnc-DeeJayAhmed.mkv',
+    title: 'Brooklyn Nine-Nine',
+    type: FileType.EPISODE,
+    extension: '.mkv',
+    audio: undefined,
+    resolution: 1080,
+    year: undefined,
+    codec: undefined,
+    language: undefined,
+    seasonNumber: 1,
+    episodeNumber: 22,
+    episodeName: undefined
+  },
+  {
+    raw: 'The Hunger Games Mockingjay Part 1 (2014) 1080p BluRay 5.1Ch x265 HEVC SUJAIDR',
+    title: 'The Hunger Games Mockingjay Part 1',
+    type: FileType.MOVIE,
+    extension: undefined,
+    audio: undefined,
+    resolution: 1080,
+    year: 2014,
+    codec: 'h265',
+    language: undefined,
+    seasonNumber: undefined,
+    episodeNumber: undefined,
+    episodeName: undefined
   }
 ];
 
