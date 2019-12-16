@@ -1,13 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 import rrdir from 'rrdir';
-import {
-  ignoreFilesIncluding,
-  mediaFileExtensions,
-  minMediaFileSizeBytes,
-  stripFileNameRegex,
-  supportingFileExtensions
-} from './constants';
+import { ignoreFilesIncluding, mediaFileExtensions, stripFileNameRegex, supportingFileExtensions } from './constants';
 import { stripNameTags } from './helpers/stripNameTags';
 import { Logger } from './logger';
 import { NameParser } from './parser';
@@ -18,7 +12,7 @@ export class Apollo {
   private log = this.options.logger;
   private directories: string[] = [];
 
-  constructor(readonly options: Partial<ApolloOptions> & { input: string; output: string; logger: Logger }) {}
+  constructor(readonly options: ApolloOptions & { input: string; output: string; logger: Logger }) {}
 
   /**
    * Run apollo using the options provided
@@ -33,6 +27,9 @@ export class Apollo {
 
     const files = await this.getFileIndex();
     const groupedFiles = this.groupFiles(files.parsedMediaFiles, files.parsedSupportingFiles);
+    let checkedCount = 0;
+    let newCount = 0;
+
     for (let group of groupedFiles) {
       const location = this.getFileLocation(group);
       const existingDir = this.directories.find(name => name.toLowerCase() === location.dir.toLowerCase());
@@ -52,14 +49,16 @@ export class Apollo {
         this.log.debug(`Linking "${file.path}" -> "${newFilePath}"`);
 
         try {
+          checkedCount += 1;
           await fs.promises.symlink(file.path, newFilePath);
+          newCount += 1;
         } catch (e) {
           if (e.code === 'EPERM') {
             this.log.throw(
               `Permission error linking "${file.path}" -> "${newFilePath}". If you are on windows, make sure you are running Apollo as administrator.`
             );
           } else if (e.code === 'EEXIST') {
-            this.log.warn(`File "${newFilePath}" already exists. Skipping symlink`);
+            this.log.debug(`File "${newFilePath}" already exists. Skipping symlink`);
             continue;
           }
 
@@ -67,6 +66,8 @@ export class Apollo {
         }
       }
     }
+
+    this.log.info(`Checked ${checkedCount.toLocaleString()} files and moved  ${newCount.toLocaleString()} new files`);
   }
 
   /**
@@ -156,6 +157,7 @@ export class Apollo {
   private async getFileIndex() {
     const parsedMediaFiles: ParsedFile[] = [];
     const parsedSupportingFiles: File[] = [];
+    let ignoredCount = 0;
 
     for await (const file of rrdir.stream(this.options.input, { strict: true, followSymlinks: true, stats: true })) {
       const lowerPath = file.path.toLowerCase();
@@ -166,14 +168,21 @@ export class Apollo {
 
       if (file.err || !file.stats || ignoreFile || !supportedType) {
         if (ignoreFile) {
-          this.log.warn(`Ignoring "${file.path}" because it contains undesirable keywords`);
+          ignoredCount += 1;
+          this.log.debug(`Ignoring "${file.path}" because it contains undesirable keywords`);
+        } else if (!supportedType) {
+          ignoredCount += 1;
+          this.log.debug(`Ignoring "${file.path}" because it is not a supported file type`);
+        } else if (file.err || !file.stats) {
+          this.log.warn(`Ignoring "${file.path}" due to an error when reading the file`);
         }
 
         continue;
       }
 
-      if (isMediaFile && file.stats.size < minMediaFileSizeBytes) {
-        this.log.warn(`Ignoring "${file.path}" as it is a media file smaller than ${minMediaFileSizeBytes} bytes`);
+      if (isMediaFile && file.stats.size < this.options.minSize) {
+        ignoredCount += 1;
+        this.log.debug(`Ignoring "${file.path}" as it is a media file smaller than ${this.options.minSize.toLocaleString()} bytes`);
         continue;
       }
 
@@ -189,6 +198,10 @@ export class Apollo {
 
         parsedMediaFiles.push(parsedMediaFile);
       }
+    }
+
+    if (ignoredCount !== 0 && !this.options.debug) {
+      this.log.warn(`Ignored ${ignoredCount.toLocaleString()} undesirable files. Run with --debug for a full list.`);
     }
 
     return {

@@ -17,18 +17,17 @@ const cli = meow(
 
     Options
       --debug, -D Enable development logging
+      --minSize The minimum size of a media file in bytes to be considered valid. Defaults to 25,000,000 (25Mb)
 `,
   {
     flags: {
-      // move: {
-      //   type: 'boolean',
-      //   alias: ['m', 'M'],
-      //   default: false
-      // },
       debug: {
         type: 'boolean',
         alias: ['d', 'D'],
         default: false
+      },
+      minSize: {
+        default: 25000000
       }
     }
   }
@@ -69,11 +68,10 @@ async function main() {
     output,
     logger: log,
     debug: cli.flags.debug,
-    move: cli.flags.move
+    minSize: cli.flags.minSize
   });
 
   await apollo.run();
-  log.info(`Imported files from "${input}" to "${output}"`);
 }
 
 main();

@@ -6,10 +6,6 @@
  */
 export const stripFileNameRegex = / ?((\[|\().*?(\]|\))|-[A-z]+) ?/i;
 /**
- * if the media file size is smaller than this, we ignore it and assume it's a feature or extra or something useless.
- */
-export const minMediaFileSizeBytes = 25000000;
-/**
  * a list of file extensions that indicate that the file is a video.
  *
  */

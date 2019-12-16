@@ -6,8 +6,8 @@ export interface ApolloOptions {
   input: string;
   output: string;
   debug: boolean;
-  move: boolean;
   logger: Logger;
+  minSize: number;
 }
 
 export interface File extends rrdir.Entry {
