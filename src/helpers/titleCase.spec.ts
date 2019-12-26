@@ -8,5 +8,6 @@ describe('helpers/titleCase', () => {
     expect(titleCase('the shawshank redemption')).toEqual('The Shawshank Redemption');
     expect(titleCase('x-men dark phoenix')).toEqual('X-Men Dark Phoenix');
     expect(titleCase('eps1.0_hellofriend.mov')).toEqual('eps1.0_hellofriend.mov');
+    expect(titleCase('House, M.d')).toEqual('House, M.D');
   });
 });

@@ -1,4 +1,4 @@
-const abbreviationIndex = /[a-z](\.[a-z])(?:$| )/g;
+const abbreviationIndex = /[A-z](\.[a-z])(?:$| )/g;
 const splitRegex = /( |-)/g;
 // if title has mutliple words together that are capitalised. e,g "IO"
 // if the title has no spaces and has special characters (e.g "eps1.0_hellofriend.mov") - Mr. Robot why :(
