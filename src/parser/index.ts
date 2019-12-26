@@ -4,6 +4,7 @@ import { FileType, ParsedName, ParsedSchema } from './types';
 import { cleanTitleName } from '../helpers/cleanTitleName';
 import { cleanFileName } from '../helpers/cleanFileName';
 import { doubleSpaceRegex } from '../constants';
+import stringSimilarity from 'string-similarity';
 
 const partRegex = /Part ([0-9]{1,2})(?: of [0-9]{1,2})?/i;
 const spaceOrFullStopRegex = /\.| /;
@@ -90,7 +91,7 @@ export class NameParser {
       // as i've noticed people get lazy per-episode
       // todo: better checks for which has better "special" bits (e.g dashes) would be nice
       if (key === 'title' && data.title && parsedParent.title) {
-        if (parsedParent.title.toLowerCase().includes(data.title.toLowerCase()) || parsedParent.title.length === data.title.length) {
+        if (stringSimilarity.compareTwoStrings(parsedParent.title.toLowerCase(), data.title.toLowerCase()) > 0.8) {
           data.title = parsedParent.title;
           continue;
         }

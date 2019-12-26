@@ -271,6 +271,21 @@ const titles: (ParsedName & { raw: string })[] = [
     episodeName: 'Republic City Hustle'
   },
   {
+    raw:
+      'C:\\media\\AVATAR Series (2005-2014) - COMPLETE The Last Airbender, 2010 Movie, Legend of Korra - 1080p BluRay x264\\2. The Legend of Korra (2012-14)\\Book 1a - Air (2012)\\Avatar (TLoK) - S01 E01 - Welcome to Republic City (1080p - BluRay).mp4',
+    title: 'Avatar (TLoK)',
+    type: FileType.EPISODE,
+    extension: '.mp4',
+    audio: undefined,
+    resolution: 1080,
+    year: 2012,
+    codec: undefined,
+    language: undefined,
+    seasonNumber: 1,
+    episodeNumber: 1,
+    episodeName: 'Welcome to Republic City'
+  },
+  {
     raw: 'Family.Guy.S17E01 [1080p Web x265][MP3 5.1].mp4',
     title: 'Family Guy',
     type: FileType.EPISODE,
