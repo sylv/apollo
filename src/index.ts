@@ -58,7 +58,10 @@ export class Apollo {
               `Permission error linking "${file.path}" -> "${newFilePath}". If you are on windows, make sure you are running Apollo as administrator.`
             );
           } else if (e.code === 'EEXIST') {
-            this.log.debug(`File "${newFilePath}" already exists. Skipping symlink`);
+            this.log.debug(`Failed creating "${newFilePath}" as it already exists. This is not an error.`);
+            continue;
+          } else if (e.code === 'EINVAL') {
+            this.log.error(`Encountered EINVAL for "${newFilePath}": ${e.message}`);
             continue;
           }
 
@@ -67,7 +70,7 @@ export class Apollo {
       }
     }
 
-    this.log.info(`Checked ${checkedCount.toLocaleString()} files and moved  ${newCount.toLocaleString()} new files`);
+    this.log.info(`Checked ${checkedCount.toLocaleString()} files and moved ${newCount.toLocaleString()} new files`);
   }
 
   /**
@@ -192,7 +195,7 @@ export class Apollo {
       } else {
         const parsedMediaFile = this.parseMediaFile(file);
         if (!parsedMediaFile.parsed.title) {
-          this.log.error(`Ignoring "${file.path}" because we failed to extract a title`);
+          this.log.warn(`Ignoring "${file.path}" because we failed to extract a title`);
           continue;
         }
 
