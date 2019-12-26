@@ -10,7 +10,8 @@
   "scripts": {
     "build": "tsc",
     "link": "npm link && rm ./package-lock.json",
-    "test": "jest --config=jest.json"
+    "test": "jest --config=jest.json",
+    "test:changed": "yarn test --onlyChanged"
   },
   "devDependencies": {
     "@types/jest": "^24.0.23",

@@ -438,7 +438,22 @@ const titles: (ParsedName & { raw: string })[] = [
     language: undefined,
     seasonNumber: 3,
     episodeNumber: 2,
-    episodeName: 'Hitchcock and Scully'
+    episodeName: 'Hitchcock and Scully (1)'
+  },
+  {
+    raw:
+      'C:\\media\\The.Office.US.S01-S09.Season.1-9.Complete.720p.HDTV.x264-MRSK [CTTV]\\The.Office.US.S02.Season.2.Complete.720p.HDTV.x264-MRSK [CTTV]\\The.Office.S02E01.720p.HDTV.X264-MRSK.mkv',
+    title: 'The Office US',
+    type: FileType.EPISODE,
+    extension: '.mkv',
+    audio: undefined,
+    resolution: 720,
+    year: undefined,
+    codec: 'h264',
+    language: undefined,
+    seasonNumber: 2,
+    episodeNumber: 1,
+    episodeName: undefined
   }
 ];
 

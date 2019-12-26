@@ -64,6 +64,7 @@ export class NameParser {
       }
     }
 
+    const isCompleteCollection = parentDirPath && parentDirPath.toLowerCase().includes('complete');
     const data = {
       title,
       type,
@@ -71,7 +72,7 @@ export class NameParser {
       ...parsed.resolved
     };
 
-    if (!parentDirPath || (title && data.episodeNumber && data.seasonNumber)) {
+    if (!parentDirPath || (!isCompleteCollection && title && data.episodeNumber && data.seasonNumber)) {
       return data;
     }
 
@@ -83,6 +84,18 @@ export class NameParser {
     }
 
     for (let key of Object.keys(parsedParent)) {
+      // this specificaly handles "The Office" that is in the directory
+      // "The Office (US)" where (US) is apparently important
+      // also, "Brooklyn Nine-Nine/Brooklyn Nine Nine S01E01.mkv" will prefer the parent directories title over its own
+      // as i've noticed people get lazy per-episode
+      // todo: better checks for which has better "special" bits (e.g dashes) would be nice
+      if (key === 'title' && data.title && parsedParent.title) {
+        if (parsedParent.title.toLowerCase().includes(data.title.toLowerCase()) || parsedParent.title.length === data.title.length) {
+          data.title = parsedParent.title;
+          continue;
+        }
+      }
+
       if ((data as any)[key] === undefined) {
         (data as any)[key] = (parsedParent as any)[key];
       }
