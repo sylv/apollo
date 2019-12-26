@@ -22,15 +22,13 @@ _I'm still testing Apollo. As soon as I trust it with other peoples files, I'll 
 # goals
 
 - Speed is key
-  - Other renamers are slow due to individually requesting information from external sources. This can take a lot of time when you have hundreds of videos to process and live far from the origin server.
 - No network dependencies
-  - Network dependencies including movie or TV databases are used by other renamers to get detailed data about TV shows. In my opinion, this is a pointless use of resources if you're only sorting your library so Plex or another application can pick it up. If you're sorting your library because you want to view it, you can still get away with using the data in the file names or paths. The only data you might miss is episode names.
-- Plex should understand the output
-  - Otherwise whats the point?
+  - Pinging an outside network with a list of everything you have in your library is both slow and bad for privacy. There is a good chance your media player of choice (Plex, Emvy, Jellyfin) will lookup the titles in your library for you.
+- Plex should pick up the output structure and correctly import titles
 
 # caveats
 
-- Apollo will ignore file paths.
+- Apollo will ignore parent directories.
   - If you have movies in a structure like `My Epic Movie (2019) (1080p)/movie.mp4`, Apollo will only look at `movie.mp4` for data.
 - File names lacking data will be logged and ignored.
   - Given `S16E01 Emmy-Winning Episode[1080p Web x265][MP3 5.1].mp4`, Apollo will log an error and skip over the file because it could not extract the parent title's name, which would be "Family Guy". Given the full path, a human could get enough information about the file to guess what the parent title's name is, but that would overcomplicate the process and the original point was to be simple and fast.
@@ -44,9 +42,7 @@ See [src/parser/index.spec.ts](src/parser/index.spec.ts) for everything the pars
 # what apollo might be able to do in the future
 
 - [ ] Support for moving instead of symlinking
-  - [ ] "Recovery" files that can be used to restore moved files to their original or a new location.
-- [ ] Look at parent directories to see if we can find more metadata about the file when missing.
-  - This would complicate the whole parsing process, so I'm personally against it.
+- [ ] "Recovery" files that can be used to restore moved files to their original or a new location.
 - [ ] Allow files to be renamed without duplicating them the next time Apollo runs
-  - My approach would be to read the output directory structure, build a map with keys being file sizes and original paths or names. When writing, if the map contains a file with the same size and/or same original name/path, skip writing and assume the user intervened or the file already exists.
 - [ ] Subtitle files should have their language as an extension - e.g `Batman Begins (2005).eng.srt`
+- [ ] Have a local "slim" copy of [IMDB Interfaces](https://www.imdb.com/interfaces/) for fast lookups of proper title names. SQLite with FTS should suffice.
