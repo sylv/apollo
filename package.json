@@ -17,12 +17,11 @@
     "@types/meow": "^5.0.0",
     "@types/minimatch": "^3.0.3",
     "@types/node": "^12.12.14",
-    "@types/recursive-readdir": "^2.2.0",
-    "@types/string-similarity": "^3.0.0",
     "@typescript-eslint/eslint-plugin": "^2.9.0",
     "eslint-config-airbnb-typescript": "^6.3.1",
     "eslint-plugin-import": "^2.18.2",
     "jest": "^24.9.0",
+    "prettier": "^1.19.1",
     "ts-jest": "^24.2.0",
     "ts-node": "^8.5.2",
     "typescript": "^3.7.2"
@@ -41,12 +40,7 @@
   },
   "dependencies": {
     "chalk": "^3.0.0",
-    "lnk": "^1.1.0",
     "meow": "^5.0.0",
-    "prettier": "^1.19.1",
-    "recursive-readdir": "^2.2.2",
-    "rrdir": "^3.2.1",
-    "sanitize-filename": "^1.6.3",
-    "string-similarity": "^3.0.0"
+    "rrdir": "^3.2.1"
   }
 }
