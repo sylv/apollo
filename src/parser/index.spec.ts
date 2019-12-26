@@ -1,5 +1,4 @@
 import { NameParser } from './';
-import test from 'ava';
 import { FileType, ParsedName } from './types';
 
 const titles: (ParsedName & { raw: string })[] = [
@@ -354,32 +353,76 @@ const titles: (ParsedName & { raw: string })[] = [
     seasonNumber: undefined,
     episodeNumber: undefined,
     episodeName: undefined
+  },
+  {
+    raw: 'Se7en.1995.REMASTERED.1080p.BluRay.10bit.HEVC.6CH.MkvCage.ws.mkv',
+    title: 'Se7en',
+    type: FileType.MOVIE,
+    extension: '.mkv',
+    audio: undefined,
+    resolution: 1080,
+    year: 1995,
+    codec: 'h265',
+    language: undefined,
+    seasonNumber: undefined,
+    episodeNumber: undefined,
+    episodeName: undefined
+  },
+  {
+    raw: 'X-Men Dark Phoenix 2019 2160p HEVC',
+    title: 'X-Men Dark Phoenix',
+    type: FileType.MOVIE,
+    extension: undefined,
+    audio: undefined,
+    resolution: 2160,
+    year: 2019,
+    codec: 'h265',
+    language: undefined,
+    seasonNumber: undefined,
+    episodeNumber: undefined,
+    episodeName: undefined
+  },
+  {
+    raw: 'Mr. Robot S01E01 eps1.0_hellofriend.mov (1080p x265 10bit Joy).mkv',
+    title: 'Mr Robot',
+    type: FileType.EPISODE,
+    extension: '.mkv',
+    audio: undefined,
+    resolution: 1080,
+    year: undefined,
+    codec: 'h265',
+    language: undefined,
+    seasonNumber: 1,
+    episodeNumber: 1,
+    episodeName: 'eps1.0_hellofriend.mov'
   }
 ];
 
-test('parser tests', t => {
+describe('parser tests', () => {
   for (let test of titles) {
-    const parser = new NameParser();
-    const output = parser.parse(test.raw);
-    delete test.raw;
-    delete output.excess;
+    it(`should parse "${test.raw}"`, () => {
+      const parser = new NameParser();
+      const output = parser.parse(test.raw);
+      delete test.raw;
+      delete output.excess;
 
-    // ava says defined properties that are undefined and properties that are undefined are the same thing
-    // this hacks around that
-    for (let [key, value] of Object.entries(test)) {
-      if (value !== undefined) {
-        continue;
+      // ava says defined properties that are undefined and properties that are undefined are the same thing
+      // this hacks around that
+      for (let [key, value] of Object.entries(test)) {
+        if (value !== undefined) {
+          continue;
+        }
+
+        const outputValue = (output as any)[key];
+        const testValue = (test as any)[key];
+        const outputIsUndefined = outputValue == undefined && testValue === outputValue;
+        if (outputIsUndefined) {
+          delete (test as any)[key];
+          delete (output as any)[key];
+        }
       }
 
-      const outputValue = (output as any)[key];
-      const testValue = (test as any)[key];
-      const outputIsUndefined = outputValue == undefined && testValue === outputValue;
-      if (outputIsUndefined) {
-        delete (test as any)[key];
-        delete (output as any)[key];
-      }
-    }
-
-    t.deepEqual(output, test);
+      expect(output).toEqual(test);
+    });
   }
 });

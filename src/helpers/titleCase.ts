@@ -1,7 +1,12 @@
+const abbreviationIndex = /[a-z](\.[a-z])(?:$| )/g;
+const splitRegex = /( |-)/g;
+// if title has mutliple words together that are capitalised. e,g "IO"
+// if the title has no spaces and has special characters (e.g "eps1.0_hellofriend.mov") - Mr. Robot why :(
+// not 100% on this one ^ as it might break things.
+const alreadyCapitalisedRegex = /([A-Z]{2,}|^[a-z0-9\.\_]+[\.\_]+[a-z0-9\.\_]+$)/;
 const lowers = [
   'a',
   'an',
-  'the',
   'and',
   'but',
   'or',
@@ -20,48 +25,42 @@ const lowers = [
   'onto',
   'to',
   'with',
-  'is'
+  'is',
+  'the'
 ];
 
 /**
- * Convert a sentence to Title Case.
+ * Convert a sentence to Title Case. Not perfect, but good enough(TM)
  * @param input The input, "my epic movie: return of the jedi"
  */
 export function titleCase(input: string): string {
-  // don't overwrite "IO" or etc with "Io"
-  // previously we would skip if it contained any capitalisation but then "Mission impossible 1" happened
-  // so it's easier to take a more aggressive approach unless we're sure it's fine
-  if (/[A-Z]{2,}/.exec(input)) {
+  // don't overwrite "IO" or etc with "Io", but still fix "Mission impossible 1"
+  if (alreadyCapitalisedRegex.exec(input)) {
     return input.trim();
   }
 
   return (
     input
       .trim()
-      // for something like "TRON: Legacy" this could destroy it if it's already
-      // capitalised properly, turning it into like.. "Tron: Legacy"
-      // .toLowerCase()
-      .split(/( |-)+/g)
+      .split(splitRegex)
       .map((word, index) => {
-        if ([' ', '-'].includes(word)) {
+        if (word === '-' || word === ' ') {
           return word;
         }
 
         const raw = word.toLowerCase();
-        if (lowers.includes(raw) && index !== 0) {
+        // words at the start of the sentence should be capitalised regardless
+        // words in the middle like "the" should be lowercased
+        if (index !== 0 && lowers.includes(raw)) {
           return raw;
         }
 
         return raw.substring(0, 1).toUpperCase() + raw.slice(1).toLowerCase();
       })
       .join('')
-      // this lil bit does  "House,  M.d" => "House, M.D"
-      .replace(/(\.)?([a-z])([^a-z]|$)(\.)?/g, (match, dot1 = '', char, extraChar = '', dot2 = '') => {
-        if (dot1 !== '.' && dot2 !== '.') {
-          return match;
-        }
-
-        return `${dot1}${char.toUpperCase()}${extraChar}${dot2}`;
+      // fix abbreviation capitalisation, essentialy "House, m.d" => "House, M.D"
+      .replace(abbreviationIndex, match => {
+        return match.toUpperCase();
       })
       .trim()
   );

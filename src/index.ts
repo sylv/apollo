@@ -1,8 +1,8 @@
-import path from 'path';
 import fs from 'fs';
+import path from 'path';
 import rrdir from 'rrdir';
-import { ignoreFilesIncluding, mediaFileExtensions, stripFileNameRegex, supportingFileExtensions } from './constants';
-import { stripNameTags } from './helpers/stripNameTags';
+import { ignoreFilesIncluding, mediaFileExtensions, supportingFileExtensions } from './constants';
+import { stripStringForComparison } from './helpers/stripStringForComparison';
 import { Logger } from './logger';
 import { NameParser } from './parser';
 import { FileType } from './parser/types';
@@ -114,7 +114,7 @@ export class Apollo {
           // for movies we're a little more lenient because there are much higher chances the only
           // supporting files in the directory are for the movie
           // basically we look for any supporting file starting with the movie title in the same directory
-          const strippedTitle = this.stripStringForComparison(file.parsed.title as string);
+          const strippedTitle = stripStringForComparison(file.parsed.title as string);
           const startsWith = file.main.strippedParentDirectory.startsWith(strippedTitle);
 
           const check = (sFile: File): Boolean => {
@@ -232,9 +232,9 @@ export class Apollo {
   private parseFilePath(file: rrdir.Entry): File {
     const fileName = path.basename(file.path);
     const fileDirectory = path.dirname(file.path);
-    const strippedFileName = this.stripStringForComparison(fileName);
+    const strippedFileName = stripStringForComparison(fileName);
     const parentDirectory = path.basename(fileDirectory);
-    const strippedParentDirectory = this.stripStringForComparison(parentDirectory);
+    const strippedParentDirectory = stripStringForComparison(parentDirectory);
 
     return {
       ...file,
@@ -243,25 +243,5 @@ export class Apollo {
       strippedName: strippedFileName,
       strippedParentDirectory
     };
-  }
-
-  /**
-   * Strip undesirable parts of a string to make it better for direct comparison
-   * @param input  The input, e.g "I.Am.Mother.2019.1080p.WEBRip.x264-[YTS.LT].mp4"
-   * @returns "i am mother 2019 1080p webrip x264"
-   */
-  private stripStringForComparison(input: string) {
-    return (
-      stripNameTags(input.toLowerCase())
-        // replace dots and underscores with spaces. we won't lose anything
-        .replace(/\.|_/g, ' ')
-        // replace things that might get in the way of direct comparisons
-        .replace(stripFileNameRegex, ' ')
-        // remove resolution, because sometimes "My.Movie.BluRay.720p.x264.srt" is intended for "My.Movie.2009.BluRay.1080p.x264"
-        .replace(/[0-9]{3,4}p/i, ' ')
-        // remove double spaces that we may have created
-        .replace(/[ ]{2,}/g, ' ')
-        .trim()
-    );
   }
 }

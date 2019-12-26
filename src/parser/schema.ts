@@ -1,9 +1,5 @@
+import { avcNames, hevcNames, languages } from '../constants';
 import { Schema } from './types';
-
-const languages = ['ITA', 'ENG', 'RUS', 'SPA', 'JPN', 'KOR', 'GER', 'FRA', 'HIN'];
-// h264, x264 etc are handled by regex. these are just "common" variants
-const hevcNames = ['mpeg-h', 'mpeg-2', 'hevc'];
-const avcNames = ['avc', 'mpeg-4'];
 
 // some more involved extraction is handled by the parser directly
 export const schema: Schema = {
@@ -46,17 +42,35 @@ export const schema: Schema = {
         .reduce((unique, part) => (unique.includes(part) ? unique : unique.concat(part)), [] as string[])
   },
   seasonNumber: {
-    regex: /(?: |\[|\(|^)(?:(?:season|se|s)\.? ?([0-9]{1,2})|([0-9]{1,2})x[0-9]{1,2})/gi,
-    index: [1, 2],
+    regex: /(?:se\. ?([0-9]{1,2})|season ([0-9]{1,2})|s([0-9]{1,2})(?:e|$| )|([0-9]{1,2})x[0-9]{1,2})/gi,
     // episode needs the season number to exist in some circumstances
     replace: false,
-    number: true
+    extract: match => {
+      for (let part of match.slice(1)) {
+        const parsed = +part;
+        if (isNaN(parsed) === false) {
+          return parsed;
+        }
+      }
+    }
   },
+  // https://i.imgur.com/hj0nNxs.png
+  // Test Name  1x1
+  // Test Name ep10
+  // Test Name s1e10
+  // Test Name Season 10 Episode 9
+  // Test Name episode 9
   episodeNumber: {
-    regex: /(?:(?: |[0-9])(?:episode|ep|e)\.? ?([0-9]{1,2})|[0-9]{1,2}x([0-9]{1,2}))/gi,
-    index: [1, 2],
-    number: true,
+    regex: /(?: ep ?([0-9]{1,2})|episode ([0-9]{1,2})|(?: |[0-9])e([0-9]{1,2})|[0-9]{1,2}x([0-9]{1,2}))/gi,
     // Part [0-9] may be unreliable, so we just.. yeah.
-    replace: false
+    replace: false,
+    extract: match => {
+      for (let part of match.slice(1)) {
+        const parsed = +part;
+        if (isNaN(parsed) === false) {
+          return parsed;
+        }
+      }
+    }
   }
 };

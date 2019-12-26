@@ -1,8 +1,12 @@
-import test from 'ava';
 import { titleCase } from './titleCase';
 
-test('capitalise titles correctly', t => {
-  t.is(titleCase('this is a title'), 'This is a Title');
-  t.is(titleCase('rick and morty'), 'Rick and Morty');
-  t.is(titleCase('the shawshank redemption'), 'The Shawshank Redemption');
+describe('helpers/titleCase', () => {
+  it('should capitalise titles properly', () => {
+    expect(titleCase('this is a title')).toEqual('This is a Title');
+    expect(titleCase('rick and morty')).toEqual('Rick and Morty');
+    expect(titleCase(' rick and morty')).toEqual('Rick and Morty');
+    expect(titleCase('the shawshank redemption')).toEqual('The Shawshank Redemption');
+    expect(titleCase('x-men dark phoenix')).toEqual('X-Men Dark Phoenix');
+    expect(titleCase('eps1.0_hellofriend.mov')).toEqual('eps1.0_hellofriend.mov');
+  });
 });
