@@ -195,7 +195,7 @@ export class Apollo {
       } else {
         const parsedMediaFile = this.parseMediaFile(file);
         if (!parsedMediaFile.parsed.title) {
-          this.log.warn(`Ignoring "${file.path}" because we failed to extract a title`);
+          this.log.error(`Ignoring "${file.path}" because we failed to extract a title`);
           continue;
         }
 
@@ -220,7 +220,7 @@ export class Apollo {
   private parseMediaFile(file: rrdir.Entry): ParsedFile {
     const main = this.parseFilePath(file);
     const parser = new NameParser();
-    const parsed = parser.parse(main.fileName);
+    const parsed = parser.parse(main.path);
 
     return {
       main,

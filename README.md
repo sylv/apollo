@@ -30,8 +30,6 @@ _I'm still testing Apollo. As soon as I trust it with other peoples files, I'll 
 
 - Apollo will ignore parent directories.
   - If you have movies in a structure like `My Epic Movie (2019) (1080p)/movie.mp4`, Apollo will only look at `movie.mp4` for data.
-- File names lacking data will be logged and ignored.
-  - Given `S16E01 Emmy-Winning Episode[1080p Web x265][MP3 5.1].mp4`, Apollo will log an error and skip over the file because it could not extract the parent title's name, which would be "Family Guy". Given the full path, a human could get enough information about the file to guess what the parent title's name is, but that would overcomplicate the process and the original point was to be simple and fast.
 - Ambiguous file names can confuse Apollo.
   - Given `Family Guy Blue Harvest 2007 [1080p BluRay H265][MP3 5.1].mp4`, Apollo will think this file is a movie due to it not having a season or episode number. In reality, [IMDb classes this title as a TV show](https://www.imdb.com/title/tt0888817/).
 

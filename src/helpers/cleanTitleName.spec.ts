@@ -1,5 +1,4 @@
 import { cleanTitleName } from './cleanTitleName';
-import { O_TRUNC } from 'constants';
 
 describe('helpers/cleanTitleName', () => {
   it('should remove excess characters', () => {

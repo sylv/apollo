@@ -395,6 +395,50 @@ const titles: (ParsedName & { raw: string })[] = [
     seasonNumber: 1,
     episodeNumber: 1,
     episodeName: 'eps1.0_hellofriend.mov'
+  },
+  {
+    raw:
+      'C:\\media\\Family Guy - Complete H265\\Season 16 [1080p x265][AAC 5[1080p Web x265][MP3 5.1]\\S16E01 Emmy-Winning Episode[1080p Web x265][MP3 5.1].mp4',
+    title: 'Family Guy',
+    type: FileType.EPISODE,
+    extension: '.mp4',
+    audio: undefined,
+    resolution: 1080,
+    year: undefined,
+    codec: 'h265',
+    language: undefined,
+    seasonNumber: 16,
+    episodeNumber: 1,
+    episodeName: 'Emmy-Winning Episode'
+  },
+  {
+    raw: 'C:\\media\\Brooklyn Nine-Nine Season 2 1080p WEB-DL 10bit AAC5.1 HEVC x265 MEANDRAGON\\S00E23 Johnny And Dora.mkv',
+    title: 'Brooklyn Nine-Nine',
+    type: FileType.EPISODE,
+    extension: '.mkv',
+    audio: 'AAC',
+    resolution: 1080,
+    year: undefined,
+    codec: 'h265',
+    language: undefined,
+    seasonNumber: 2,
+    episodeNumber: 23,
+    episodeName: 'Johnny and Dora'
+  },
+  {
+    raw:
+      'C:\\media\\Brooklyn.Nine-Nine.Season.3.Complete.720p.WEB.x264-[MULVAcoded]\\Brooklyn.Nine.Nine.S00E02.Webisode.Hitchcock.and.Scully.(1).WEB.x264-[MULVAcoded].mp4',
+    title: 'Brooklyn Nine-Nine',
+    type: FileType.EPISODE,
+    extension: '.mp4',
+    audio: undefined,
+    resolution: 720,
+    year: undefined,
+    codec: 'h264',
+    language: undefined,
+    seasonNumber: 3,
+    episodeNumber: 2,
+    episodeName: 'Hitchcock and Scully'
   }
 ];
 

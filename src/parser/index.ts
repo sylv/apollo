@@ -1,3 +1,4 @@
+import path from 'path';
 import { schema } from './schema';
 import { FileType, ParsedName, ParsedSchema } from './types';
 import { cleanTitleName } from '../helpers/cleanTitleName';
@@ -5,6 +6,7 @@ import { cleanFileName } from '../helpers/cleanFileName';
 import { doubleSpaceRegex } from '../constants';
 
 const partRegex = /Part ([0-9]{1,2})(?: of [0-9]{1,2})?/i;
+const spaceOrFullStopRegex = /\.| /;
 
 export class NameParser {
   /**
@@ -12,6 +14,12 @@ export class NameParser {
    * @param fileName The torrent name, "[pseudo] My Legal Show S02E01 A Very Awesome Episode Name [1080p] [h.265].mkv"
    */
   parse(fileName: string): ParsedName {
+    const isPath = fileName.includes(path.sep);
+    const parentDirPath = isPath && path.dirname(fileName);
+    if (parentDirPath) {
+      fileName = path.basename(fileName);
+    }
+
     const { cleanedFileName, extension } = cleanFileName(fileName);
     const parsed = this.parseSchema(cleanedFileName);
     // if the episode number already exists, it's probably apart of the episode name
@@ -56,12 +64,45 @@ export class NameParser {
       }
     }
 
-    return {
+    const data = {
       title,
       type,
       extension,
       ...parsed.resolved
     };
+
+    if (!parentDirPath || (title && data.episodeNumber && data.seasonNumber)) {
+      return data;
+    }
+
+    // if we couldn't get all the info we want from the file name alone, try looking at the parent.
+    // sometimes it contains more info, at the risk of being mislead.
+    const parsedParent = this.getParentTitle(parentDirPath);
+    if (!parsedParent) {
+      return data;
+    }
+
+    for (let key of Object.keys(parsedParent)) {
+      if ((data as any)[key] === undefined) {
+        (data as any)[key] = (parsedParent as any)[key];
+      }
+    }
+
+    return data;
+  }
+
+  private getParentTitle(parentDirPath: string): ParsedName | undefined {
+    const parentDirName = path.basename(parentDirPath);
+    if (parentDirName.length <= 2 || !spaceOrFullStopRegex.exec(parentDirName)) {
+      return;
+    }
+
+    const parsedParent = this.parse(parentDirName);
+    if (parsedParent && parsedParent.title) {
+      return parsedParent;
+    }
+
+    return this.getParentTitle(parentDirPath.slice(0, -parentDirName.length));
   }
 
   /**

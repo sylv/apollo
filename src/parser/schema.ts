@@ -48,7 +48,7 @@ export const schema: Schema = {
     extract: match => {
       for (let part of match.slice(1)) {
         const parsed = +part;
-        if (isNaN(parsed) === false) {
+        if (isNaN(parsed) === false && parsed > 0 && parsed < 100) {
           return parsed;
         }
       }
@@ -67,7 +67,7 @@ export const schema: Schema = {
     extract: match => {
       for (let part of match.slice(1)) {
         const parsed = +part;
-        if (isNaN(parsed) === false) {
+        if (isNaN(parsed) === false && parsed > 0) {
           return parsed;
         }
       }

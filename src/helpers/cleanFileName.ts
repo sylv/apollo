@@ -2,7 +2,9 @@ import { fileExtensionRegex } from '../constants';
 import { stripNameTags } from './stripNameTags';
 
 const groupExtra = /[\-]{1,}[A-z0-9]{2,}$/;
-const randomShit = /dts|(dd)?((5|7)\.1(?:ch)?|ch|Atmos|nf|YIFY|Tigole|multi|hc|Dolby|TrueHD|4k|HDR|Blu-?Ray|final cut|web-?[A-z]+|bd-?rip|dvd-?rip|UHD|ReEnc|(?:kor)?sub|[0-9]{1,2}bit)/;
+// todo: this is very aggressive. a better approach might just be matching the
+// contents and including it in the schema instead of mindlessly cutting it out.
+const randomShit = /dts|(dd)?((5|7)\.1(?:ch)?|ch|Atmos|nf|YIFY|Tigole|multi|hc|Dolby| complete|web(isode)?|TrueHD|4k|HDR|Blu-?Ray|final cut|web-?[A-z]+|bd-?rip|dvd-?rip|UHD|ReEnc|(?:kor)?sub|[0-9]{1,2}bit)/;
 const excessRegex = new RegExp(`(${groupExtra.source}|(\\[|\\(|\\.|-| )?${randomShit.source}(?:\\)|\\]|\\.|-| |$))`, 'ig');
 const specialDoubleSpaceRegex = /[ .]{2,}/g;
 const cleanTagEndRegex = / ?-? (\]|\))/g;
