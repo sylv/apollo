@@ -81,15 +81,17 @@ export class Apollo {
       case FileType.EPISODE:
         const seasonName = file.parsed.seasonNumber ? `Season ${file.parsed.seasonNumber}` : 'Unknown Season';
         const episodeName = file.parsed.episodeName ? ` - ${file.parsed.episodeName}` : '';
-        const seasonNumber = file.parsed.seasonNumber
-          ? ` - s${file.parsed.seasonNumber.toString().padStart(2, '0')}e${file.parsed.episodeNumber?.toString().padStart(2, '0')}`
-          : '';
+        const parts = [
+          file.parsed.seasonNumber && `S${file.parsed.seasonNumber.toString().padStart(2, '0')}`,
+          file.parsed.episodeNumber && `E${file.parsed.episodeNumber.toString().padStart(2, '0')}`
+        ].filter(f => f);
+        const index = parts.length ? ' - ' + parts.join(' ') : '';
 
         return {
           // "TV Shows/My Show/Season 1"
           dir: path.join(this.options.output, 'TV Shows', file.parsed.title as string, seasonName),
           // "My Show - 1x3" or "My Show - 1x3 - My Episode"
-          name: `${file.parsed.title}${seasonNumber}${episodeName}`
+          name: `${file.parsed.title}${index}${episodeName}`
         };
       case FileType.MOVIE:
         const name = `${file.parsed.title}` + (file.parsed.year ? ` (${file.parsed.year})` : '');
