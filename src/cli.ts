@@ -17,7 +17,7 @@ const cli = meow(
 
     Options
       --debug, -D Enable development logging
-      --minSize The minimum size of a media file in bytes to be considered valid. Defaults to 25,000,000 (25Mb)
+      --min-size, --minSize The minimum size of a media file in bytes to be considered valid. Defaults to 25,000,000 (25Mb)
 `,
   {
     flags: {
@@ -27,7 +27,8 @@ const cli = meow(
         default: false
       },
       minSize: {
-        default: 25000000
+        default: 25000000,
+        alias: ['min-size', 'minsize']
       }
     }
   }
