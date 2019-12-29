@@ -469,6 +469,20 @@ const titles: (ParsedName & { raw: string })[] = [
     seasonNumber: 2,
     episodeNumber: 1,
     episodeName: undefined
+  },
+  {
+    raw: 'C:\\media\\Top Gear UK 1-17\\Top Gear - Season 10\\(auto) Top Gear - 12.23.2008 - [10x10] - [German Performance Saloon].avi',
+    title: 'Top Gear',
+    type: FileType.EPISODE,
+    extension: '.avi',
+    audio: undefined,
+    resolution: undefined,
+    year: 2008,
+    codec: undefined,
+    language: undefined,
+    seasonNumber: 10,
+    episodeNumber: 10,
+    episodeName: 'German Performance Saloon'
   }
 ];
 

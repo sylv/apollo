@@ -2,6 +2,7 @@ import { tagStart, tagEnd } from './stripNameTags';
 import { titleCase } from './titleCase';
 
 const cleanTitleNameRegex = /^( |-|,|\]|\[|\)|-)+|( |-|,|\]|\[|\(|-)+$/g;
+const dateRegex = /(- )?[0-9]{2}(?:-|\.)[0-9]{2}(?:-|\.)[0-9]{4} ?$/;
 
 /**
  * Remove tags at the start of a title. Some titles end with useful tags at the end, so we preserve those - ex "Avatar (tlok)"
@@ -46,5 +47,7 @@ export function cleanTitleName(rawInput: string) {
   // specifically this is the handle "Avatar (TLA)" while also stripping the useless tag from "[pseudo] My Show S01E01"
   const withoutStartTags = removeStartTags(rawInput);
   const withoutGarbage = withoutStartTags.replace(cleanTitleNameRegex, ' ');
-  return titleCase(withoutGarbage);
+  // for some reason "Top Gear - 12.23.2008" exists. this removes the "- 12.23.2008" bit so lookups work
+  const withoutDate = withoutGarbage.replace(dateRegex, '');
+  return titleCase(withoutDate);
 }

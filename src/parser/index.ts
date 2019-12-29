@@ -1,11 +1,11 @@
 import path from 'path';
-import { schema } from './schema';
+import { schema as rawSchema } from './schema';
 import { FileType, ParsedName, ParsedSchema } from './types';
 import { cleanTitleName } from '../helpers/cleanTitleName';
 import { cleanFileName } from '../helpers/cleanFileName';
-import { doubleSpaceRegex } from '../constants';
 import stringSimilarity from 'string-similarity';
 
+const sortedSchema = Object.entries(rawSchema).sort(item => ((item[1] as any).replace ? -1 : 1));
 const partRegex = /Part ([0-9]{1,2})(?: of [0-9]{1,2})?/i;
 const spaceOrFullStopRegex = /\.| /;
 
@@ -25,7 +25,7 @@ export class NameParser {
     const parsed = this.parseSchema(cleanedFileName);
     // if the episode number already exists, it's probably apart of the episode name
     // if the year exists, it's probably a movie (e.g, "The Mockingjay Part 1") instead of an episode
-    const partMatch = !parsed.resolved.episodeNumber && !parsed.resolved.year && cleanedFileName.match(partRegex);
+    const partMatch = !parsed.resolved.episodeNumber && !parsed.resolved.year && partRegex.exec(cleanedFileName);
     if (partMatch) {
       parsed.resolved.episodeNumber = +partMatch[1];
       parsed.matches.episodeNumber = partMatch;
@@ -38,11 +38,13 @@ export class NameParser {
     const type = parsed.resolved.episodeNumber || parsed.resolved.seasonNumber ? FileType.EPISODE : FileType.MOVIE;
 
     if (parsed.resolved.episodeNumber) {
-      // more or less guess the episode name
-      const episodeMatch = parsed.matches.episodeNumber as RegExpMatchArray;
+      // if it looks like an episode, try get the episode name by assuming it's between the season/episode
+      // number and the next match.
+      // this is definitely hacky, but it seems to be "good enough" for most cases.
+      const episodeMatch = parsed.matches.episodeNumber as RegExpExecArray;
       const episodeEndIndex = (episodeMatch.index as number) + episodeMatch[0].length;
       let nextMatchIndex = cleanedFileName.length;
-      for (let match of Object.values(parsed.matches).filter(x => x) as RegExpMatchArray[]) {
+      for (let match of Object.values(parsed.matches).filter(x => x) as RegExpExecArray[]) {
         const index = match.index as number;
         if (index >= episodeEndIndex && (nextMatchIndex == undefined || index < nextMatchIndex)) {
           nextMatchIndex = index;
@@ -52,14 +54,13 @@ export class NameParser {
       const rawEpisodeName = cleanedFileName.substring(episodeEndIndex, nextMatchIndex).trim();
       if (rawEpisodeName) {
         parsed.resolved.episodeName = cleanTitleName(rawEpisodeName);
-      }
-
-      // fallback episode name resolver
-      if (!parsed.resolved.episodeName && title && / - /.test(title)) {
-        const sepIndex = title.indexOf('-');
-        // chances are we grabbed both by accident.
-        // todo: this might be unreliable
-        // basically, "Avatar (TLoK) - Republic City Hustle" => split into title/episodeName
+      } else if (title && title.includes(' - ')) {
+        // if we failed to grab an episode name, we can *try* grab it by looking at the title.
+        // if it's lets say "My Show - An Episode Name", then this should work.
+        // if it's something else, it might not.
+        // we could verify this is accurate by comparing other titles from the same directory, if it's a
+        // whole season. But that would be complicated to do with the current layout.
+        const sepIndex = title.indexOf(' - ');
         parsed.resolved.episodeName = cleanTitleName(title.substring(sepIndex + 1));
         title = title.substring(0, sepIndex).trim();
       }
@@ -123,52 +124,62 @@ export class NameParser {
    * Parse the schema and return its values in structured json. Cleanup has to be done on the output but it gets us some of the way there
    */
   private parseSchema(cleanedInput: string) {
-    let replacedInput = cleanedInput;
     const parsed: ParsedSchema<ParsedName> = {
       firstMatchIndex: undefined,
-      replacedInput,
+      replacedInput: cleanedInput,
       matches: {},
       resolved: {}
     };
 
-    for (let [key, item] of Object.entries(schema)) {
-      let firstMatch: RegExpMatchArray | undefined;
+    // do the parts with replace: true first so later indexes aren't fucked up
+    for (let [key, item] of sortedSchema) {
+      item.regex.lastIndex = 0;
       let value: string | number | undefined;
-
-      replacedInput = replacedInput
-        .replace(item.regex, (match, ...args) => {
-          if (!firstMatch) {
-            // last two args are some random shit we don't care about
-            firstMatch = [match, ...args.slice(0, args.length - 2)];
-            firstMatch.index = args[args.length - 2];
-
-            // subsequent matches can be replaced, we only need one hopefully
-            if ('replace' in item && item.replace === false) {
-              return match;
-            }
+      let firstMatch: RegExpExecArray | undefined;
+      let lastMatch: RegExpExecArray | null;
+      // parsed.replacedInput.replace could work, but we want the full RegExpExecArray which, to my knowledge,
+      // String.replace doesn't give. Previously we made the array ourselves from what String.replace did
+      // give, but typescript didn't like that.
+      while ((lastMatch = item.regex.exec(parsed.replacedInput))) {
+        if (!firstMatch) {
+          firstMatch = lastMatch;
+          if (parsed.firstMatchIndex == undefined || parsed.firstMatchIndex > (firstMatch.index as number)) {
+            parsed.firstMatchIndex = firstMatch.index;
           }
+        }
 
-          return ' ';
-        })
-        .replace(doubleSpaceRegex, ' ');
+        if ('replace' in item && item.replace !== false) {
+          parsed.replacedInput =
+            parsed.replacedInput.substring(0, lastMatch.index) + parsed.replacedInput.substring(lastMatch.index + lastMatch[0].length);
+        }
+        // todo: in theory this is true but for some reason it fails under some tests so thats epic
+        // else {
+        //   // don't need to get more matches if we aren't replacing them
+        //   break;
+        // }
+
+        // without the "g" flag, we'll loop forever
+        if (!item.regex.flags.includes('g')) {
+          break;
+        }
+      }
 
       if (!firstMatch) {
         continue;
-      }
-
-      if (parsed.firstMatchIndex == undefined || parsed.firstMatchIndex > (firstMatch.index as number)) {
-        parsed.firstMatchIndex = firstMatch.index;
       }
 
       if ('extract' in item) {
         value = item.extract(firstMatch);
       } else {
         if (item.index == undefined) {
+          // get the first group or fall back to the whole match by default
           item.index = [1, 0];
         } else if (typeof item.index === 'number') {
+          // makes it easier handling arrays only
           item.index = [item.index];
         }
 
+        // get the value by trying all the provided indexes
         for (let index of item.index) {
           value = firstMatch[index];
           if (value) {
@@ -176,12 +187,17 @@ export class NameParser {
           }
         }
 
+        // try parse the value as a number if needed
         if (item.number && value) {
           value = +value;
+          if (isNaN(value)) {
+            break;
+          }
         }
       }
 
-      if (value == undefined || (typeof value === 'number' && isNaN(value))) {
+      //
+      if (value == undefined) {
         continue;
       }
 

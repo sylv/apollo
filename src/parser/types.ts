@@ -3,7 +3,7 @@ export interface BaseSchemaItem {
 }
 
 export interface CustomSchemaItem extends BaseSchemaItem {
-  extract: (match: RegExpMatchArray) => any;
+  extract: (match: RegExpExecArray) => any;
 }
 
 export interface AutoSchemaItem extends BaseSchemaItem {
@@ -21,7 +21,7 @@ export interface ParsedSchema<T> {
   replacedInput: string;
   resolved: Partial<T>;
   matches: {
-    [key: string]: RegExpMatchArray | undefined;
+    [key: string]: RegExpExecArray | undefined;
   };
 }
 

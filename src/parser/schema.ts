@@ -13,8 +13,8 @@ export const schema: Schema = {
     number: true
   },
   year: {
-    regex: /(?: |\[|\()([0-9]{4})(?: |\)|\])/,
-    index: 1,
+    regex: /(?:(?: |\[|\(|\.)([0-9]{4})(?: |\)|\])|[0-9]{2}(?:-|\.)[0-9]{2}(?:-|\.)([0-9]{4}))/,
+    index: [1, 2],
     number: true
   },
   codec: {
@@ -44,7 +44,6 @@ export const schema: Schema = {
   seasonNumber: {
     regex: /(?:se\. ?([0-9]{1,2})|season ([0-9]{1,2})|s([0-9]{1,2})(?:e|$| )|([0-9]{1,2})x[0-9]{1,2})/gi,
     // episode needs the season number to exist in some circumstances
-    replace: false,
     extract: match => {
       for (let part of match.slice(1)) {
         const parsed = +part;
@@ -63,7 +62,6 @@ export const schema: Schema = {
   episodeNumber: {
     regex: /(?: ep ?([0-9]{1,2})|episode ([0-9]{1,2})|(?: |[0-9])e([0-9]{1,2})|[0-9]{1,2}x([0-9]{1,2}))/gi,
     // Part [0-9] may be unreliable, so we just.. yeah.
-    replace: false,
     extract: match => {
       for (let part of match.slice(1)) {
         const parsed = +part;
