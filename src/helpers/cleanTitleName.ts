@@ -1,7 +1,7 @@
 import { tagStart, tagEnd } from './stripNameTags';
 import { titleCase } from './titleCase';
 
-const cleanTitleNameRegex = /^( |-|,|\]|\[|\)|-)+|( |-|,|\]|\[|\(|-)+$/g;
+const cleanTitleNameRegex = /^([0-9]-(?=[A-z])| |-|,|\]|\[|\)|-)+|( |-|,|\]|\[|\(|-)+$/g;
 const dateRegex = /(- )?[0-9]{2}(?:-|\.)[0-9]{2}(?:-|\.)[0-9]{4} ?$/;
 
 /**

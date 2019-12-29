@@ -483,6 +483,20 @@ const titles: (ParsedName & { raw: string })[] = [
     seasonNumber: 10,
     episodeNumber: 10,
     episodeName: 'German Performance Saloon'
+  },
+  {
+    raw: '3-The.Return.of.the.King.2003.Extended.Cut.1080p.10bit.BluRay.x265.HEVC.6CH-MRN.mkv',
+    title: 'The Return of the King',
+    type: FileType.MOVIE,
+    extension: '.mkv',
+    audio: undefined,
+    resolution: 1080,
+    year: 2003,
+    codec: 'h265',
+    language: undefined,
+    seasonNumber: undefined,
+    episodeNumber: undefined,
+    episodeName: undefined
   }
 ];
 
