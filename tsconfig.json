@@ -10,7 +10,7 @@
     "outDir": "dist",
     "baseUrl": ".",
     "paths": {
-      "*": ["./types/*"]
+      "*": ["./types/*", "./src/*"]
     }
   },
   "include": ["src/**/*.ts"],

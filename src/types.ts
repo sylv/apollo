@@ -1,28 +1,46 @@
-import { Logger } from './logger';
-import { ParsedName } from './parser/types';
-import rrdir = require('rrdir');
+export namespace apollo {
+  export enum TitleType {
+    MOVIE = "MOVIE",
+    TV = "TV"
+  }
 
-export interface ApolloOptions {
-  input: string;
-  output: string;
-  debug: boolean;
-  logger: Logger;
-  minSize: number;
-}
+  export enum FileType {
+    MEDIA = "MEDIA",
+    SUPPORTING = "SUPPORTING"
+  }
 
-export interface File extends rrdir.Entry {
-  fileName: string;
-  directoryPath: string;
-  /** used for comparisons with supporting files */
-  strippedName: string;
-  strippedParentDirectory: string;
-}
+  export interface LookupResult {
+    title: string;
+    year?: number;
+    rank: number;
+    type: TitleType;
+    poster?: string;
+  }
 
-export interface ParsedFile {
-  main: File;
-  parsed: ParsedName;
-}
+  export interface Match {
+    value: string;
+    index: number;
+  }
 
-export interface GroupedFile extends ParsedFile {
-  files: File[];
+  export interface Options {
+    input: string;
+    output: string;
+    debug: boolean;
+    minSize: number;
+  }
+
+  export interface Parsed {
+    title: string;
+    resolution?: number;
+    type: TitleType;
+    fileType: FileType;
+    collection: boolean;
+    seasonNumber?: number;
+    episodeNumber?: number;
+    extension: string;
+    startYear?: number;
+    endYear?: number;
+    languages: string[];
+    audio: string[];
+  }
 }

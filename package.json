@@ -13,37 +13,33 @@
     "test": "jest --config=jest.json",
     "test:changed": "yarn test --onlyChanged"
   },
-  "devDependencies": {
-    "@types/jest": "^24.0.23",
-    "@types/meow": "^5.0.0",
-    "@types/minimatch": "^3.0.3",
-    "@types/node": "^12.12.14",
-    "@types/string-similarity": "^3.0.0",
-    "@typescript-eslint/eslint-plugin": "^2.9.0",
-    "eslint-config-airbnb-typescript": "^6.3.1",
-    "eslint-plugin-import": "^2.18.2",
-    "jest": "^24.9.0",
-    "prettier": "^1.19.1",
-    "ts-jest": "^24.2.0",
-    "ts-node": "^8.5.2",
-    "typescript": "^3.7.2"
-  },
   "bin": {
     "apollo": "./bin/apollo"
   },
-  "ava": {
-    "compileEnhancements": false,
-    "extensions": [
-      "ts"
-    ],
-    "require": [
-      "ts-node/register"
-    ]
+  "devDependencies": {
+    "@types/jest": "^25.1.2",
+    "@types/meow": "^5.0.0",
+    "@types/minimatch": "^3.0.3",
+    "@types/node": "^12.12.14",
+    "@types/node-fetch": "^2.5.4",
+    "@types/sanitize-filename": "^1.6.3",
+    "@types/signale": "^1.2.1",
+    "@typescript-eslint/eslint-plugin": "^2.20.0",
+    "eslint-config-airbnb-typescript": "^7.0.0",
+    "eslint-plugin-import": "^2.20.1",
+    "jest": "^25.1.0",
+    "prettier": "^1.19.1",
+    "ts-jest": "^25.2.0",
+    "typescript": "^3.7.5"
   },
   "dependencies": {
     "chalk": "^3.0.0",
-    "meow": "^5.0.0",
-    "rrdir": "^3.2.1",
-    "string-similarity": "^3.0.0"
+    "mem": "^6.0.1",
+    "meow": "^6.0.1",
+    "node-fetch": "^2.6.0",
+    "path-exists": "^4.0.0",
+    "rrdir": "^4.0.1",
+    "sanitize-filename": "^1.6.3",
+    "signale": "^1.4.0"
   }
 }
