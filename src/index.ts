@@ -6,6 +6,7 @@ import path from "path";
 import { EXCLUDE_BLACKLIST } from "./constants";
 import { ApolloParser } from "./parser";
 import { apollo } from "./types";
+export * from './types'
 
 export class Apollo {
   protected readonly options: apollo.Options;
