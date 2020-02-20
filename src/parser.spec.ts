@@ -359,6 +359,21 @@ const tests: (apollo.Parsed & { input: string })[] = [
     audio: [],
     seasonNumber: 1,
     episodeNumber: 1
+  },
+  {
+    input: "Y:\\completed\\Deadpool 2016 1080p BluRay x264 DTS-JYK\\Subs\\French.srt",
+    title: "Deadpool",
+    resolution: 1080,
+    type: apollo.TitleType.MOVIE,
+    collection: false,
+    extension: ".srt",
+    fileType: apollo.FileType.SUPPORTING,
+    startYear: 2016,
+    endYear: undefined,
+    languages: [],
+    audio: [],
+    seasonNumber: undefined,
+    episodeNumber: undefined
   }
 ];
 
