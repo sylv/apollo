@@ -6,7 +6,9 @@ import { EXCLUDE_BLACKLIST } from "./constants";
 import { ApolloParser } from "./parser";
 import { apollo } from "./types";
 import { log } from "./helpers/log";
+
 export * from "./types";
+export * from "./parser";
 
 export class Apollo {
   protected readonly options: apollo.Options;
