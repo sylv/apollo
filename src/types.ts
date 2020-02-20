@@ -1,4 +1,6 @@
 export namespace apollo {
+  // using strings instead of numbers makes it easier to debug when apollo
+  // is on the operating table.
   export enum TitleType {
     MOVIE = "MOVIE",
     TV = "TV"
@@ -25,7 +27,8 @@ export namespace apollo {
   export interface Options {
     input: string;
     output: string;
-    debug: boolean;
+    move: boolean;
+    dryRun: boolean;
     minSize: number;
   }
 

@@ -1,24 +1,30 @@
 import fs from "fs";
 import rrdir from "rrdir";
 import sanitize from "sanitize-filename";
-import signale from "signale";
 import path from "path";
 import { EXCLUDE_BLACKLIST } from "./constants";
 import { ApolloParser } from "./parser";
 import { apollo } from "./types";
-export * from './types'
+import { log } from "./helpers/log";
+export * from "./types";
 
 export class Apollo {
   protected readonly options: apollo.Options;
-  protected readonly log = signale.scope("apollo");
+  protected readonly log = log.scope("apollo");
   protected createdDirectories = new Set();
-  protected createdFiles = new Set();
+  protected handledFiles = new Set();
 
   constructor(options: apollo.Options) {
     this.options = options;
   }
 
+  /**
+   * Run the parser with the given options.
+   */
   async run() {
+    let checkedCount = 0;
+    let newCount = 0;
+
     for await (const file of rrdir.stream(this.options.input, { stats: true })) {
       if (file.directory) continue;
       if ((file.stats as fs.Stats).size < this.options.minSize) {
@@ -35,18 +41,50 @@ export class Apollo {
       const parser = new ApolloParser();
       const parsed = await parser.parse(file.path);
       if (!parsed) continue;
-      parsed.extension = ".txt";
       const output = this.getFileOutputPath(parsed);
+
+      // can't create a path that already exists
+      if (this.handledFiles.has(output.path)) {
+        this.log.warn(`Skipping "${file.path}" as the output path "${output.path}" already exists`);
+        continue;
+      }
+
       if (!this.createdDirectories.has(output.directory)) {
         await fs.promises.mkdir(output.directory, { recursive: true });
       }
 
-      this.log.debug(`CREATE ${output.path}`);
-      fs.writeFileSync(output.path, file.path);
-      // await fs.promises.(file.path, output.path);
+      const action = this.options.move ? "moving" : "linking";
+      try {
+        checkedCount += 1;
+
+        if (!this.options.dryRun) {
+          // move or create symlinks based on options
+          if (this.options.move) await fs.promises.rename(file.path, output.path);
+          else fs.promises.symlink(file.path, output.path);
+        }
+
+        this.log.info(`${action} "${file.path}" -> "${output.path}"`);
+        this.handledFiles.add(output.path);
+        newCount += 1;
+      } catch (e) {
+        if (e.code === "EPERM") {
+          this.log.error(`EPERM: permission error ${action} "${file.path}" -> "${output.path}".`);
+          return process.exit(1);
+        } else if (e.code === "EEXIST") {
+          this.log.debug(`Failed ${action} "${output.path}" as the destination already exists.`);
+          continue;
+        }
+
+        throw e;
+      }
     }
+
+    this.log.info(`Checked ${checkedCount.toLocaleString()} files and moved ${newCount.toLocaleString()} new files`);
   }
 
+  /**
+   * Get the path a parsed title should be outputted to.
+   */
   protected getFileOutputPath(parsed: apollo.Parsed) {
     const title = sanitize(parsed.title);
     let outputPath: string;

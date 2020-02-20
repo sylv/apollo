@@ -9,7 +9,7 @@ declare namespace rrdir {
     include?: string[];
     strict?: boolean;
     encoding?: string;
-    minimatch?: import('minimatch').IOptions;
+    match?: any;
   }
 
   interface StatOptions extends BaseOptions {
@@ -23,7 +23,7 @@ declare namespace rrdir {
     path: string;
     directory: boolean;
     symlink: boolean;
-    stats?: import('fs').Stats;
+    stats?: import("fs").Stats;
     err: Error;
   }
 }

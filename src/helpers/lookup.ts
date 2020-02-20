@@ -1,5 +1,5 @@
 import mem from "mem";
-import fetch from "node-fetch";
+import got from "got";
 import { apollo } from "../types";
 import { SERIES_ALIASES } from "../constants";
 
@@ -56,7 +56,10 @@ export const lookup = mem(
     if (!query) return [];
     const firstChar = query.charAt(0);
     const url = `https://v2.sg.media-imdb.com/suggestion/${firstChar}/${query}.json`;
-    const json: IMDbResult = await fetch(url).then(r => r.status === 200 && r.json());
+    const json = await got(url)
+      .json<IMDbResult>()
+      .catch(() => null);
+
     if (!json || !json.d) {
       return [];
     }

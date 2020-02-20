@@ -3,6 +3,10 @@
 Apollo is a tool to organise your media library. It uses the undocumented IMDb Search API for fast and reliable title lookups.
 This is still experimental, so installation and usage is vague.
 
+# to-do
+
+- [ ] Subtitles are not handled correctly. They should have their language in the path.
+
 # command-line use
 
 ```bash

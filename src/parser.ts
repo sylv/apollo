@@ -1,5 +1,5 @@
-import signale from "signale";
 import { lookup } from "./helpers/lookup";
+import { log } from "./helpers/log";
 import { apollo } from "./types";
 import {
   YEAR_REGEX,
@@ -15,10 +15,15 @@ import {
 } from "./constants";
 
 export class ApolloParser {
-  protected readonly log = signale.scope("parser");
-  protected matchIndexes: { start: number; end: number }[] = [];
+  protected readonly log = log.scope("parser");
+  protected readonly matchIndexes: { start: number; end: number }[] = [];
 
-  public async parse(filePath: string, parentData?: Partial<apollo.Parsed>): Promise<apollo.Parsed | void> {
+  /**
+   * Parse a torrent name or complete path.
+   * @param filePath The torrent name or file path.
+   * @param parentData Used internally.
+   */
+  public async parse(filePath: string, parentData?: Partial<apollo.Parsed>): Promise<apollo.Parsed | undefined> {
     let extension = parentData ? parentData.extension : ALL_EXTENSIONS.find(ext => filePath.endsWith(ext));
     if (!extension) {
       this.log.debug(`Could not extract file extension for "${filePath}"`);
@@ -73,7 +78,7 @@ export class ApolloParser {
       // remove "movie 1" from the start and "movie" from the end, if they exist.
       .replace(/^movie(?: [0-9])? | movie$/i, "")
       // remove urls that weren't in brackets
-      .replace(/(www\.)?[a-z0-9]+\.(?:com|org|me|se|info)/i, "")
+      .replace(/(www )?[a-z0-9]+ (?:com|org|me|se|info)/i, "")
       // remove things like "(auto)" at the start of strings, e.g "(auto) Top Gear"
       .replace(/^\([A-z0-9]+\) ?/, "")
       .trim();
@@ -84,12 +89,6 @@ export class ApolloParser {
     }
 
     const results = await lookup(rawTitle);
-    // if (results.length === 0 && rawTitle.includes(" - ")) {
-    //   const altTitle = rawTitle.split(" - ")[0];
-    //   const altResults = await lookup(altTitle);
-    //   if (altResults.length) results = altResults;
-    // }
-
     const type = index.seasonNumber || index.episodeNumber ? apollo.TitleType.TV : apollo.TitleType.MOVIE;
     const best = this.getBestResult(results, rawTitle, type, year && year.start);
     // the length comparison is a hacky way to stop picking titles that IMDb gives us when it really doesn't
@@ -111,39 +110,27 @@ export class ApolloParser {
     };
   }
 
-  protected getLanguages(cleanPath: string) {
+  /**
+   * Get a list of language codes from the input.
+   * @example ["ENG", "ITA"]
+   */
+  protected getLanguages(cleanPath: string): string[] {
     return this.getMatch(cleanPath, LANGUAGE_REGEX, true).map(match => match[0]);
   }
 
-  protected getAudio(cleanPath: string) {
+  /**
+   * Get misc audio information from the input.
+   * @example ["AC3", "5.1"]
+   */
+  protected getAudio(cleanPath: string): string[] {
     return this.getMatch(cleanPath, AUDIO_REGEX, true).map(match => match[0]);
   }
 
-  protected getBestResult(results: apollo.LookupResult[], title: string, type: apollo.TitleType, year?: number) {
-    const acceptable = results.filter(result => {
-      if (type !== result.type) return false;
-      if (type === apollo.TitleType.MOVIE && year && result.year && result.year !== year) return false;
-      return true;
-    });
-
-    if (!title.includes(" ")) {
-      // with single-word titles, i've found IMDb struggles sometimes,
-      // for example returning "Logan Lucky (2017)" before "Logan (2017)". This is a hacky way
-      // to get around that.
-      const exact = results.slice(0, 4).find(t => t.title.toLowerCase() === title.toLowerCase());
-      if (exact) return exact;
-    }
-
-    return acceptable.shift();
-  }
-
-  protected firstMatchIndex(afterIndex: number = 0) {
-    this.matchIndexes.sort((a, b) => a.start - b.start);
-    if (afterIndex === 0) return this.matchIndexes[0];
-    return this.matchIndexes.find(m => afterIndex < m.end);
-  }
-
-  protected getYear(cleanPath: string) {
+  /**
+   * Get a year from the input.
+   * @example { start: 2019, end: 2020 }
+   */
+  protected getYear(cleanPath: string): { start: number; end: number | undefined } | undefined {
     const match = this.getMatch(cleanPath, YEAR_REGEX, false);
     if (!match || !match.groups) return;
     // by getting the first 2 digits on the start year, we can handle things like 2014-15 and 1944-45
@@ -157,19 +144,31 @@ export class ApolloParser {
     };
   }
 
-  protected getResolution(cleanPath: string) {
+  /**
+   * Get the resolution of the input.
+   * @example 1080
+   */
+  protected getResolution(cleanPath: string): number | undefined {
     const match = this.getMatch(cleanPath, RESOLUTION_REGEX, false);
     if (!match) return;
 
     return +match;
   }
 
-  protected getCollectionState(cleanPath: string) {
+  /**
+   * Get whether the input is a collection.
+   * @example true
+   */
+  protected getCollectionState(cleanPath: string): boolean {
     const match = this.getMatch(cleanPath, COLLECTION_REGEX, false);
     return !!match;
   }
 
-  protected getSeasonAndEpisode(cleanPath: string) {
+  /**
+   * Get the season and episode index from the input.
+   * @param cleanPath { seasonNumber: 6, episodeNumber: 9 }
+   */
+  protected getSeasonAndEpisode(cleanPath: string): { seasonNumber: number | undefined; episodeNumber: number | undefined } {
     let seasonNumber: number | undefined;
     let episodeNumber: number | undefined;
 
@@ -177,6 +176,14 @@ export class ApolloParser {
       const matches = this.getMatch(cleanPath, pattern, true);
       for (const match of matches) {
         if (!match.groups) continue;
+
+        // if the char after the match is '-', it indicates a range that we didn't
+        // grab. It could be something like "S01e01-10" when the actual index is "S01E05"
+        // so we completely ignore these matches if they are suspicious.
+        const endIndex = match.index + match[0].length;
+        const charAfterMatch = cleanPath[endIndex];
+        if (charAfterMatch === "-") continue;
+
         const se = match.groups.season ? +match.groups.season : undefined;
         const ep = match.groups.episode ? +match.groups.episode : undefined;
         if (se && ep) {
@@ -196,9 +203,45 @@ export class ApolloParser {
   }
 
   /**
+   * Get the best search result for the input.
+   */
+  protected getBestResult(
+    results: apollo.LookupResult[],
+    title: string,
+    type: apollo.TitleType,
+    year?: number
+  ): apollo.LookupResult | undefined {
+    const acceptable = results.filter(result => {
+      if (type !== result.type) return false;
+      if (type === apollo.TitleType.MOVIE && year && result.year && result.year !== year) return false;
+      return true;
+    });
+
+    if (!title.includes(" ")) {
+      // with single-word titles, i've found IMDb struggles sometimes,
+      // for example returning "Logan Lucky (2017)" before "Logan (2017)". This is a hacky way
+      // to get around that.
+      const exact = results.slice(0, 4).find(t => t.title.toLowerCase() === title.toLowerCase());
+      if (exact) return exact;
+    }
+
+    return acceptable.shift();
+  }
+
+  /**
+   * Get the first match index in the input. For example, in "My Movie 2019", the first match would be the index of the start of "2019" as that is a year.
+   * @param afterIndex Get the first match that is after this index.
+   */
+  protected firstMatchIndex(afterIndex: number = 0): { start: number; end: number } | undefined {
+    this.matchIndexes.sort((a, b) => a.start - b.start);
+    if (afterIndex === 0) return this.matchIndexes[0];
+    return this.matchIndexes.find(m => afterIndex < m.end);
+  }
+
+  /**
    * Clean the file path and replace dots or underscores with spaces when necessary.
    */
-  protected getCleanFilePath(filePath: string) {
+  protected getCleanFilePath(filePath: string): string {
     return (
       filePath
         .split(/\/|\\/g)
@@ -210,31 +253,28 @@ export class ApolloParser {
   }
 
   /**
-   * Given a file or directory name, replace dots or underscores with spaces if it is suspected of using
-   * them as a replacement.
+   * Given a file or directory name, replace dots that are used as placeholders for spaces.
    */
-  protected handleSpaceReplacements(filePathPart: string) {
-    const spaceCount = filePathPart.split(" ").length;
-    const matches: { char: string; count: number }[] = [];
+  protected handleSpaceReplacements(filePathPart: string): string {
+    // previously I was trying to be smart here by counting how many spaces
+    // and how many dots and only replacing if there were N amount of dots more than spaces
+    // but that proved unreliable when I started encountering names with both mixed equally.
+    // fuck standards I guess.
     for (const char of SPACE_PLACEHOLDERS) {
-      const count = filePathPart.split(char).length;
-      matches.push({ char, count });
-    }
-
-    matches.sort((a, b) => b.count - a.count);
-    const best = matches[0];
-    const worst = matches[matches.length - 1];
-    if (best.count > spaceCount * 0.5 && best.count - worst.count > 4) {
-      return filePathPart.split(best.char).join(" ");
+      filePathPart = filePathPart.split(char).join(" ");
     }
 
     return filePathPart;
   }
 
+  /**
+   * Get a match from a string. This automatically handles pushiung to this.matchIndexes and
+   * multiple matches for you and most of the time should be preferred over string.match or RegExp.exec.
+   */
   // getting all matches, even if we're only using one, is important for title extraction.
   protected getMatch(target: string, pattern: RegExp, returnAll: true): RegExpExecArray[];
-  protected getMatch(target: string, pattern: RegExp, returnAll: false): RegExpExecArray | void;
-  protected getMatch(target: string, pattern: RegExp, returnAll: boolean): RegExpExecArray | RegExpExecArray[] | void {
+  protected getMatch(target: string, pattern: RegExp, returnAll: false): RegExpExecArray | undefined;
+  protected getMatch(target: string, pattern: RegExp, returnAll: boolean): RegExpExecArray | RegExpExecArray[] | undefined {
     pattern.lastIndex = 0;
     if (!pattern.flags.includes("g")) {
       throw new Error(`Cannot use ApolloParser#match() on RegExp without specifying "g" flag`);
@@ -244,12 +284,15 @@ export class ApolloParser {
     let match;
     while ((match = pattern.exec(target))) {
       matches.push(match);
+
+      // add the match to this.matchIndexes for title extraction
       const startIndex = match.index ? match.index : target.lastIndexOf(match[0]);
       if (startIndex === -1) continue;
       this.matchIndexes.push({ start: startIndex, end: startIndex + match[0].length });
     }
 
     if (returnAll) return matches;
+    // matches.sort((a, b) => a.index - b.index);
     return matches[matches.length - 1];
   }
 }
