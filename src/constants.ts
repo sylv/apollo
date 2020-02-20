@@ -21,7 +21,7 @@ export const AUDIO_REGEX = /ac3|aac|dd |7\.1|5\.1|dolby|atmos/gi;
 export const LANGUAGE_REGEX = /(ITA|ENG|RUS)/g;
 export const IGNORE_PATH_PART_REGEX = /^(?:[A-Z]:|[a-z]+|tv shows)$/i;
 export const COLLECTION_REGEX = /complete|completa|collection|trilogy|duology|(?:season|se|s) ?[0-9]{1,2} ?- ?(?:season|se|s)?[0-9]{1,2}/gi;
-export const EXCLUDE_BLACKLIST = /lore|histories|sample|trailer|behind.the.scenes|deleted.and.extended.scenes|deleted.scenes|extras?|featurettes|interviews|scenes|shorts/i;
+export const EXCLUDE_BLACKLIST_REGEX = /lore|histories|sample|trailer|behind.the.scenes|deleted.and.extended.scenes|deleted.scenes|extras?|featurettes|interviews|scenes|shorts/i;
 export const SEASON_EPISODE_PATTERNS = [
   // matches "1x1"
   // not "1x1t", "1x1-1x2"
@@ -36,3 +36,11 @@ export const SEASON_EPISODE_PATTERNS = [
   // matches "Part 3 of 3" if we're really desparate
   /Part (?<episode>[0-9]) of [0-9]/gi
 ];
+
+// patterns for cleaning titles
+export const TITLE_TAG_REGEX = /\[.*?\]/g;
+export const TITLE_RELEASE_GROUP_REGEX = /-[a-z]{2,}(?=$|\/)/gi;
+export const TITLE_TRAILING_TAG_REGEX = / ?(?:\(|\[) ?$/g;
+export const TITLE_STRIP_WORD_REGEX = /^movie(?: [0-9])? | movie$/i;
+export const TITLE_URL_REGEX = /(www )?[a-z0-9]+ (?:com|org|me|se|info)/i;
+export const TITLE_PREFIX_TAG_REGEX = /^\([A-z0-9]+\) ?/;

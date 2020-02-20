@@ -2,7 +2,7 @@ import fs from "fs";
 import rrdir from "rrdir";
 import sanitize from "sanitize-filename";
 import path from "path";
-import { EXCLUDE_BLACKLIST } from "./constants";
+import { EXCLUDE_BLACKLIST_REGEX } from "./constants";
 import { ApolloParser } from "./parser";
 import { apollo } from "./types";
 import { log } from "./helpers/log";
@@ -34,7 +34,7 @@ export class Apollo {
         continue;
       }
 
-      const blacklisted = file.path.match(EXCLUDE_BLACKLIST);
+      const blacklisted = file.path.match(EXCLUDE_BLACKLIST_REGEX);
       if (blacklisted) {
         this.log.debug(`Skipping "${file.path}" as it contains undesirable keywords`);
         continue;

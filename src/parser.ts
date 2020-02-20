@@ -1,18 +1,7 @@
 import { lookup } from "./helpers/lookup";
 import { log } from "./helpers/log";
 import { apollo } from "./types";
-import {
-  YEAR_REGEX,
-  RESOLUTION_REGEX,
-  COLLECTION_REGEX,
-  SEASON_EPISODE_PATTERNS,
-  SPACE_PLACEHOLDERS,
-  IGNORE_PATH_PART_REGEX,
-  ALL_EXTENSIONS,
-  SUPPORTING_FILE_EXTENSIONS,
-  AUDIO_REGEX,
-  LANGUAGE_REGEX
-} from "./constants";
+import * as constants from "./constants";
 
 export class ApolloParser {
   protected readonly log = log.scope("parser");
@@ -24,13 +13,13 @@ export class ApolloParser {
    * @param parentData Used internally.
    */
   public async parse(filePath: string, parentData?: Partial<apollo.Parsed>): Promise<apollo.Parsed | undefined> {
-    let extension = parentData ? parentData.extension : ALL_EXTENSIONS.find(ext => filePath.endsWith(ext));
+    let extension = parentData ? parentData.extension : constants.ALL_EXTENSIONS.find(ext => filePath.endsWith(ext));
     if (!extension) {
       this.log.debug(`Could not extract file extension for "${filePath}"`);
       return;
     }
 
-    const fileType = SUPPORTING_FILE_EXTENSIONS.includes(extension) ? apollo.FileType.SUPPORTING : apollo.FileType.MEDIA;
+    const fileType = constants.SUPPORTING_FILE_EXTENSIONS.includes(extension) ? apollo.FileType.SUPPORTING : apollo.FileType.MEDIA;
     const cleanPath = this.getCleanFilePath(filePath.endsWith(extension) ? filePath.slice(0, -extension.length) : filePath);
     const year = this.getYear(cleanPath);
     const resolution = this.getResolution(cleanPath);
@@ -67,21 +56,7 @@ export class ApolloParser {
     }
 
     const closestPathSep = cleanPath.substring(0, firstMatchIndex.start).lastIndexOf("/");
-    const rawTitle = cleanPath
-      .substring(closestPathSep + 1, firstMatchIndex.start)
-      // remove tags like [1080p]
-      .replace(/\[.*?\]/g, " ")
-      // remove release group suffixes like -QxR
-      .replace(/-[a-z]{2,}(?=$|\/)/gi, "")
-      // trim trailing ('s from e.g "Avatar - The Last Airbender Movie ("
-      .replace(/ ?(?:\(|\[) ?$/g, "")
-      // remove "movie 1" from the start and "movie" from the end, if they exist.
-      .replace(/^movie(?: [0-9])? | movie$/i, "")
-      // remove urls that weren't in brackets
-      .replace(/(www )?[a-z0-9]+ (?:com|org|me|se|info)/i, "")
-      // remove things like "(auto)" at the start of strings, e.g "(auto) Top Gear"
-      .replace(/^\([A-z0-9]+\) ?/, "")
-      .trim();
+    const rawTitle = this.cleanTitle(cleanPath.substring(closestPathSep + 1, firstMatchIndex.start));
 
     if (!rawTitle) {
       this.log.error(`Could not extract title for "${filePath}"`);
@@ -115,7 +90,7 @@ export class ApolloParser {
    * @example ["ENG", "ITA"]
    */
   protected getLanguages(cleanPath: string): string[] {
-    return this.getMatch(cleanPath, LANGUAGE_REGEX, true).map(match => match[0]);
+    return this.getMatch(cleanPath, constants.LANGUAGE_REGEX, true).map(match => match[0]);
   }
 
   /**
@@ -123,7 +98,7 @@ export class ApolloParser {
    * @example ["AC3", "5.1"]
    */
   protected getAudio(cleanPath: string): string[] {
-    return this.getMatch(cleanPath, AUDIO_REGEX, true).map(match => match[0]);
+    return this.getMatch(cleanPath, constants.AUDIO_REGEX, true).map(match => match[0]);
   }
 
   /**
@@ -131,7 +106,7 @@ export class ApolloParser {
    * @example { start: 2019, end: 2020 }
    */
   protected getYear(cleanPath: string): { start: number; end: number | undefined } | undefined {
-    const match = this.getMatch(cleanPath, YEAR_REGEX, false);
+    const match = this.getMatch(cleanPath, constants.YEAR_REGEX, false);
     if (!match || !match.groups) return;
     // by getting the first 2 digits on the start year, we can handle things like 2014-15 and 1944-45
     const start = +match.groups.start;
@@ -149,7 +124,7 @@ export class ApolloParser {
    * @example 1080
    */
   protected getResolution(cleanPath: string): number | undefined {
-    const match = this.getMatch(cleanPath, RESOLUTION_REGEX, false);
+    const match = this.getMatch(cleanPath, constants.RESOLUTION_REGEX, false);
     if (!match) return;
 
     return +match;
@@ -160,7 +135,7 @@ export class ApolloParser {
    * @example true
    */
   protected getCollectionState(cleanPath: string): boolean {
-    const match = this.getMatch(cleanPath, COLLECTION_REGEX, false);
+    const match = this.getMatch(cleanPath, constants.COLLECTION_REGEX, false);
     return !!match;
   }
 
@@ -172,7 +147,7 @@ export class ApolloParser {
     let seasonNumber: number | undefined;
     let episodeNumber: number | undefined;
 
-    for (const pattern of SEASON_EPISODE_PATTERNS) {
+    for (const pattern of constants.SEASON_EPISODE_PATTERNS) {
       const matches = this.getMatch(cleanPath, pattern, true);
       for (const match of matches) {
         if (!match.groups) continue;
@@ -245,7 +220,7 @@ export class ApolloParser {
     return (
       filePath
         .split(/\/|\\/g)
-        .filter(p => p.length > 2 && !p.match(IGNORE_PATH_PART_REGEX))
+        .filter(p => p.length > 2 && !p.match(constants.IGNORE_PATH_PART_REGEX))
         .map(this.handleSpaceReplacements.bind(this))
         // we use "/" to indicate a path. it's convenient.
         .join("/")
@@ -260,7 +235,7 @@ export class ApolloParser {
     // and how many dots and only replacing if there were N amount of dots more than spaces
     // but that proved unreliable when I started encountering names with both mixed equally.
     // fuck standards I guess.
-    for (const char of SPACE_PLACEHOLDERS) {
+    for (const char of constants.SPACE_PLACEHOLDERS) {
       filePathPart = filePathPart.split(char).join(" ");
     }
 
@@ -294,5 +269,28 @@ export class ApolloParser {
     if (returnAll) return matches;
     // matches.sort((a, b) => a.index - b.index);
     return matches[matches.length - 1];
+  }
+
+  /**
+   * strip information that was incorrectly included in a title.
+   * @example "(auto) Infinity War Movie 1 (" -> "Infinity War"
+   */
+  protected cleanTitle(title: string) {
+    return (
+      title
+        // remove tags like [1080p]
+        .replace(constants.TITLE_TAG_REGEX, " ")
+        // remove release group suffixes like -QxR
+        .replace(constants.TITLE_RELEASE_GROUP_REGEX, "")
+        // trim trailing ('s from e.g "Avatar - The Last Airbender Movie ("
+        .replace(constants.TITLE_TRAILING_TAG_REGEX, "")
+        // remove "movie 1" from the start and "movie" from the end, if they exist.
+        .replace(constants.TITLE_STRIP_WORD_REGEX, "")
+        // remove urls that weren't in brackets
+        .replace(constants.TITLE_URL_REGEX, "")
+        // remove things like "(auto)" at the start of strings, e.g "(auto) Top Gear"
+        .replace(constants.TITLE_PREFIX_TAG_REGEX, "")
+        .trim()
+    );
   }
 }
