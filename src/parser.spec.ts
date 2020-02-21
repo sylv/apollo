@@ -15,7 +15,7 @@ const tests: (apollo.Parsed & { input: string })[] = [
     languages: [],
     audio: [],
     seasonNumber: 7,
-    episodeNumber: 25
+    episodeNumber: [25]
   },
   {
     // Not having the season number in the file name caused huge issues for the original parser
@@ -32,7 +32,7 @@ const tests: (apollo.Parsed & { input: string })[] = [
     languages: [],
     audio: [],
     seasonNumber: 1,
-    episodeNumber: 2
+    episodeNumber: [2]
   },
   {
     // Another bag of worms test.
@@ -49,7 +49,8 @@ const tests: (apollo.Parsed & { input: string })[] = [
     fileType: apollo.FileType.MEDIA,
     startYear: 2001,
     languages: [],
-    audio: []
+    audio: [],
+    episodeNumber: []
   },
   {
     // space between "S03 E11" meant the whole match was thrown out.
@@ -64,7 +65,7 @@ const tests: (apollo.Parsed & { input: string })[] = [
     languages: [],
     audio: [],
     seasonNumber: 3,
-    episodeNumber: 11
+    episodeNumber: [11]
   },
   {
     // season ranges, "1x01" season/episode formats
@@ -77,7 +78,7 @@ const tests: (apollo.Parsed & { input: string })[] = [
     languages: [],
     audio: [],
     seasonNumber: 13,
-    episodeNumber: 4
+    episodeNumber: [4]
   },
   {
     // "1x01" season/episode formats
@@ -90,7 +91,7 @@ const tests: (apollo.Parsed & { input: string })[] = [
     languages: [],
     audio: [],
     seasonNumber: 10,
-    episodeNumber: 4
+    episodeNumber: [4]
   },
   {
     // testing series aliases
@@ -104,7 +105,7 @@ const tests: (apollo.Parsed & { input: string })[] = [
     languages: [],
     audio: [],
     seasonNumber: 3,
-    episodeNumber: 12
+    episodeNumber: [12]
   },
   {
     // similar issues to the Republic City Hustle test from the same series below.
@@ -119,7 +120,7 @@ const tests: (apollo.Parsed & { input: string })[] = [
     languages: [],
     audio: [],
     seasonNumber: 4,
-    episodeNumber: 10
+    episodeNumber: [10]
   },
   {
     // that one scene where nicholas cage steps off the plane and his stunning, silky hair is blowing in the wind
@@ -133,7 +134,8 @@ const tests: (apollo.Parsed & { input: string })[] = [
     fileType: apollo.FileType.MEDIA,
     startYear: 1997,
     languages: [],
-    audio: ["AC3", "AC3"]
+    audio: ["AC3", "AC3"],
+    episodeNumber: []
   },
   {
     // The multi-collection pack was annoying at times.
@@ -153,7 +155,7 @@ const tests: (apollo.Parsed & { input: string })[] = [
     languages: [],
     audio: [],
     seasonNumber: undefined,
-    episodeNumber: undefined
+    episodeNumber: []
   },
   {
     // surprisingly this one hasn't caused any issues yet, though I figure it's a good test
@@ -167,7 +169,8 @@ const tests: (apollo.Parsed & { input: string })[] = [
     fileType: apollo.FileType.MEDIA,
     startYear: 2009,
     languages: [],
-    audio: []
+    audio: [],
+    episodeNumber: []
   },
   {
     // this just generally seemed like a good test.
@@ -183,7 +186,7 @@ const tests: (apollo.Parsed & { input: string })[] = [
     languages: [],
     audio: [],
     seasonNumber: 5,
-    episodeNumber: 1
+    episodeNumber: [1]
   },
   {
     // this one is just straight nasty.
@@ -204,7 +207,7 @@ const tests: (apollo.Parsed & { input: string })[] = [
     fileType: apollo.FileType.MEDIA,
     languages: [],
     audio: [],
-    episodeNumber: 3
+    episodeNumber: [3]
   },
   {
     // brackets around season index
@@ -220,7 +223,7 @@ const tests: (apollo.Parsed & { input: string })[] = [
     languages: [],
     audio: [],
     seasonNumber: 7,
-    episodeNumber: 6
+    episodeNumber: [6]
   },
   {
     // IMDB results would give another longer movie name, which is why we now prefer exact matches when there are no spaces.
@@ -233,7 +236,8 @@ const tests: (apollo.Parsed & { input: string })[] = [
     fileType: apollo.FileType.MEDIA,
     startYear: 2017,
     languages: [],
-    audio: []
+    audio: [],
+    episodeNumber: []
   },
   {
     // (auto) prefix fucked things up
@@ -248,7 +252,7 @@ const tests: (apollo.Parsed & { input: string })[] = [
     languages: [],
     audio: [],
     seasonNumber: 10,
-    episodeNumber: 1
+    episodeNumber: [1]
   },
   {
     // previous season parsers would look up "Love Death and Robots S01", which is why ApolloParser#getMatches() works how it  do
@@ -263,7 +267,7 @@ const tests: (apollo.Parsed & { input: string })[] = [
     languages: ["ITA", "ENG", "ITA", "ENG"],
     audio: [],
     seasonNumber: 1,
-    episodeNumber: 1
+    episodeNumber: [1]
   },
   {
     // looking up this title would get invalid results.
@@ -278,7 +282,7 @@ const tests: (apollo.Parsed & { input: string })[] = [
     languages: [],
     audio: [],
     seasonNumber: 1,
-    episodeNumber: 1
+    episodeNumber: [1]
   },
   {
     // had issues with the brackets in [11x01] and the full date "2008.06.22"
@@ -293,7 +297,7 @@ const tests: (apollo.Parsed & { input: string })[] = [
     languages: [],
     audio: [],
     seasonNumber: 11,
-    episodeNumber: 1
+    episodeNumber: [1]
   },
   {
     // the dash in "S01e01-10" really fucked with the parser.
@@ -309,7 +313,7 @@ const tests: (apollo.Parsed & { input: string })[] = [
     languages: ["ITA", "ENG"],
     audio: [],
     seasonNumber: 1,
-    episodeNumber: 5
+    episodeNumber: [5]
   },
   {
     // good test for confusing "Se7en" as "Season 7"
@@ -325,7 +329,7 @@ const tests: (apollo.Parsed & { input: string })[] = [
     languages: [],
     audio: [],
     seasonNumber: undefined,
-    episodeNumber: undefined
+    episodeNumber: []
   },
   {
     // good test for dots
@@ -341,7 +345,7 @@ const tests: (apollo.Parsed & { input: string })[] = [
     languages: [],
     audio: [],
     seasonNumber: 17,
-    episodeNumber: 16
+    episodeNumber: [16]
   },
   {
     // the www.Torrenting.org had to be filtered out
@@ -358,7 +362,7 @@ const tests: (apollo.Parsed & { input: string })[] = [
     languages: [],
     audio: [],
     seasonNumber: 1,
-    episodeNumber: 1
+    episodeNumber: [1]
   },
   {
     input: "Y:\\completed\\Deadpool 2016 1080p BluRay x264 DTS-JYK\\Subs\\French.srt",
@@ -373,7 +377,23 @@ const tests: (apollo.Parsed & { input: string })[] = [
     languages: [],
     audio: [],
     seasonNumber: undefined,
-    episodeNumber: undefined
+    episodeNumber: []
+  },
+  {
+    input:
+      "The Simpsons (1989-2018) Seasons 01-29 & Movie [1080p] [Ultimate Batch] [HEVC] [x265] [pseudo]/Season 28/The Simpsons - S28E12E13 - The Great Phatsby [1080p] [x265] [pseudo].mkv",
+    title: "The Simpsons",
+    resolution: 1080,
+    type: apollo.TitleType.TV,
+    collection: true,
+    extension: ".mkv",
+    fileType: apollo.FileType.MEDIA,
+    startYear: undefined,
+    endYear: undefined,
+    languages: [],
+    audio: [],
+    seasonNumber: 28,
+    episodeNumber: [12, 13]
   }
 ];
 

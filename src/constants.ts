@@ -22,6 +22,7 @@ export const LANGUAGE_REGEX = /(ITA|ENG|RUS)/g;
 export const IGNORE_PATH_PART_REGEX = /^(?:[A-Z]:|[a-z]+|tv shows)$/i;
 export const COLLECTION_REGEX = /complete|completa|collection|trilogy|duology|(?:season|se|s) ?[0-9]{1,2} ?- ?(?:season|se|s)?[0-9]{1,2}/gi;
 export const EXCLUDE_BLACKLIST_REGEX = /lore|histories|sample|trailer|behind.the.scenes|deleted.and.extended.scenes|deleted.scenes|extras?|featurettes|interviews|scenes|shorts/i;
+export const SEASON_EPISODE_RANGE_REGEX = /SE?(?<season>[0-9]{1,2})EP?(?<episodeStart>[0-9]{1,2})(?:-|E)+(?<episodeEnd>[0-9]{1,2})/i;
 export const SEASON_EPISODE_PATTERNS = [
   // matches "1x1"
   // not "1x1t", "1x1-1x2"

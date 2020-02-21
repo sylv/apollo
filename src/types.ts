@@ -39,7 +39,7 @@ export namespace apollo {
     fileType: FileType;
     collection: boolean;
     seasonNumber?: number;
-    episodeNumber?: number;
+    episodeNumber: number[];
     extension: string;
     startYear?: number;
     endYear?: number;

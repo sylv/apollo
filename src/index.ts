@@ -91,10 +91,10 @@ export class Apollo {
     const title = sanitize(parsed.title);
     let outputPath: string;
 
-    if (parsed.episodeNumber) {
+    if (parsed.episodeNumber.length) {
       const parentDir = parsed.seasonNumber ? `Season ${parsed.seasonNumber}` : "Unknown Season";
       const paddedSeason = parsed.seasonNumber ? "S" + parsed.seasonNumber.toString().padStart(2, "0") : "";
-      const paddedEpisode = parsed.episodeNumber.toString().padStart(2, "0");
+      const paddedEpisode = parsed.episodeNumber.map(n => n.toString().padStart(2, "0")).join("-");
       const loc = `TV Shows/${title}/${parentDir}/${title} ${paddedSeason}E${paddedEpisode}${parsed.extension}`;
       outputPath = path.join(this.options.output, loc);
     } else {

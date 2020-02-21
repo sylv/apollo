@@ -1,6 +1,7 @@
 import { lookup } from "./helpers/lookup";
 import { log } from "./helpers/log";
 import { apollo } from "./types";
+import path from "path";
 import * as constants from "./constants";
 
 export class ApolloParser {
@@ -64,7 +65,7 @@ export class ApolloParser {
     }
 
     const results = await lookup(rawTitle);
-    const type = index.seasonNumber || index.episodeNumber ? apollo.TitleType.TV : apollo.TitleType.MOVIE;
+    const type = index.seasonNumber || index.episodeNumber.length ? apollo.TitleType.TV : apollo.TitleType.MOVIE;
     const best = this.getBestResult(results, rawTitle, type, year && year.start);
     // the length comparison is a hacky way to stop picking titles that IMDb gives us when it really doesn't
     // know what we want. it's basically just a hilariously long title, so checking if it's too long is pretty reliable.
@@ -143,9 +144,9 @@ export class ApolloParser {
    * Get the season and episode index from the input.
    * @param cleanPath { seasonNumber: 6, episodeNumber: 9 }
    */
-  protected getSeasonAndEpisode(cleanPath: string): { seasonNumber: number | undefined; episodeNumber: number | undefined } {
+  protected getSeasonAndEpisode(cleanPath: string): { seasonNumber: number | undefined; episodeNumber: number[] } {
     let seasonNumber: number | undefined;
-    let episodeNumber: number | undefined;
+    let episodeNumber: number[] = [];
 
     for (const pattern of constants.SEASON_EPISODE_PATTERNS) {
       const matches = this.getMatch(cleanPath, pattern, true);
@@ -165,12 +166,25 @@ export class ApolloParser {
           // if we have both, trust it more than separate parts we got.
           // e.g, "Season 1\S02E02", this should give us S02E02 instead of S01E02
           seasonNumber = se;
-          episodeNumber = ep;
+          episodeNumber = [ep];
           break;
         }
 
         if (se && !seasonNumber) seasonNumber = se;
-        if (ep && !episodeNumber) episodeNumber = ep;
+        if (ep && !episodeNumber.length) episodeNumber = [ep];
+      }
+    }
+
+    if (!seasonNumber || !episodeNumber.length) {
+      // this handles the case where the file contains multiple episodes.
+      const fileName = path.basename(cleanPath);
+      const rangeMatch = fileName.match(constants.SEASON_EPISODE_RANGE_REGEX);
+      if (rangeMatch) {
+        const groups = rangeMatch.groups || {};
+        const adjustedIndex = (rangeMatch.index || fileName.indexOf(cleanPath[0])) + cleanPath.lastIndexOf("/") + 1;
+        seasonNumber = +groups.season;
+        episodeNumber = [+groups.episodeStart, +groups.episodeEnd];
+        this.matchIndexes.push({ start: adjustedIndex, end: adjustedIndex + cleanPath[0].length });
       }
     }
 
