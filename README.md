@@ -1,19 +1,39 @@
 # apollo
 
-Apollo is a tool to organise your media library. It uses the undocumented IMDb Search API for fast and reliable title lookups.
-This is still experimental, so installation and usage is vague.
+Apollo is a tool to organise your media library. It's intended to be a faster, more reliable alternative to [FileBot](https://filebot.net). Using the undocumented IMDb search API, we can do fast title searches to get accurate names for your library.
 
-# to-do
+# installation
 
-- [ ] Subtitles are not handled correctly. They should have their language in the path.
+_Apollo is still experimental. I encourage you to try it out and compare it to filebot. Stick with symlinking so you don't destroy your library and report any issues you find. This is still a rough guide._
 
-# command-line use
+Requires [Node.js](https://nodejs.org/en/) >=12.0.0
 
 ```bash
+git clone https://github.com/sylv/apollo.git
+cd apollo
+npm install
+npm run build
+npm run link
+apollo --version
+```
+
+# usage
+
+## command line
+
+```bash
+apollo --help
 apollo ./torrents ./library
 ```
 
-# programmatic usage
+## programmatic
+
+```json
+"dependencies": {
+    "apollo": "git+https://github.com/sylv/apollo.git",
+    ...
+}
+```
 
 ```ts
 import apollo from "apollo";
