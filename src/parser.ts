@@ -160,9 +160,9 @@ export class ApolloParser {
         const charAfterMatch = cleanPath[endIndex];
         if (charAfterMatch === "-") continue;
 
-        const se = match.groups.season ? +match.groups.season : undefined;
-        const ep = match.groups.episode ? +match.groups.episode : undefined;
-        if (se && ep) {
+        const se = match.groups.season ? +match.groups.season : NaN;
+        const ep = match.groups.episode ? +match.groups.episode : NaN;
+        if (!isNaN(se) && !isNaN(ep)) {
           // if we have both, trust it more than separate parts we got.
           // e.g, "Season 1\S02E02", this should give us S02E02 instead of S01E02
           seasonNumber = se;
@@ -170,8 +170,8 @@ export class ApolloParser {
           break;
         }
 
-        if (se && !seasonNumber) seasonNumber = se;
-        if (ep && !episodeNumber.length) episodeNumber = [ep];
+        if (!isNaN(se) && !seasonNumber) seasonNumber = se;
+        if (!isNaN(ep) && !episodeNumber.length) episodeNumber = [ep];
       }
     }
 

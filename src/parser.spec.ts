@@ -394,6 +394,23 @@ const tests: (apollo.Parsed & { input: string })[] = [
     audio: [],
     seasonNumber: 28,
     episodeNumber: [12, 13]
+  },
+  {
+    // support for "0" episode numbers
+    // this isn't the best behaviour but it's as best as we can get with fucky episode indexes
+    input: "/mnt/z/completed/Top Gear UK 1-17/Top Gear - Season 16/Top Gear - [16x00] The_Three_Wise_Men_Christmas.avi",
+    title: "Top Gear",
+    resolution: undefined,
+    type: apollo.TitleType.TV,
+    collection: false,
+    extension: ".avi",
+    fileType: apollo.FileType.MEDIA,
+    startYear: undefined,
+    endYear: undefined,
+    languages: [],
+    audio: [],
+    seasonNumber: 16,
+    episodeNumber: [0]
   }
 ];
 
