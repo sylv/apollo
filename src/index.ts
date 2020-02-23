@@ -1,4 +1,4 @@
-import fs from "fs";
+import fs from "fs-extra";
 import rrdir from "rrdir";
 import sanitize from "sanitize-filename";
 import path from "path";
@@ -45,7 +45,8 @@ export class Apollo {
       }
 
       if (!this.createdDirectories.has(output.directory)) {
-        await fs.promises.mkdir(output.directory, { recursive: true });
+        await fs.mkdirp(output.directory);
+        this.createdDirectories.add(output.directory);
       }
 
       const action = this.options.move ? "moving" : "linking";
@@ -54,8 +55,8 @@ export class Apollo {
 
         if (!this.options.dryRun) {
           // move or create symlinks based on options
-          if (this.options.move) await fs.promises.rename(file.path, output.path);
-          else fs.promises.symlink(file.path, output.path);
+          if (this.options.move) await fs.move(file.path, output.path);
+          else fs.symlink(file.path, output.path);
         }
 
         this.log.info(`${action} "${file.path}" -> "${output.path}"`);
