@@ -8,11 +8,11 @@ import { Apollo } from "./";
 const cli = meow(
   `
     Usage
-      parcel-cli <input-directory> <output-directory>
+      apollo <input-directory> <output-directory>
     Example
-      parcel-cli ./torrents ./clean
-      parcel-cli ./torrents/**/*.mkv ./clean
-      parcel-cli D:\\Torrents E:\\Media
+      apollo ./torrents ./clean
+      apollo ./torrents/**/*.mkv ./clean
+      apollo D:\\Torrents E:\\Media
     Options
       --debug Enable development logging
       --move Move files instead of using symlinks. 
