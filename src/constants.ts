@@ -21,7 +21,6 @@ export const AUDIO_REGEX = /ac3|aac|dd |7\.1|5\.1|dolby|atmos/gi;
 export const LANGUAGE_REGEX = /(ITA|ENG|RUS)/g;
 export const IGNORE_PATH_PART_REGEX = /^(?:[A-Z]:|[a-z]+|tv shows)$/i;
 export const COLLECTION_REGEX = /complete|completa|collection|trilogy|duology|(?:season|se|s) ?[0-9]{1,2} ?- ?(?:season|se|s)?[0-9]{1,2}/gi;
-export const EXCLUDE_BLACKLIST_REGEX = /lore|histories|sample|trailer|behind.the.scenes|deleted.and.extended.scenes|deleted.scenes|extras?|featurettes|interviews|scenes|shorts/i;
 export const SEASON_EPISODE_RANGE_REGEX = /SE?(?<season>[0-9]{1,2})EP?(?<episodeStart>[0-9]{1,2})(?:-|E)+(?<episodeEnd>[0-9]{1,2})/i;
 export const SEASON_EPISODE_PATTERNS = [
   // matches "1x1"
@@ -36,6 +35,21 @@ export const SEASON_EPISODE_PATTERNS = [
   /(?<=^| |\/|\[|\()(?:SE|S)(?<season>[0-9]{1,2}) ?(?:(?:EP|E)(?<episode>[0-9]{1,2}))?(?=$| |\/|]|\))/gi,
   // matches "Part 3 of 3" if we're really desparate
   /Part (?<episode>[0-9]) of [0-9]/gi
+];
+
+// export const EXCLUDE_BLACKLIST_REGEX = /lore|histories|sample|trailer|behind.the.scenes|deleted.and.extended.scenes|deleted.scenes|extras?|featurettes|interviews|scenes|shorts/i;
+export const EXCLUDE_BLACKLIST_REGEX = [
+  /^lore$/i,
+  /^histories(( and| &) lore)?$/i,
+  /sample|trailer/i,
+  /^Behind.the.Scenes$/i,
+  /^Deleted.and.Extended.Scenes$/i,
+  /^Deleted.Scenes$/i,
+  /^Extras?$/i,
+  /^Featurettes$/i,
+  /^Interviews$/i,
+  /^Scenes$/i,
+  /^Shorts$/i
 ];
 
 // patterns for cleaning titles

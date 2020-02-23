@@ -22,6 +22,11 @@ export class ApolloParser {
 
     const fileType = constants.SUPPORTING_FILE_EXTENSIONS.includes(extension) ? apollo.FileType.SUPPORTING : apollo.FileType.MEDIA;
     const cleanPath = this.getCleanFilePath(filePath.endsWith(extension) ? filePath.slice(0, -extension.length) : filePath);
+    if (!cleanPath) {
+      this.log.debug(`Skipping "${filePath}" as it contains undesirable keywords`);
+      return;
+    }
+
     const year = this.getYear(cleanPath);
     const resolution = this.getResolution(cleanPath);
     const audio = this.getAudio(cleanPath);
@@ -230,10 +235,18 @@ export class ApolloParser {
   /**
    * Clean the file path and replace dots or underscores with spaces when necessary.
    */
-  protected getCleanFilePath(filePath: string): string {
+  protected getCleanFilePath(filePath: string): string | undefined {
+    const filePathParts = filePath.split(/\/|\\/g);
+
+    for (const filePathPart of filePathParts) {
+      for (const pattern of constants.EXCLUDE_BLACKLIST_REGEX) {
+        const match = filePathPart.match(pattern);
+        if (match) return;
+      }
+    }
+
     return (
-      filePath
-        .split(/\/|\\/g)
+      filePathParts
         .filter(p => p.length > 2 && !p.match(constants.IGNORE_PATH_PART_REGEX))
         .map(this.handleSpaceReplacements.bind(this))
         // we use "/" to indicate a path. it's convenient.

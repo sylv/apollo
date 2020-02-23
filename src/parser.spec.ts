@@ -1,7 +1,7 @@
 import { apollo } from "./types";
 import { ApolloParser } from "./parser";
 
-const tests: (apollo.Parsed & { input: string })[] = [
+const tests: ((apollo.Parsed & { input: string }) | { input: string })[] = [
   {
     // Another multi pack that borks things occasionally.
     input:
@@ -411,6 +411,28 @@ const tests: (apollo.Parsed & { input: string })[] = [
     audio: [],
     seasonNumber: 16,
     episodeNumber: [0]
+  },
+  {
+    // the " + Extras" meant this title was being ignored.
+    input:
+      "Y:\\media\\BoJack Horseman (2014) Season 1 S01 + Extras (1080p BluRay x265 HEVC 10bit AAC 5.1 RCVR)\\BoJack Horseman (2014) - S01E02 - BoJack Hates The Troops (1080p BluRay x265 RCVR).mkv",
+    title: "BoJack Horseman",
+    resolution: 1080,
+    type: apollo.TitleType.TV,
+    collection: false,
+    extension: ".mkv",
+    fileType: apollo.FileType.MEDIA,
+    startYear: 2014,
+    endYear: undefined,
+    languages: [],
+    audio: ["AAC"],
+    seasonNumber: 1,
+    episodeNumber: [2]
+  },
+  {
+    // this makes sure the fix for the above test didn't break things.
+    input:
+      "Y:\\torrents\\BoJack Horseman (2014) Season 1 S01 + Extras (1080p BluRay x265 HEVC 10bit AAC 5.1 RCVR)\\Featurettes\\Side-by-side Animation Walk-Through.mkv"
   }
 ];
 
@@ -419,8 +441,13 @@ describe("parser tests", () => {
     it(`should parse "${test.input}"`, async () => {
       const parser = new ApolloParser();
       const output = await parser.parse(test.input);
-      delete test.input;
-      expect(output).toEqual(test);
+      if (Object.keys(test).length === 1) {
+        // we're testing to make sure it *isn't* parsed.
+        expect(output).toBeUndefined();
+      } else {
+        delete test.input;
+        expect(output).toEqual(test);
+      }
     });
   }
 });

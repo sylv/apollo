@@ -2,7 +2,6 @@ import fs from "fs";
 import rrdir from "rrdir";
 import sanitize from "sanitize-filename";
 import path from "path";
-import { EXCLUDE_BLACKLIST_REGEX } from "./constants";
 import { ApolloParser } from "./parser";
 import { apollo } from "./types";
 import { log } from "./helpers/log";
@@ -31,12 +30,6 @@ export class Apollo {
       if (file.directory) continue;
       if ((file.stats as fs.Stats).size < this.options.minSize) {
         this.log.debug(`Skipping "${file.path}" as it is too small`);
-        continue;
-      }
-
-      const blacklisted = file.path.match(EXCLUDE_BLACKLIST_REGEX);
-      if (blacklisted) {
-        this.log.debug(`Skipping "${file.path}" as it contains undesirable keywords`);
         continue;
       }
 
