@@ -36,7 +36,7 @@ apollo ./torrents ./library
 ```
 
 ```ts
-import apollo from "apollo";
+import apollo from "apollo/parser";
 
 const torrentNameData = await apollo.parse(`The.Walking.Dead.S01-S07.Season.1-7.1080p.10bit.BluRay.5.1.x265.HEVC`);
 const filePathData = await apollo.parse(`Bob's Burgers 2011 SE 1 - 8 Complete/SE1/09 Spaghetti Western and Meatballs.mp4`);
