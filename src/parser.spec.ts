@@ -433,6 +433,21 @@ const tests: ((apollo.Parsed & { input: string }) | { input: string })[] = [
     // this makes sure the fix for the above test didn't break things.
     input:
       "Y:\\torrents\\BoJack Horseman (2014) Season 1 S01 + Extras (1080p BluRay x265 HEVC 10bit AAC 5.1 RCVR)\\Featurettes\\Side-by-side Animation Walk-Through.mkv"
+  },
+  {
+    input: 'Peaky_Blinders_S03E06_x265_1080p_BluRay_30nama_30NAMA.mkv',
+    title: 'Peaky Blinders',
+    resolution: 1080,
+    type: apollo.TitleType.TV,
+    collection: false,
+    extension: '.mkv',
+    fileType: apollo.FileType.MEDIA,
+    startYear: undefined,
+    endYear: undefined,
+    languages: [],
+    audio: [],
+    seasonNumber: 3,
+    episodeNumber: [6]
   }
 ];
 

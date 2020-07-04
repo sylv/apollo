@@ -1,7 +1,7 @@
 export const SUPPORTED_MEDIA_EXTENSIONS = [".mp4", ".3gp", ".mkv", ".mov", ".wmv", ".ogg", ".flv", ".avi", ".hdv", ".webm"];
 export const SUPPORTING_FILE_EXTENSIONS = [".srt", ".sub"];
 export const ALL_EXTENSIONS = [...SUPPORTED_MEDIA_EXTENSIONS, ...SUPPORTING_FILE_EXTENSIONS];
-export const SPACE_PLACEHOLDERS = ["."];
+export const SPACE_PLACEHOLDERS = [".", '_'];
 export const SERIES_ALIASES = [
   {
     pattern: /avatar \(?tlok\)?/i,
