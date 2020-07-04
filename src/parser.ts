@@ -8,12 +8,14 @@ export class ApolloParser {
   protected readonly log = log.scope("parser");
   protected readonly matchIndexes: { start: number; end: number }[] = [];
 
+  constructor(readonly options?: apollo.ParserOptions) { }
+
   /**
    * Parse a torrent name or complete path.
    * @param filePath The torrent name or file path.
    * @param parentData Used internally.
    */
-  public async parse(filePath: string, options?: apollo.ParserOptions, parentData?: Partial<apollo.Parsed>): Promise<apollo.Parsed | undefined> {
+  public async parse(filePath: string, parentData?: Partial<apollo.Parsed>): Promise<apollo.Parsed | undefined> {
     let extension = parentData ? parentData.extension : constants.ALL_EXTENSIONS.find(ext => filePath.endsWith(ext));
     if (!extension) {
       this.log.debug(`Could not extract file extension for "${filePath}"`);
@@ -51,7 +53,7 @@ export class ApolloParser {
       // that makes very little sense.
       if (firstFileNameMatch && firstFileNameMatch.start > lastSep + 1) {
         const parser = new ApolloParser();
-        return parser.parse(fileName, options, { collection: true, extension });
+        return parser.parse(fileName, { collection: true, extension });
       }
     }
 
@@ -71,7 +73,8 @@ export class ApolloParser {
     }
 
     let title = rawTitle;
-    if (!options?.disableLookup) {
+    if (!this.options?.disableLookup) {
+      // this.log.debug(`Querying IMDb for "${rawTitle}"`)
       const results = await lookup(rawTitle);
       const best = this.getBestResult(results, rawTitle, type, year && year.start);
       // the length comparison is a hacky way to stop picking titles that IMDb gives us when it really doesn't
