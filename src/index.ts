@@ -5,6 +5,7 @@ import path from "path";
 import { ApolloParser } from "./parser";
 import { apollo } from "./types";
 import { log } from "./helpers/log";
+import { SUPPORTING_FILE_EXTENSIONS } from './constants';
 
 export * from "./types";
 export * from "./parser";
@@ -28,7 +29,10 @@ export class Apollo {
 
     for await (const file of rrdir.stream(this.options.input, { stats: true })) {
       if (file.directory) continue;
-      if ((file.stats as fs.Stats).size < this.options.minSize) {
+      // todo: this means we're checking the file ext twice, once here and once in the parser
+      // when deciding if it's a media file or a supporting file 
+      const supporting = SUPPORTING_FILE_EXTENSIONS.some(ext => file.path.endsWith(ext))
+      if (!supporting && (file.stats as fs.Stats).size < this.options.minSize) {
         this.log.debug(`Skipping "${file.path}" as it is too small`);
         continue;
       }
