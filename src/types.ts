@@ -46,4 +46,12 @@ export namespace apollo {
     languages: string[];
     audio: string[];
   }
+
+  export interface ParserOptions {
+    /** 
+     * Whether to query IMDb for more accurate title information. Disabling will result in less accurate "title" data. 
+     * IMDb queries are usually fast (<100ms for most people, even those outside the US) and are cached. 
+     */
+    disableLookup?: boolean
+  }
 }

@@ -13,7 +13,7 @@ export class ApolloParser {
    * @param filePath The torrent name or file path.
    * @param parentData Used internally.
    */
-  public async parse(filePath: string, parentData?: Partial<apollo.Parsed>): Promise<apollo.Parsed | undefined> {
+  public async parse(filePath: string, options?: apollo.ParserOptions, parentData?: Partial<apollo.Parsed>): Promise<apollo.Parsed | undefined> {
     let extension = parentData ? parentData.extension : constants.ALL_EXTENSIONS.find(ext => filePath.endsWith(ext));
     if (!extension) {
       this.log.debug(`Could not extract file extension for "${filePath}"`);
@@ -32,6 +32,7 @@ export class ApolloParser {
     const audio = this.getAudio(cleanPath);
     const languages = this.getLanguages(cleanPath);
     const index = this.getSeasonAndEpisode(cleanPath);
+    const type = index.seasonNumber || index.episodeNumber.length ? apollo.TitleType.TV : apollo.TitleType.MOVIE;
 
     // with collections, the top-most title might be for the whole series.
     // trusting the file name alone is more reliable, though will mean we get less information overall.
@@ -50,7 +51,7 @@ export class ApolloParser {
       // that makes very little sense.
       if (firstFileNameMatch && firstFileNameMatch.start > lastSep + 1) {
         const parser = new ApolloParser();
-        return parser.parse(fileName, { collection: true, extension });
+        return parser.parse(fileName, options, { collection: true, extension });
       }
     }
 
@@ -69,12 +70,16 @@ export class ApolloParser {
       return;
     }
 
-    const results = await lookup(rawTitle);
-    const type = index.seasonNumber || index.episodeNumber.length ? apollo.TitleType.TV : apollo.TitleType.MOVIE;
-    const best = this.getBestResult(results, rawTitle, type, year && year.start);
-    // the length comparison is a hacky way to stop picking titles that IMDb gives us when it really doesn't
-    // know what we want. it's basically just a hilariously long title, so checking if it's too long is pretty reliable.
-    const title = best && best.title.length < rawTitle.length * 3 ? best.title : rawTitle;
+    let title = rawTitle;
+    if (!options?.disableLookup) {
+      const results = await lookup(rawTitle);
+      const best = this.getBestResult(results, rawTitle, type, year && year.start);
+      // the length comparison is a hacky way to stop picking titles that IMDb gives us when it really doesn't
+      // know what we want. it's basically just a hilariously long title, so checking if it's too long is pretty reliable.
+      // checking the title length and assuming it's too long before the query might be better, but could mean
+      // we're missing out on an accurate match. something to consider maybe?
+      title = best && best.title.length < rawTitle.length * 3 ? best.title : rawTitle;
+    }
 
     return {
       title,
