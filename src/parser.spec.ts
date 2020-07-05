@@ -468,6 +468,22 @@ const tests: ((apollo.Parsed & { input: string }) | { input: string })[] = [
     episodeNumber: [5]
   },
   {
+    // same as above but testing with dots as paces because that previously broke things.
+    input: `/mnt/vtfs/torrents/completed/Trailer.Park.Boys.Season.9.[1080p].[HEVC]/S09E05.The.Motel.Can't.Live.at.the.Motel.mkv`,
+    title: 'Trailer Park Boys',
+    resolution: 1080,
+    type: apollo.TitleType.TV,
+    collection: false,
+    extension: '.mkv',
+    fileType: apollo.FileType.MEDIA,
+    startYear: undefined,
+    endYear: undefined,
+    languages: [],
+    audio: [],
+    seasonNumber: 9,
+    episodeNumber: [5]
+  },
+  {
     // this tests the opposite of above to make sure we're still counting "Trailer" directories 
     input: `/mnt/vtfs/torrents/completed/Trailer/Not a Show Season 9 [1080p] [HEVC]/S09E05.mkv`
   }

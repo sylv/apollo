@@ -251,21 +251,19 @@ export class ApolloParser {
    */
   protected getCleanFilePath(filePath: string): string | undefined {
     const filePathParts = filePath.split(/\/|\\/g);
+    const cleanedPathParts: string[] = []
 
     for (const filePathPart of filePathParts) {
-      for (const pattern of constants.EXCLUDE_BLACKLIST_REGEX) {
-        const match = filePathPart.match(pattern);
-        if (match) return;
-      }
+      const cleanPathPart = this.handleSpaceReplacements(filePathPart)
+      // we have to check the blacklist first or else something like "Trailers" would be discarded
+      // before we check the blacklist
+      if (constants.EXCLUDE_BLACKLIST_REGEX.some(p => p.test(cleanPathPart))) return
+      // only once it passes the blacklist can we do this check
+      if (filePathPart.length <= 2 || constants.IGNORE_PATH_PART_REGEX.test(filePathPart)) continue
+      cleanedPathParts.push(cleanPathPart)
     }
 
-    return (
-      filePathParts
-        .filter(p => p.length > 2 && !p.match(constants.IGNORE_PATH_PART_REGEX))
-        .map(this.handleSpaceReplacements.bind(this))
-        // we use "/" to indicate a path. it's convenient.
-        .join("/")
-    );
+    return cleanedPathParts.join('/')
   }
 
   /**
