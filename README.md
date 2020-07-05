@@ -39,7 +39,7 @@ apollo ./torrents ./library
 import { ApolloParser } from "apollo";
 
 // use different parser instances for each input,
-// otherwise past data will corrupt the output.
+// otherwise previous inputs will corrupt the output.
 const torrentNameParser = new ApolloParser();
 const filePathParser = new ApolloParser();
 const torrentNameData = await torrentNameParser.parse(`The.Walking.Dead.S01-S07.Season.1-7.1080p.10bit.BluRay.5.1.x265.HEVC`);
