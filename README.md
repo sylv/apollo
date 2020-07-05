@@ -56,3 +56,8 @@ console.log({ torrentNameData, filePathData });
 //     episodeNumber: 9,
 // }
 ```
+
+# todo
+
+- [ ] Directories with multiple subtitles in different languages for the same file like `movie.mp4`, `movie.eng.sub`, `movie.rus.sub` aren't handled correctly and will move the subtitle file we first see as `movie.sub` and leave the rest behind.
+- [ ] Customisable output directory structure, instead of the default `Movies/Movie (year)/Movie (year).ext`
