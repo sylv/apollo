@@ -43,7 +43,7 @@ export class ApolloParser {
     // where we would otherwise pick up "The Hobbit & Lord of the Rings Collection" as the title.
     const collection = parentData ? true : this.getCollectionState(cleanPath);
     if (parentData === undefined && collection) {
-      const lastSep = cleanPath.lastIndexOf("/") + 1;
+      const lastSep = cleanPath.lastIndexOf('/') + 1;
       const fileName = cleanPath.substring(lastSep);
       const firstFileNameMatch = this.firstMatchIndex(lastSep);
       // for something like "Bob's Burgers/SE2/01 Title.mp4", we don't want to rely solely on the
@@ -52,8 +52,7 @@ export class ApolloParser {
 
       // that makes very little sense.
       if (firstFileNameMatch && firstFileNameMatch.start > lastSep + 1) {
-        const parser = new ApolloParser();
-        return parser.parse(fileName, { collection: true, extension });
+        return this.parse(fileName, { collection: true, extension });
       }
     }
 
@@ -64,24 +63,31 @@ export class ApolloParser {
       return;
     }
 
-    const closestPathSep = cleanPath.substring(0, firstMatchIndex.start).lastIndexOf("/");
-    const rawTitle = this.cleanTitle(cleanPath.substring(closestPathSep + 1, firstMatchIndex.start));
+    const fileNameStart = cleanPath.lastIndexOf('/') + 1
+    const firstFileNameMatch = fileNameStart !== -1 && this.firstMatchIndex(fileNameStart)?.start
+    const firstFilePathMatch = this.firstMatchIndex()?.start
+    let titleFromFileName = !!firstFileNameMatch && cleanPath.substring(fileNameStart, firstFileNameMatch)
+    let titleFromFilePath = !!firstFilePathMatch && cleanPath.substring(0, firstFilePathMatch)
+    if (titleFromFileName && titleFromFileName.includes('/')) titleFromFileName = false
+    if (titleFromFilePath && titleFromFilePath.includes('/')) titleFromFilePath = false
+    const rawTitle = titleFromFilePath || titleFromFileName
+    const cleanTitle = rawTitle && this.cleanTitle(rawTitle)
 
-    if (!rawTitle) {
+    if (!cleanTitle) {
       this.log.error(`Could not extract title for "${filePath}"`);
       return;
     }
 
-    let title = rawTitle;
+    let title = cleanTitle;
     if (!this.options?.disableLookup) {
-      // this.log.debug(`Querying IMDb for "${rawTitle}"`)
-      const results = await lookup(rawTitle);
-      const best = this.getBestResult(results, rawTitle, type, year && year.start);
+      this.log.debug(`Querying IMDb for "${rawTitle}"`)
+      const results = await lookup(cleanTitle);
+      const best = this.getBestResult(results, cleanTitle, type, year && year.start);
       // the length comparison is a hacky way to stop picking titles that IMDb gives us when it really doesn't
       // know what we want. it's basically just a hilariously long title, so checking if it's too long is pretty reliable.
       // checking the title length and assuming it's too long before the query might be better, but could mean
       // we're missing out on an accurate match. something to consider maybe?
-      title = best && best.title.length < rawTitle.length * 3 ? best.title : rawTitle;
+      title = best && best.title.length < cleanTitle.length * 3 ? best.title : cleanTitle;
     }
 
     return {
@@ -286,10 +292,6 @@ export class ApolloParser {
   protected getMatch(target: string, pattern: RegExp, returnAll: false): RegExpExecArray | undefined;
   protected getMatch(target: string, pattern: RegExp, returnAll: boolean): RegExpExecArray | RegExpExecArray[] | undefined {
     pattern.lastIndex = 0;
-    if (!pattern.flags.includes("g")) {
-      throw new Error(`Cannot use ApolloParser#match() on RegExp without specifying "g" flag`);
-    }
-
     const matches: RegExpExecArray[] = [];
     let match;
     while ((match = pattern.exec(target))) {

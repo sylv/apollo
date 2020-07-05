@@ -38,7 +38,7 @@ export class Apollo {
       }
 
       const parser = new ApolloParser();
-      const parsed = await parser.parse(file.path);
+      const parsed = await parser.parse(file.path.slice(this.options.input.length));
       if (!parsed) continue;
       const output = this.getFileOutputPath(parsed);
 

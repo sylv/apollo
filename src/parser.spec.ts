@@ -435,7 +435,9 @@ const tests: ((apollo.Parsed & { input: string }) | { input: string })[] = [
       "Y:\\torrents\\BoJack Horseman (2014) Season 1 S01 + Extras (1080p BluRay x265 HEVC 10bit AAC 5.1 RCVR)\\Featurettes\\Side-by-side Animation Walk-Through.mkv"
   },
   {
-    input: 'Peaky_Blinders_S03E06_x265_1080p_BluRay_30nama_30NAMA.mkv',
+    // the `_` instead of dots or actual spaces can be confusing
+    // for whatever reason, the path at the start confuses title extraction.
+    input: '/mnt/vtfs/torrents/completed/1080p/s01/Peaky_Blinders_S01E01_x265_1080p_BluRay_30nama_30NAMA.mkv',
     title: 'Peaky Blinders',
     resolution: 1080,
     type: apollo.TitleType.TV,
@@ -446,8 +448,8 @@ const tests: ((apollo.Parsed & { input: string }) | { input: string })[] = [
     endYear: undefined,
     languages: [],
     audio: [],
-    seasonNumber: 3,
-    episodeNumber: [6]
+    seasonNumber: 1,
+    episodeNumber: [1]
   }
 ];
 

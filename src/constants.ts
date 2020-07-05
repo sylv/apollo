@@ -14,7 +14,12 @@ export const SERIES_ALIASES = [
 ];
 
 // patterns
-export const YEAR_REGEX = /([0-9]{2}(?:\.|\/)[0-9]{2}(?:\.|\/))?(?<start>[0-9]{4})(?:-(?<end>[0-9]{2,4}))?(?=$| |\)|\])/gi;
+
+// YEAR_REGEX also grabs dates to make title extraction better. `Top Gear 08.09.2008` would come out as `Top Gear 08 09` otherwise.
+// note: this is a bit aggressive when matching without spaces, e.g "08 09 2008" will be
+// assumed to be a date because dots (if present) could be stripped assuming they are spaces.
+// that could lead to false positives, just something to keep an eye on.
+export const YEAR_REGEX = /([0-9]{2}(?:\.|\/| )[0-9]{2}(?:\.|\/| ))?(?<start>[0-9]{4})(?:-(?<end>[0-9]{2,4}))?(?=$| |\)|\])/gi;
 export const DOUBLE_SPACE_REGEX = /[ ]{2,}/g;
 export const RESOLUTION_REGEX = /[0-9]{3,4}(?=p)/gi;
 export const AUDIO_REGEX = /ac3|aac|dd |7\.1|5\.1|dolby|atmos/gi;
