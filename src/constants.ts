@@ -46,7 +46,7 @@ export const SEASON_EPISODE_PATTERNS = [
 export const EXCLUDE_BLACKLIST_REGEX = [
   /^lore$/i,
   /^histories(( and| &) lore)?$/i,
-  /sample|trailer/i,
+  /sample|trailer(?! park boys)/i, // "excludes "trailer park boys"
   /^Behind.the.Scenes$/i,
   /^Deleted.and.Extended.Scenes$/i,
   /^Deleted.Scenes$/i,
