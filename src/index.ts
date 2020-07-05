@@ -18,6 +18,7 @@ export class Apollo {
 
   constructor(options: apollo.Options) {
     this.options = options;
+    if (this.options.disableLookup) this.log.info(`IMDb queries are disabled due to --disable-lookup.`)
   }
 
   /**
@@ -37,7 +38,7 @@ export class Apollo {
         continue;
       }
 
-      const parser = new ApolloParser()
+      const parser = new ApolloParser({ disableLookup: this.options.disableLookup })
       const parsed = await parser.parse(file.path.slice(this.options.input.length));
       if (!parsed) {
         this.log.warn(`Skipping "${file.path}" as no data could be extracted. Run with --debug for more info.`)

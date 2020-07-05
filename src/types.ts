@@ -30,6 +30,7 @@ export namespace apollo {
     move: boolean;
     dryRun: boolean;
     minSize: number;
+    disableLookup: boolean
   }
 
   export interface Parsed {

@@ -18,7 +18,7 @@ const cli = meow(
       --move Move files instead of using symlinks. 
       --min-size The minimum size of a media file in bytes to be considered valid. Defaults to 25,000,000 (25Mb)
       --dry-run Skip file moves or symlink creations. In conjuction with --debug, this is good for testing.
-      --no-lookup Skip querying IMDb for more accurate title information. This would also allow Apollo to work without an internet connection.
+      --disable-lookup Skip querying IMDb for more accurate title information. This would also allow Apollo to work without an internet connection.
 `,
   {
     flags: {
@@ -35,6 +35,10 @@ const cli = meow(
       },
       move: {
         type: "boolean",
+        default: false
+      },
+      disableLookup: {
+        type: 'boolean',
         default: false
       }
     }
@@ -79,7 +83,8 @@ async function main() {
     output: outputDir,
     move: cli.flags.move,
     dryRun: cli.flags.dryRun,
-    minSize: cli.flags.minSize
+    minSize: cli.flags.minSize,
+    disableLookup: cli.flags.disableLookup
   });
 
   await apollo.run();
