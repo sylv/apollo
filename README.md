@@ -38,9 +38,12 @@ apollo ./torrents ./library
 ```ts
 import { ApolloParser } from "apollo";
 
-const parser = new ApolloParser();
-const torrentNameData = await parser.parse(`The.Walking.Dead.S01-S07.Season.1-7.1080p.10bit.BluRay.5.1.x265.HEVC`);
-const filePathData = await parser.parse(`Bob's Burgers 2011 SE 1 - 8 Complete/SE1/09 Spaghetti Western and Meatballs.mp4`);
+// use different parser instances for each input,
+// otherwise past data will corrupt the output.
+const torrentNameParser = new ApolloParser();
+const filePathParser = new ApolloParser();
+const torrentNameData = await torrentNameParser.parse(`The.Walking.Dead.S01-S07.Season.1-7.1080p.10bit.BluRay.5.1.x265.HEVC`);
+const filePathData = await filePathParser.parse(`Bob's Burgers 2011 SE 1 - 8 Complete/SE1/09 Spaghetti Western and Meatballs.mp4`);
 console.log({ torrentNameData, filePathData });
 // see src/parser.spec.ts for more utterly horrifying inputs that mostly work.
 // {
