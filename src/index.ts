@@ -2,7 +2,7 @@ import fs from "fs-extra";
 import rrdir from "rrdir";
 import sanitize from "sanitize-filename";
 import path from "path";
-import { ApolloParser } from "./parser";
+import { ApolloParser } from './parser';
 import { apollo } from "./types";
 import { log } from "./helpers/log";
 import { SUPPORTING_FILE_EXTENSIONS } from './constants';
@@ -15,6 +15,7 @@ export class Apollo {
   protected readonly log = log.scope("apollo");
   protected createdDirectories = new Set();
   protected handledFiles = new Set();
+  protected parser = new ApolloParser()
 
   constructor(options: apollo.Options) {
     this.options = options;
@@ -37,9 +38,12 @@ export class Apollo {
         continue;
       }
 
-      const parser = new ApolloParser();
-      const parsed = await parser.parse(file.path.slice(this.options.input.length));
-      if (!parsed) continue;
+      const parsed = await this.parser.parse(file.path.slice(this.options.input.length));
+      if (!parsed) {
+        this.log.warn(`Skipping "${file.path}" as no data could be extracted. Run with --debug for more info.`)
+        continue
+      };
+
       const output = this.getFileOutputPath(parsed);
 
       // can't create a path that already exists
