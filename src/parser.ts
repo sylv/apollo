@@ -5,10 +5,9 @@ import path from "path";
 import * as constants from "./constants";
 
 export class ApolloParser {
-  protected readonly log = log.scope("parser");
   protected readonly matchIndexes: { start: number; end: number }[] = [];
 
-  constructor(readonly options?: apollo.ParserOptions) { }
+  constructor(readonly options?: apollo.ParserOptions) {}
 
   /**
    * Parse a torrent name or complete path.
@@ -18,14 +17,14 @@ export class ApolloParser {
   public async parse(filePath: string, parentData?: Partial<apollo.Parsed>): Promise<apollo.Parsed | undefined> {
     let extension = parentData ? parentData.extension : constants.ALL_EXTENSIONS.find(ext => filePath.endsWith(ext));
     if (!extension) {
-      this.log.debug(`Could not extract file extension for "${filePath}"`);
+      log.debug(`Could not extract file extension for "${filePath}"`);
       return;
     }
 
     const fileType = constants.SUPPORTING_FILE_EXTENSIONS.includes(extension) ? apollo.FileType.SUPPORTING : apollo.FileType.MEDIA;
     const cleanPath = this.getCleanFilePath(filePath.endsWith(extension) ? filePath.slice(0, -extension.length) : filePath);
     if (!cleanPath) {
-      this.log.debug(`Skipping "${filePath}" as it contains undesirable keywords`);
+      log.debug(`Skipping "${filePath}" as it contains undesirable keywords`);
       return;
     }
 
@@ -43,7 +42,7 @@ export class ApolloParser {
     // where we would otherwise pick up "The Hobbit & Lord of the Rings Collection" as the title.
     const collection = parentData ? true : this.getCollectionState(cleanPath);
     if (parentData === undefined && collection) {
-      const lastSep = cleanPath.lastIndexOf('/') + 1;
+      const lastSep = cleanPath.lastIndexOf("/") + 1;
       const fileName = cleanPath.substring(lastSep);
       const firstFileNameMatch = this.firstMatchIndex(lastSep);
       // for something like "Bob's Burgers/SE2/01 Title.mp4", we don't want to rely solely on the
@@ -59,28 +58,28 @@ export class ApolloParser {
     // look up the title using the IMDb search API
     const firstMatchIndex = this.firstMatchIndex();
     if (!firstMatchIndex) {
-      this.log.debug(`No matches on string "${cleanPath}"`);
+      log.debug(`No matches on string "${cleanPath}"`);
       return;
     }
 
-    const fileNameStart = cleanPath.lastIndexOf('/') + 1
-    const firstFileNameMatch = fileNameStart !== -1 && this.firstMatchIndex(fileNameStart)?.start
-    const firstFilePathMatch = this.firstMatchIndex()?.start
-    let titleFromFileName = !!firstFileNameMatch && cleanPath.substring(fileNameStart, firstFileNameMatch)
-    let titleFromFilePath = !!firstFilePathMatch && cleanPath.substring(0, firstFilePathMatch)
-    if (titleFromFileName && titleFromFileName.includes('/')) titleFromFileName = false
-    if (titleFromFilePath && titleFromFilePath.includes('/')) titleFromFilePath = false
-    const rawTitle = titleFromFilePath || titleFromFileName
-    const cleanTitle = rawTitle && this.cleanTitle(rawTitle)
+    const fileNameStart = cleanPath.lastIndexOf("/") + 1;
+    const firstFileNameMatch = fileNameStart !== -1 && this.firstMatchIndex(fileNameStart)?.start;
+    const firstFilePathMatch = this.firstMatchIndex()?.start;
+    let titleFromFileName = !!firstFileNameMatch && cleanPath.substring(fileNameStart, firstFileNameMatch);
+    let titleFromFilePath = !!firstFilePathMatch && cleanPath.substring(0, firstFilePathMatch);
+    if (titleFromFileName && titleFromFileName.includes("/")) titleFromFileName = false;
+    if (titleFromFilePath && titleFromFilePath.includes("/")) titleFromFilePath = false;
+    const rawTitle = titleFromFilePath || titleFromFileName;
+    const cleanTitle = rawTitle && this.cleanTitle(rawTitle);
 
     if (!cleanTitle) {
-      this.log.error(`Could not extract title for "${filePath}"`);
+      log.error(`Could not extract title for "${filePath}"`);
       return;
     }
 
     let title = cleanTitle;
     if (!this.options?.disableLookup) {
-      this.log.debug(`Querying IMDb for "${rawTitle}"`)
+      log.debug(`Querying IMDb for "${rawTitle}"`);
       const results = await lookup(cleanTitle);
       const best = this.getBestResult(results, cleanTitle, type, year && year.start);
       // the length comparison is a hacky way to stop picking titles that IMDb gives us when it really doesn't
@@ -251,19 +250,19 @@ export class ApolloParser {
    */
   protected getCleanFilePath(filePath: string): string | undefined {
     const filePathParts = filePath.split(/\/|\\/g);
-    const cleanedPathParts: string[] = []
+    const cleanedPathParts: string[] = [];
 
     for (const filePathPart of filePathParts) {
-      const cleanPathPart = this.handleSpaceReplacements(filePathPart)
+      const cleanPathPart = this.handleSpaceReplacements(filePathPart);
       // we have to check the blacklist first or else something like "Trailers" would be discarded
       // before we check the blacklist
-      if (constants.EXCLUDE_BLACKLIST_REGEX.some(p => p.test(cleanPathPart))) return
+      if (constants.EXCLUDE_BLACKLIST_REGEX.some(p => p.test(cleanPathPart))) return;
       // only once it passes the blacklist can we do this check
-      if (filePathPart.length <= 2 || constants.IGNORE_PATH_PART_REGEX.test(filePathPart)) continue
-      cleanedPathParts.push(cleanPathPart)
+      if (filePathPart.length <= 2 || constants.IGNORE_PATH_PART_REGEX.test(filePathPart)) continue;
+      cleanedPathParts.push(cleanPathPart);
     }
 
-    return cleanedPathParts.join('/')
+    return cleanedPathParts.join("/");
   }
 
   /**

@@ -437,12 +437,12 @@ const tests: ((apollo.Parsed & { input: string }) | { input: string })[] = [
   {
     // the `_` instead of dots or actual spaces can be confusing
     // for whatever reason, the path at the start confuses title extraction.
-    input: '/mnt/vtfs/torrents/completed/1080p/s01/Peaky_Blinders_S01E01_x265_1080p_BluRay_30nama_30NAMA.mkv',
-    title: 'Peaky Blinders',
+    input: "/mnt/vtfs/torrents/completed/1080p/s01/Peaky_Blinders_S01E01_x265_1080p_BluRay_30nama_30NAMA.mkv",
+    title: "Peaky Blinders",
     resolution: 1080,
     type: apollo.TitleType.TV,
     collection: false,
-    extension: '.mkv',
+    extension: ".mkv",
     fileType: apollo.FileType.MEDIA,
     startYear: undefined,
     endYear: undefined,
@@ -454,11 +454,11 @@ const tests: ((apollo.Parsed & { input: string }) | { input: string })[] = [
   {
     // "Trailer" in "Trailer Park Boys" could be excluded thinking it's an actual trailer.
     input: `/mnt/vtfs/torrents/completed/Trailer Park Boys Season 9 [1080p] [HEVC]/S09E05 The Motel Can't Live at the Motel.mkv`,
-    title: 'Trailer Park Boys',
+    title: "Trailer Park Boys",
     resolution: 1080,
     type: apollo.TitleType.TV,
     collection: false,
-    extension: '.mkv',
+    extension: ".mkv",
     fileType: apollo.FileType.MEDIA,
     startYear: undefined,
     endYear: undefined,
@@ -470,11 +470,11 @@ const tests: ((apollo.Parsed & { input: string }) | { input: string })[] = [
   {
     // same as above but testing with dots as paces because that previously broke things.
     input: `/mnt/vtfs/torrents/completed/Trailer.Park.Boys.Season.9.[1080p].[HEVC]/S09E05.The.Motel.Can't.Live.at.the.Motel.mkv`,
-    title: 'Trailer Park Boys',
+    title: "Trailer Park Boys",
     resolution: 1080,
     type: apollo.TitleType.TV,
     collection: false,
-    extension: '.mkv',
+    extension: ".mkv",
     fileType: apollo.FileType.MEDIA,
     startYear: undefined,
     endYear: undefined,
@@ -484,7 +484,7 @@ const tests: ((apollo.Parsed & { input: string }) | { input: string })[] = [
     episodeNumber: [5]
   },
   {
-    // this tests the opposite of above to make sure we're still counting "Trailer" directories 
+    // this tests the opposite of above to make sure we're still counting "Trailer" directories
     input: `/mnt/vtfs/torrents/completed/Trailer/Not a Show Season 9 [1080p] [HEVC]/S09E05.mkv`
   }
 ];

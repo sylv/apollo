@@ -9,12 +9,17 @@
   "private": false,
   "scripts": {
     "build": "tsc",
-    "link": "npm link && rm ./package-lock.json",
+    "prepack": "tsc",
+    "start": "tsc && node ./dist/cli.js",
     "test": "jest --config=jest.json",
     "test:changed": "yarn test --onlyChanged"
   },
+  "files": [
+    "dist",
+    "bin"
+  ],
   "bin": {
-    "apollo": "./bin/apollo"
+    "apollo": "dist/cli.js"
   },
   "devDependencies": {
     "@types/fs-extra": "^8.1.0",
@@ -25,6 +30,7 @@
     "eslint-config-airbnb-typescript": "^7.0.0",
     "eslint-plugin-import": "^2.20.1",
     "jest": "^25.1.0",
+    "memfs": "^3.2.0",
     "prettier": "^1.19.1",
     "ts-jest": "^25.2.1",
     "typescript": "^3.7.5"
@@ -39,6 +45,6 @@
     "path-exists": "^4.0.0",
     "rrdir": "^4.0.1",
     "sanitize-filename": "^1.6.3",
-    "signale": "^1.4.0"
+    "winston": "^3.3.3"
   }
 }

@@ -1,4 +1,6 @@
 {
+  "include": ["./src/"],
+  "exclude": ["**/*.spec.ts"],
   "compilerOptions": {
     "target": "es5",
     "module": "commonjs",
@@ -7,6 +9,10 @@
     "resolveJsonModule": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
+    "declaration": true,
+    "declarationDir": "typings",
+    "sourceMap": true,
+    "removeComments": false,
     "outDir": "dist",
     "baseUrl": ".",
     "paths": {

@@ -38,7 +38,7 @@ const cli = meow(
         default: false
       },
       disableLookup: {
-        type: 'boolean',
+        type: "boolean",
         default: false
       }
     }
