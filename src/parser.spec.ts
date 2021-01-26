@@ -491,7 +491,7 @@ const tests: ((apollo.Parsed & { input: string }) | { input: string })[] = [
 
 describe("parser tests", () => {
   for (const test of tests) {
-    it(`should parse "${test.input}"`, async () => {
+    it.concurrent(`should parse "${test.input}"`, async () => {
       const parser = new ApolloParser();
       const output = await parser.parse(test.input);
       if (Object.keys(test).length === 1) {
