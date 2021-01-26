@@ -48,7 +48,7 @@ console.log({ torrentNameData, filePathData });
 // see src/parser.spec.ts for more utterly horrifying inputs that mostly work.
 // {
 //     title: "Bob's Burgers",
-//     type: apollo.TitleType.TV,
+//     type: IMDBTitleType.SERIES,
 //     collection: true,
 //     extension: ".mp4",
 //     fileType: apollo.FileType.MEDIA,

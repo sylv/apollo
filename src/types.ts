@@ -1,22 +1,9 @@
-export namespace apollo {
-  // using strings instead of numbers makes it easier to debug when apollo
-  // is on the operating table.
-  export enum TitleType {
-    MOVIE = "MOVIE",
-    TV = "TV"
-  }
+import { IMDBTitleType } from "@ryanke/imdb-api";
 
+export namespace apollo {
   export enum FileType {
     MEDIA = "MEDIA",
-    SUPPORTING = "SUPPORTING"
-  }
-
-  export interface LookupResult {
-    title: string;
-    year?: number;
-    rank: number;
-    type: TitleType;
-    poster?: string;
+    SUPPORTING = "SUPPORTING",
   }
 
   export interface Match {
@@ -30,13 +17,13 @@ export namespace apollo {
     move: boolean;
     dryRun: boolean;
     minSize: number;
-    disableLookup: boolean
+    disableLookup: boolean;
   }
 
   export interface Parsed {
     title: string;
     resolution?: number;
-    type: TitleType;
+    type: IMDBTitleType;
     fileType: FileType;
     collection: boolean;
     seasonNumber?: number;
@@ -49,10 +36,10 @@ export namespace apollo {
   }
 
   export interface ParserOptions {
-    /** 
-     * Whether to query IMDb for more accurate title information. Disabling will result in less accurate "title" data. 
-     * IMDb queries are usually fast (<100ms for most people, even those outside the US) and are cached. 
+    /**
+     * Whether to query IMDb for more accurate title information. Disabling will result in less accurate "title" data.
+     * IMDb queries are usually fast (<100ms for most people, even those outside the US) and are cached.
      */
-    disableLookup?: boolean
+    disableLookup?: boolean;
   }
 }

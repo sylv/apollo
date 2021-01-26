@@ -1,6 +1,6 @@
-import meow = require("meow");
-import path = require("path");
-import pathExists from "path-exists";
+import meow from "meow";
+import path from "path";
+import fs from "fs";
 import isAdmin from "is-admin";
 import { log } from "./helpers/log";
 import { Apollo } from "./";
@@ -26,22 +26,22 @@ const cli = meow(
         // 25000000 = 25mb
         default: 25000000,
         alias: "min-size",
-        type: "number"
+        type: "number",
       },
       dryRun: {
         default: false,
         type: "boolean",
-        alias: "dry-run"
+        alias: "dry-run",
       },
       move: {
         type: "boolean",
-        default: false
+        default: false,
       },
       disableLookup: {
         type: "boolean",
-        default: false
-      }
-    }
+        default: false,
+      },
+    },
   }
 );
 
@@ -51,7 +51,7 @@ async function main() {
   const inputDir = rawInput && path.resolve(cwd, rawInput);
   const outputDir = rawOutput && inputDir && path.resolve(cwd, rawOutput);
   const hasSufficientPermissions = process.platform === "win32" ? await isAdmin() : true;
-  const inputExists = inputDir && (await pathExists(inputDir));
+  const inputExists = inputDir && fs.existsSync(inputDir);
 
   if (!inputDir || !outputDir) {
     // only complain if other options are given. this makes apollo work like "apollo --help"
@@ -84,7 +84,7 @@ async function main() {
     move: cli.flags.move,
     dryRun: cli.flags.dryRun,
     minSize: cli.flags.minSize,
-    disableLookup: cli.flags.disableLookup
+    disableLookup: cli.flags.disableLookup,
   });
 
   await apollo.run();

@@ -3,6 +3,7 @@ import { log } from "./helpers/log";
 import { apollo } from "./types";
 import path from "path";
 import * as constants from "./constants";
+import { IMDBTitlePartial, IMDBTitleType } from "@ryanke/imdb-api";
 
 export class ApolloParser {
   protected readonly matchIndexes: { start: number; end: number }[] = [];
@@ -15,7 +16,7 @@ export class ApolloParser {
    * @param parentData Used internally.
    */
   public async parse(filePath: string, parentData?: Partial<apollo.Parsed>): Promise<apollo.Parsed | undefined> {
-    let extension = parentData ? parentData.extension : constants.ALL_EXTENSIONS.find(ext => filePath.endsWith(ext));
+    let extension = parentData ? parentData.extension : constants.ALL_EXTENSIONS.find((ext) => filePath.endsWith(ext));
     if (!extension) {
       log.debug(`Could not extract file extension for "${filePath}"`);
       return;
@@ -33,7 +34,7 @@ export class ApolloParser {
     const audio = this.getAudio(cleanPath);
     const languages = this.getLanguages(cleanPath);
     const index = this.getSeasonAndEpisode(cleanPath);
-    const type = index.seasonNumber || index.episodeNumber.length ? apollo.TitleType.TV : apollo.TitleType.MOVIE;
+    const type = index.seasonNumber || index.episodeNumber.length ? IMDBTitleType.SERIES : IMDBTitleType.MOVIE;
 
     // with collections, the top-most title might be for the whole series.
     // trusting the file name alone is more reliable, though will mean we get less information overall.
@@ -86,7 +87,7 @@ export class ApolloParser {
       // know what we want. it's basically just a hilariously long title, so checking if it's too long is pretty reliable.
       // checking the title length and assuming it's too long before the query might be better, but could mean
       // we're missing out on an accurate match. something to consider maybe?
-      title = best && best.title.length < cleanTitle.length * 3 ? best.title : cleanTitle;
+      title = best && best.name.length < cleanTitle.length * 3 ? best.name : cleanTitle;
     }
 
     return {
@@ -100,7 +101,7 @@ export class ApolloParser {
       endYear: year && year.end,
       languages,
       audio,
-      ...index
+      ...index,
     };
   }
 
@@ -109,7 +110,7 @@ export class ApolloParser {
    * @example ["ENG", "ITA"]
    */
   protected getLanguages(cleanPath: string): string[] {
-    return this.getMatch(cleanPath, constants.LANGUAGE_REGEX, true).map(match => match[0]);
+    return this.getMatch(cleanPath, constants.LANGUAGE_REGEX, true).map((match) => match[0]);
   }
 
   /**
@@ -117,7 +118,7 @@ export class ApolloParser {
    * @example ["AC3", "5.1"]
    */
   protected getAudio(cleanPath: string): string[] {
-    return this.getMatch(cleanPath, constants.AUDIO_REGEX, true).map(match => match[0]);
+    return this.getMatch(cleanPath, constants.AUDIO_REGEX, true).map((match) => match[0]);
   }
 
   /**
@@ -134,7 +135,7 @@ export class ApolloParser {
 
     return {
       start,
-      end
+      end,
     };
   }
 
@@ -212,15 +213,10 @@ export class ApolloParser {
   /**
    * Get the best search result for the input.
    */
-  protected getBestResult(
-    results: apollo.LookupResult[],
-    title: string,
-    type: apollo.TitleType,
-    year?: number
-  ): apollo.LookupResult | undefined {
-    const acceptable = results.filter(result => {
+  protected getBestResult(results: IMDBTitlePartial[], title: string, type: IMDBTitleType, year?: number): IMDBTitlePartial | undefined {
+    const acceptable = results.filter((result) => {
       if (type !== result.type) return false;
-      if (type === apollo.TitleType.MOVIE && year && result.year && result.year !== year) return false;
+      if (type === IMDBTitleType.MOVIE && year && result.year && result.year !== year) return false;
       return true;
     });
 
@@ -228,7 +224,7 @@ export class ApolloParser {
       // with single-word titles, i've found IMDb struggles sometimes,
       // for example returning "Logan Lucky (2017)" before "Logan (2017)". This is a hacky way
       // to get around that.
-      const exact = results.slice(0, 4).find(t => t.title.toLowerCase() === title.toLowerCase());
+      const exact = results.slice(0, 4).find((t) => t.name.toLowerCase() === title.toLowerCase());
       if (exact) return exact;
     }
 
@@ -242,7 +238,7 @@ export class ApolloParser {
   protected firstMatchIndex(afterIndex: number = 0): { start: number; end: number } | undefined {
     this.matchIndexes.sort((a, b) => a.start - b.start);
     if (afterIndex === 0) return this.matchIndexes[0];
-    return this.matchIndexes.find(m => afterIndex < m.end);
+    return this.matchIndexes.find((m) => afterIndex < m.end);
   }
 
   /**
@@ -256,7 +252,7 @@ export class ApolloParser {
       const cleanPathPart = this.handleSpaceReplacements(filePathPart);
       // we have to check the blacklist first or else something like "Trailers" would be discarded
       // before we check the blacklist
-      if (constants.EXCLUDE_BLACKLIST_REGEX.some(p => p.test(cleanPathPart))) return;
+      if (constants.EXCLUDE_BLACKLIST_REGEX.some((p) => p.test(cleanPathPart))) return;
       // only once it passes the blacklist can we do this check
       if (filePathPart.length <= 2 || constants.IGNORE_PATH_PART_REGEX.test(filePathPart)) continue;
       cleanedPathParts.push(cleanPathPart);

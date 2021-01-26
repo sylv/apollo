@@ -1,19 +1,9 @@
 export const SUPPORTED_MEDIA_EXTENSIONS = [".mp4", ".3gp", ".mkv", ".mov", ".wmv", ".ogg", ".flv", ".avi", ".hdv", ".webm"];
 export const SUPPORTING_FILE_EXTENSIONS = [".srt", ".sub"];
 export const ALL_EXTENSIONS = [...SUPPORTED_MEDIA_EXTENSIONS, ...SUPPORTING_FILE_EXTENSIONS];
-export const SPACE_PLACEHOLDERS = [".", '_'];
-export const SERIES_ALIASES = [
-  {
-    pattern: /avatar \(?tlok\)?/i,
-    title: "The Legend of Korra"
-  },
-  {
-    pattern: /avatar -? ?the last airbender( movie)?/i,
-    title: "The Last Airbender"
-  }
-];
+export const SPACE_PLACEHOLDERS = [".", "_"];
 
-// patterns
+// regex patterns. god has abandoned us.
 
 // YEAR_REGEX also grabs dates to make title extraction better. `Top Gear 08.09.2008` would come out as `Top Gear 08 09` otherwise.
 // note: this is a bit aggressive when matching without spaces, e.g "08 09 2008" will be
@@ -39,7 +29,7 @@ export const SEASON_EPISODE_PATTERNS = [
   // not "Se7en", "S01e01-10"
   /(?<=^| |\/|\[|\()(?:SE|S)(?<season>[0-9]{1,2}) ?(?:(?:EP|E)(?<episode>[0-9]{1,2}))?(?=$| |\/|]|\))/gi,
   // matches "Part 3 of 3" if we're really desparate
-  /Part (?<episode>[0-9]) of [0-9]/gi
+  /Part (?<episode>[0-9]) of [0-9]/gi,
 ];
 
 // export const EXCLUDE_BLACKLIST_REGEX = /lore|histories|sample|trailer|behind.the.scenes|deleted.and.extended.scenes|deleted.scenes|extras?|featurettes|interviews|scenes|shorts/i;
@@ -55,7 +45,7 @@ export const EXCLUDE_BLACKLIST_REGEX = [
   /^Featurettes$/i,
   /^Interviews$/i,
   /^Scenes$/i,
-  /^Shorts$/i
+  /^Shorts$/i,
 ];
 
 // patterns for cleaning titles
