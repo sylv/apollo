@@ -27,7 +27,7 @@ export class Apollo {
     let checkedCount = 0;
     let newCount = 0;
 
-    for await (const file of rrdir.stream(this.options.input, { stats: true })) {
+    for await (const file of rrdir(this.options.input, { stats: true })) {
       if (file.directory) continue;
       // todo: this means we're checking the file ext twice, once here and once in the parser
       // when deciding if it's a media file or a supporting file

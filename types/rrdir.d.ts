@@ -1,23 +1,17 @@
-declare function rrdir(dir: string, options?: rrdir.Options): Promise<rrdir.Entry[]>;
+declare function rrdir(dir: string, options?: rrdir.Options): AsyncIterableIterator<rrdir.Entry>;
 declare namespace rrdir {
   function sync(dir: string, options?: rrdir.Options): rrdir.Entry[];
-  function stream(dir: string, options?: rrdir.Options): AsyncIterable<rrdir.Entry>;
+  function async(dir: string, options?: rrdir.Options): Promise<rrdir.Entry[]>;
 
-  interface BaseOptions {
-    stats?: boolean;
+  export interface Options {
     exclude?: string[];
     include?: string[];
     strict?: boolean;
     encoding?: string;
     match?: any;
-  }
-
-  interface StatOptions extends BaseOptions {
-    stats: true;
+    stats: boolean;
     followSymlinks?: boolean;
   }
-
-  type Options = BaseOptions | StatOptions;
 
   export interface Entry {
     path: string;

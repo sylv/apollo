@@ -1,5 +1,5 @@
-import { apollo } from "./types";
-import { ApolloParser } from "./parser";
+import { apollo } from "../src/types";
+import { ApolloParser } from "../src/parser";
 
 const tests: ((apollo.Parsed & { input: string }) | { input: string })[] = [
   {
