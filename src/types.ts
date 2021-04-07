@@ -1,45 +1,43 @@
-import { IMDBTitleType } from "@ryanke/imdb-api";
+import { IMDBTitlePartial, IMDBTitleType } from "@ryanke/imdb-api";
+import { Logger } from "tslog";
 
 export namespace apollo {
-  export enum FileType {
+  export const enum FileType {
     MEDIA = "MEDIA",
-    SUPPORTING = "SUPPORTING",
+    SUBTITLE = "SUBTITLE",
   }
 
-  export interface Match {
-    value: string;
-    index: number;
-  }
-
-  export interface Options {
+  export interface Options extends ParserOptions {
     input: string;
     output: string;
     move: boolean;
     dryRun: boolean;
     minSize: number;
-    disableLookup: boolean;
+  }
+
+  export interface ParserOptions {
+    logger?: Logger;
+    disableLookup?: boolean;
   }
 
   export interface Parsed {
-    title: string;
+    title?: string;
     resolution?: number;
-    type: IMDBTitleType;
+    type?: IMDBTitleType;
     fileType: FileType;
     collection: boolean;
     seasonNumber?: number;
-    episodeNumber: number[];
+    episodeNumber?: number[];
+    seasons?: number[];
+    episodes?: number[];
     extension: string;
     startYear?: number;
     endYear?: number;
     languages: string[];
     audio: string[];
-  }
-
-  export interface ParserOptions {
-    /**
-     * Whether to query IMDb for more accurate title information. Disabling will result in less accurate "title" data.
-     * IMDb queries are usually fast (<100ms for most people, even those outside the US) and are cached.
-     */
-    disableLookup?: boolean;
+    coding: string[];
+    quality?: string;
+    date?: Date;
+    imdb?: IMDBTitlePartial;
   }
 }

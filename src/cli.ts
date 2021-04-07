@@ -2,8 +2,8 @@ import meow from "meow";
 import path from "path";
 import fs from "fs";
 import isAdmin from "is-admin";
-import { log } from "./helpers/log";
-import { Apollo } from "./";
+import { Apollo } from "./classes/Apollo";
+import { Logger } from "tslog";
 
 const cli = meow(
   `
@@ -22,8 +22,11 @@ const cli = meow(
 `,
   {
     flags: {
+      debug: {
+        default: false,
+        type: "boolean",
+      },
       minSize: {
-        // 25000000 = 25mb
         default: 25000000,
         alias: "min-size",
         type: "number",
@@ -52,6 +55,8 @@ async function main() {
   const outputDir = rawOutput && inputDir && path.resolve(cwd, rawOutput);
   const hasSufficientPermissions = process.platform === "win32" ? await isAdmin() : true;
   const inputExists = inputDir && fs.existsSync(inputDir);
+  const logLevel = cli.flags.debug ? "debug" : "info";
+  const log = new Logger({ minLevel: logLevel });
 
   if (!inputDir || !outputDir) {
     // only complain if other options are given. this makes apollo work like "apollo --help"
@@ -70,7 +75,7 @@ async function main() {
   }
 
   if (!hasSufficientPermissions && !cli.flags.move) {
-    log.error(`Administrator privilegs are required to use symlinks on Windows. Alternatively, try with --move.`);
+    log.error(`Administrator privileges are required to use symlinks on Windows. Alternatively, try with --move.`);
     process.exit(1);
   }
 
@@ -79,6 +84,7 @@ async function main() {
   }
 
   const apollo = new Apollo({
+    logger: log,
     input: inputDir,
     output: outputDir,
     move: cli.flags.move,
