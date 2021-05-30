@@ -31,7 +31,7 @@ export class Apollo {
     for await (const file of rrdir(this.options.input, { stats: true })) {
       if (file.directory) continue;
       const isSubtitle = SUBTITLE_FILE_EXTENSIONS.some((ext) => file.path.endsWith(ext));
-      if (!isSubtitle && (file.stats as fs.Stats).size < this.options.minSize) {
+      if (!isSubtitle && file.stats!.size < this.options.minSize) {
         this.log?.debug(`Skipping "${file.path}" as it is too small and not a subtitle file`);
         continue;
       }

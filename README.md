@@ -88,6 +88,6 @@ console.log(output)
 
 # todo
 
-- [ ] Directories with multiple subtitles in different languages for the same file like `movie.mp4`, `movie.eng.sub`, `movie.rus.sub` aren't handled correctly and will move the subtitle file we first see as `movie.sub` and leave the rest behind.
+- [ ] Directories with multiple subtitles in different languages for the same file like `movie.mp4`, `movie.eng.sub`, `movie.rus.sub` aren't handled correctly and will move the subtitle file we first see as `movie.sub` and leave the rest behind. We could handle this by using something like the `languagedetect` library on the subtitles, as well as trying to extract a title code from the file.
 - [ ] Customisable output directory structure, instead of the default `Movies/Movie (year)/Movie (year).ext`
 - [ ] Extraction of episode names. Shouldn't be hard with the current title extraction.

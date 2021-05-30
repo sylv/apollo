@@ -759,10 +759,23 @@
   resolved "https://registry.yarnpkg.com/@types/normalize-package-data/-/normalize-package-data-2.4.0.tgz"
   integrity sha512-f5j5b/Gf71L+dbqxIpQ4Z2WlmI/mPJ0fOkGGmFgtb6sAu97EPczzbS3/tJKxmcYDj55OX6ssqwDAWOHIYDRDGA==
 
+"@types/picomatch@*":
+  version "2.2.4"
+  resolved "https://registry.yarnpkg.com/@types/picomatch/-/picomatch-2.2.4.tgz#71acb6361deb7a68a9fd857c2fe6ccb2edf5c090"
+  integrity sha512-O4Cf3nFZbS1mFGbCjkimivto15zsf1uaEIT3Fxx3+Ek9PtAA8tu6jrsjt775GOAyHFJSjkZsz5gT3c/7gUYCRQ==
+
 "@types/prettier@^2.0.0":
   version "2.1.6"
   resolved "https://registry.yarnpkg.com/@types/prettier/-/prettier-2.1.6.tgz#f4b1efa784e8db479cdb8b14403e2144b1e9ff03"
   integrity sha512-6gOkRe7OIioWAXfnO/2lFiv+SJichKVSys1mSsgyrYHSEjk8Ctv4tSR/Odvnu+HWlH2C8j53dahU03XmQdd5fA==
+
+"@types/rrdir@^8.2.2":
+  version "8.2.2"
+  resolved "https://registry.yarnpkg.com/@types/rrdir/-/rrdir-8.2.2.tgz#eadc7a4128d574ee43e9b94428ee6dbe241855e3"
+  integrity sha512-SWNZoLgsikidUhWtcRXdZW06FiKkFs9LRgiePh3n9vvYmpKJx05T+V4EnUrjoZuNCwR6K8TeLjfHZeUSki6fAw==
+  dependencies:
+    "@types/node" "*"
+    "@types/picomatch" "*"
 
 "@types/stack-utils@^2.0.0":
   version "2.0.0"
