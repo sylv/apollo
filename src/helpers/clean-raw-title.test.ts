@@ -1,4 +1,4 @@
-import { cleanRawTitle } from "../../src/helpers/cleanRawTitle";
+import { cleanRawTitle } from "./clean-raw-title";
 
 test("Should strip tags from titles", () => {
   expect(cleanRawTitle("(auto) Top Gear [1080p]")).toBe("Top Gear");

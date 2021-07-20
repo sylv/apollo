@@ -2,7 +2,7 @@ import meow from "meow";
 import path from "path";
 import fs from "fs";
 import isAdmin from "is-admin";
-import { Apollo } from "./classes/Apollo";
+import { Apollo } from "./classes/apollo";
 import { Logger } from "tslog";
 
 const cli = meow(
@@ -17,7 +17,7 @@ const cli = meow(
       --debug Enable development logging
       --move Move files instead of using symlinks. 
       --min-size The minimum size of a media file in bytes to be considered valid. Defaults to 25,000,000 (25Mb)
-      --dry-run Skip file moves or symlink creations. In conjuction with --debug, this is good for testing.
+      --dry-run Skip file moves or symlink creations. In conjunction with --debug, this is good for testing.
       --disable-lookup Skip querying IMDb for more accurate title information. This would also allow Apollo to work without an internet connection.
 `,
   {

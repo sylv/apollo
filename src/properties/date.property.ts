@@ -1,6 +1,6 @@
 import { PART_END_PATTERN, PART_START_PATTERN } from "../constants";
-import { ApolloParser } from "../classes/ApolloParser";
-import { Property } from "./Property";
+import { ApolloParser } from "../classes/apollo-parser";
+import { Property } from "./property";
 
 const GLOBAL_DATE_PATTERN = `${PART_START_PATTERN}(?:[0-9]{1,2}(?:\\.|-|\\/)){2}[0-9]{4}${PART_END_PATTERN}`;
 const GLOBAL_DATE_REGEX = new RegExp(GLOBAL_DATE_PATTERN, "g");

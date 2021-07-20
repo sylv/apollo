@@ -1,4 +1,4 @@
-import { cleanFilePath } from "../../src/helpers/cleanFilePath";
+import { cleanFilePath } from "./clean-file-path";
 
 const title = `Avengers Infinity War (2018) [WEBRip] [1080p] [YTS.AM].mp4`;
 const directory = `Bobs Burgers`;

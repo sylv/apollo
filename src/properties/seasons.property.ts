@@ -1,5 +1,5 @@
-import { Property } from "./Property";
-import { ApolloParser } from "../classes/ApolloParser";
+import { Property } from "./property";
+import { ApolloParser } from "../classes/apollo-parser";
 import { PART_END_PATTERN, PART_START_PATTERN } from "../constants";
 
 // https://regex101.com/r/ADDnD0/1

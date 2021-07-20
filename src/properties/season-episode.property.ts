@@ -1,8 +1,8 @@
 import { apollo } from "../types";
-import { Property } from "./Property";
-import { ApolloParser } from "../classes/ApolloParser";
+import { Property } from "./property";
+import { ApolloParser } from "../classes/apollo-parser";
 import { PART_END_PATTERN, PART_START_PATTERN, SPACE_REGEX } from "../constants";
-import { getAllMatches } from "../helpers/getAllMatches";
+import { getAllMatches } from "../helpers/get-all-matches";
 
 const SEASON_EPISODE_PATTERNS = [
   // matches "1x1"

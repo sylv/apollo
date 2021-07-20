@@ -1,6 +1,6 @@
 import { PART_END_PATTERN, PART_START_PATTERN } from "../constants";
-import { ApolloParser } from "../classes/ApolloParser";
-import { Property } from "./Property";
+import { ApolloParser } from "../classes/apollo-parser";
+import { Property } from "./property";
 
 const LANGUAGES_PATTERN = `${PART_START_PATTERN}-?(ITA|ENG|RUS|Hindi|English|Italian)-?${PART_END_PATTERN}`;
 const LANGUAGES_REGEX = new RegExp(LANGUAGES_PATTERN, "g");

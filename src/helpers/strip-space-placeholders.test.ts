@@ -1,4 +1,4 @@
-import { stripSpacePlaceholders } from "../../src/helpers/stripSpacePlaceholders";
+import { stripSpacePlaceholders } from "./strip-space-placeholders";
 
 test("Should leave strings alone that are likely not using other characters as spaces", () => {
   const input = "A Movie 1080p x265 Atmos 5.1";

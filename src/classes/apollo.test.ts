@@ -1,7 +1,7 @@
 import mock from "mock-fs";
 import FileSystem from "mock-fs/lib/filesystem";
 import fs from "fs";
-import { Apollo } from "../src/index";
+import { Apollo } from "./apollo";
 
 // in testing "Downloads-2" will break as it can't be removed because it might be important info,
 // so the cli should slice that from the path.

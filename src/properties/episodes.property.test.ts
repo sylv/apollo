@@ -1,5 +1,5 @@
-import { ApolloParser } from "../../src";
-import { PropertyEpisodes } from "../../src/properties/PropertyEpisodes";
+import { ApolloParser } from "../classes/apollo-parser";
+import { PropertyEpisodes } from "./episodes.property";
 
 let parser: ApolloParser;
 

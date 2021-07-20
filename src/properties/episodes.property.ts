@@ -1,5 +1,5 @@
-import { Property } from "./Property";
-import { ApolloParser } from "../classes/ApolloParser";
+import { Property } from "./property";
+import { ApolloParser } from "../classes/apollo-parser";
 
 const EPISODE_PATTERN = `(?<=episodes|episode|ep) ?(?<episodeStart>[0-9]{1,2})(?:(?: | ?- ?)(?<episodeEnd>[0-9]{1,2}))+(?= |\\/|$)`;
 const EPISODES_REGEX = new RegExp(EPISODE_PATTERN, "gi");

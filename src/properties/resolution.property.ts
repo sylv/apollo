@@ -1,6 +1,6 @@
 import { PART_END_PATTERN, PART_START_PATTERN } from "../constants";
-import { ApolloParser } from "../classes/ApolloParser";
-import { Property } from "./Property";
+import { ApolloParser } from "../classes/apollo-parser";
+import { Property } from "./property";
 
 // 1080p
 const HEIGHT_PATTERN = `${PART_START_PATTERN}(?<height>[0-9]{3,4})(?:p)${PART_END_PATTERN}`;

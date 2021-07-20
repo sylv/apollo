@@ -1,6 +1,6 @@
-import { ApolloParser } from "../classes/ApolloParser";
-import { QUALITIES } from "../data";
-import { Property } from "./Property";
+import { ApolloParser } from "../classes/apollo-parser";
+import { QUALITIES } from "../data/qualities.data";
+import { Property } from "./property";
 
 export class PropertyQuality extends Property<"quality"> {
   readonly key = "quality";

@@ -8,7 +8,7 @@ import { Project, StructureKind, VariableDeclarationKind, SyntaxKind } from "ts-
 import { execSync } from "child_process";
 
 const SOURCE_URL = "https://raw.githubusercontent.com/filebot/data/master/media-sources.txt";
-const OUTPUT_PATH = path.join(__dirname, "../src/data/qualities.ts");
+const OUTPUT_PATH = path.join(__dirname, "../src/data/qualities.data.ts");
 const FILE_DELIMITER = "\t";
 const PATTERN_PREFIX = "(?<!^)(?:\\.|\\[| |^)";
 const PATTERN_SUFFIX = "(?=\\.|\\]| |$)";

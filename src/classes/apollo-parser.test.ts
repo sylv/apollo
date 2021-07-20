@@ -1,6 +1,8 @@
 /* cSpell:disable */
 import { IMDBTitleType } from "@ryanke/imdb-api";
-import { apollo, ApolloParser, FileType, Quality } from "../src";
+import { Quality } from "../data/qualities.data";
+import { apollo, FileType } from "../types";
+import { ApolloParser } from "./apollo-parser";
 
 const tests: Array<{ id: string | undefined; input: string; output: Partial<apollo.Parsed> | undefined }> = [
   {

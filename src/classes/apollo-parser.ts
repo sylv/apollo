@@ -1,12 +1,12 @@
 import { IMDB, IMDBTitlePartial, IMDBTitleType } from "@ryanke/imdb-api";
 import mem from "mem";
-import { cleanFilePath } from "../helpers/cleanFilePath";
-import { cleanRawTitle } from "../helpers/cleanRawTitle";
+import { cleanFilePath } from "../helpers/clean-file-path";
+import { cleanRawTitle } from "../helpers/clean-raw-title";
 import { Logger } from "tslog";
-import { properties } from "../properties/index";
 import { apollo, FileType } from "../types";
 import { ALL_EXTENSIONS, SUBTITLE_FILE_EXTENSIONS } from "../constants";
-import { getAllMatches } from "../helpers/getAllMatches";
+import { getAllMatches } from "../helpers/get-all-matches";
+import { properties } from "../properties";
 
 export class ApolloParser {
   protected matchIndexes: { start: number; end: number }[] = [];

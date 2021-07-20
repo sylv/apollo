@@ -1,6 +1,6 @@
 import { IMDBTitlePartial, IMDBTitleType } from "@ryanke/imdb-api";
 import { Logger } from "tslog";
-import { Quality } from "./data";
+import { Quality } from "./data/qualities.data";
 
 export enum FileType {
   MEDIA = "MEDIA",

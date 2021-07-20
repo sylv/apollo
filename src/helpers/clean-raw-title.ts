@@ -1,5 +1,5 @@
 import { titleCase } from "title-case";
-import { IGNORE_TITLES } from "../data";
+import { IGNORE_TITLES } from "../data/ignore.data";
 
 const TITLE_TAG_REGEX = /\[.*?\]/g;
 const TITLE_RELEASE_GROUP_REGEX = /-[a-z]{2,}(?=$|\/)/gi;

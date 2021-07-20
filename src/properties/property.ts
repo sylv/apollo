@@ -1,4 +1,4 @@
-import { ApolloParser } from "../classes/ApolloParser";
+import { ApolloParser } from "../classes/apollo-parser";
 import { apollo } from "../types";
 
 export abstract class Property<Key extends keyof apollo.Parsed> {

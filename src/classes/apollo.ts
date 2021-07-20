@@ -4,7 +4,7 @@ import rrdir from "rrdir";
 import sanitize from "sanitize-filename";
 import { Logger } from "tslog";
 import { SUBTITLE_FILE_EXTENSIONS } from "../constants";
-import { ApolloParser } from "./ApolloParser";
+import { ApolloParser } from "./apollo-parser";
 import { apollo } from "../types";
 
 export class Apollo {

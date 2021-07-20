@@ -1,4 +1,4 @@
-import { stripSpacePlaceholders } from "./stripSpacePlaceholders";
+import { stripSpacePlaceholders } from "./strip-space-placeholders";
 
 const IGNORE_PATH_PART_REGEX = /^(?:[A-Z]:|[a-z]+|tv shows)$/i;
 const EXCLUDE_BLACKLIST_REGEX = [

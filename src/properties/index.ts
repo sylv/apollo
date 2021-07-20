@@ -1,14 +1,14 @@
-import { PropertyAudio } from "./PropertyAudio";
-import { PropertyCollection } from "./PropertyCollection";
-import { PropertyEpisodes } from "./PropertyEpisodes";
-import { PropertyLanguages } from "./PropertyLanguages";
-import { PropertyResolution } from "./PropertyResolution";
-import { PropertySeasonEpisode } from "./PropertySeasonEpisode";
-import { PropertySeasons } from "./PropertySeasons";
-import { PropertyYear } from "./PropertyYear";
-import { PropertyQuality } from "./PropertyQuality";
-import { PropertyCoding } from "./PropertyCoding";
-import { PropertyDate } from "./PropertyDate";
+import { PropertyAudio } from "./audio.property";
+import { PropertyCollection } from "./collection.property";
+import { PropertyEpisodes } from "./episodes.property";
+import { PropertyLanguages } from "./languages.property";
+import { PropertyResolution } from "./resolution.property";
+import { PropertySeasonEpisode } from "./season-episode.property";
+import { PropertySeasons } from "./seasons.property";
+import { PropertyYear } from "./year.property";
+import { PropertyQuality } from "./quality.property";
+import { PropertyCoding } from "./coding.property.ts";
+import { PropertyDate } from "./date.property";
 
 export const properties = [
   new PropertyAudio(),

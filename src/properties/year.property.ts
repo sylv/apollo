@@ -1,6 +1,6 @@
 import { apollo } from "../types";
-import { Property } from "./Property";
-import { ApolloParser } from "../classes/ApolloParser";
+import { Property } from "./property";
+import { ApolloParser } from "../classes/apollo-parser";
 import { PART_END_PATTERN, PART_START_PATTERN } from "../constants";
 
 // match "2018-19", "2018" etc
