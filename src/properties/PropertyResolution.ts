@@ -20,8 +20,8 @@ export class PropertyResolution extends Property<"resolution"> {
       if (match) {
         const { width, height } = match.groups!;
         return {
-          width: width ? +width : undefined,
-          height: height ? +height : undefined,
+          width: width ? +width : null,
+          height: height ? +height : null,
         };
       }
     }

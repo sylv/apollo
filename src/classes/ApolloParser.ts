@@ -101,9 +101,9 @@ export class ApolloParser {
     let previous = 0;
     const parts = [];
     const matches = this.matchIndexes.sort((a, b) => a.start - b.start);
-    // we add an extra +1 because otherwise episode names won't be extracted if there isnt a match after them.
+    // we add an extra +1 because otherwise episode names won't be extracted if there isn't a match after them.
     // basically we have to do a final loop that extracts from the last match to the end of the string if
-    // there isnt a match at the very end.
+    // there isn't a match at the very end.
     for (let i = 0; i < matches.length + 1; i++) {
       const match = matches[i];
       const start = match?.start ?? cleanPath.length;

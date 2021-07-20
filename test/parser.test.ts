@@ -1,14 +1,14 @@
 import { IMDBTitleType } from "@ryanke/imdb-api";
-import { apollo, ApolloParser, FileType } from "../src";
+import { apollo, ApolloParser, FileType, Quality } from "../src";
 
-// todo: we need a test for endYear
-// todo: should add tests for mythbusters because they do "Season 2016" etc
+/* cSpell:disable */
+// todo: should add tests for MythBusters because they do "Season 2016" etc
 const tests: Array<{ id: string | undefined; input: string; output: Partial<apollo.Parsed> | undefined }> = [
   {
-    // - "m4v" isnt a common extension
-    // - there are no IMDb search results for this title, meaning we cant rely on it for more info
-    // - "BigBuckBunny" is hard to safely parse and will not have IMDb search results to help it
-    // - "640x360" isnt a common resolution format for torrents.
+    // "m4v" isn't a common extension
+    // there are no IMDb search results for this title, meaning we cant rely on it for more info
+    // "BigBuckBunny" is hard to safely parse and will not have IMDb search results to help it
+    // "640x360" isn't a common resolution format for torrents.
     id: undefined,
     input: "BigBuckBunny_640x360.m4v",
     output: {
@@ -23,7 +23,7 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
     },
   },
   {
-    // - packs like this with a lot of mixed data in the parent directory often break things.
+    // packs like this with a lot of mixed data in the parent directory often break things.
     id: "tt0096697",
     input:
       "The Simpsons (1989-2018) Seasons 01-29 & Movie [1080p] [Ultimate Batch] [HEVC] [x265] [pseudo]/Season 07/The Simpsons - S07E25 - Summer of 4 Ft 2 [1080p] [x265] [pseudo].mkv",
@@ -33,7 +33,7 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
       audio: [],
       collection: false,
       languages: [],
-      resolution: { height: 1080 },
+      resolution: { height: 1080, width: null },
       seasonNumber: 7,
       episodeNumber: [25],
       seasons: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29],
@@ -45,8 +45,8 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
     },
   },
   {
-    // - "SE1/02" is a great torture test for index extraction.
-    // - "Complete Eng Only Burntodisc" is almost as long as the title and may confuse title extraction.
+    // "SE1/02" is a great torture test for index extraction.
+    // "Complete Eng Only Burntodisc" is almost as long as the title and may confuse title extraction.
     id: "tt1561755",
     input: "Bob's Burgers 2011 SE 1 - 8 Complete Eng Only Burntodisc/SE1/02 Human Flesh.mp4",
     output: {
@@ -65,8 +65,8 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
     },
   },
   {
-    // - Multiple titles in the parent directory confuse title extraction and mean we have to rely on file names under specific circumstances like this
-    // - When extracting from just the file name due to the above issue, we only get a partial movie name (without "Lord of the Rings")
+    // Multiple titles in the parent directory confuse title extraction and mean we have to rely on file names under specific circumstances like this
+    // When extracting from just the file name due to the above issue, we only get a partial movie name (without "Lord of the Rings")
     id: "tt0120737",
     input:
       "The Hobbit & The Lord of The Rings Extended Trilogy 1080p 10bit BluRay x265 HEVC MRN/The Lord of The Rings Trilogy Extended Cut 1080p 10bit BluRay x265 HEVC 6CH -MRN/1-Fellowship.of.The.Ring.2001.Extended.Cut.1080p.10bit.BluRay.x265.HEVC.6CH-MRN.mkv",
@@ -76,16 +76,16 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
       audio: ["6ch"],
       collection: false,
       languages: [],
-      resolution: { height: 1080 },
+      resolution: { height: 1080, width: null },
       startYear: 2001,
-      quality: "BluRay",
+      quality: Quality.BLU_RAY,
       coding: ["10bit", "x265", "HEVC"],
       type: IMDBTitleType.MOVIE,
       title: "The Lord of the Rings: The Fellowship of the Ring",
     },
   },
   {
-    // - The space between "S03 E11" meant we weren't matching the season&episode properly.
+    // The space between "S03 E11" meant we weren't matching the season&episode properly.
     id: "tt3230854",
     input: "Z:\\torrents\\completed\\The EXPANSE - Complete Season 3 S03 (2018) - 1080p AMZN Web-DL x264\\The EXPANSE - S03 E11 - Fallen World (1080p - AMZN Web-DL).mp4",
     output: {
@@ -94,19 +94,19 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
       audio: [],
       collection: false,
       languages: [],
-      resolution: { height: 1080 },
+      resolution: { height: 1080, width: null },
       seasonNumber: 3,
       episodeNumber: [11],
       startYear: 2018,
-      quality: "WEB-DL",
+      quality: Quality.WEB_DL,
       coding: [],
       type: IMDBTitleType.EPISODE,
       title: "The Expanse",
     },
   },
   {
-    // - season ranges with spaces around the dash
-    // - "1x01" season&episode format
+    // season ranges with spaces around the dash
+    // "1x01" season&episode format
     id: "tt0397306",
     input: "/mnt/z/torrents/completed/American Dad S01 - S13/Season 13/American Dad! - 13x04 - N.S.A. (No Snoops Allowed).mkv",
     output: {
@@ -123,7 +123,7 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
     },
   },
   {
-    // - "10x04" season&episode format
+    // "10x04" season&episode format
     id: "tt0397306",
     input: "/mnt/z/torrents/completed/American Dad S01 - S13/Season 10/American Dad! - 10x04 - Crotchwalkers.mkv",
     output: {
@@ -140,7 +140,7 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
     },
   },
   {
-    // - "Avatar (TLoK)" isn't a title IMDb recognises, so we have to handle it ourselves.
+    // "Avatar (TLoK)" isn't a title IMDb recognises, so we have to handle it ourselves.
     id: "tt1695360",
     input: "Avatar (TLoK) - S03 E12 - Enter the Void (1080p - BluRay).mp4",
     output: {
@@ -149,7 +149,7 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
       audio: [],
       collection: false,
       languages: [],
-      resolution: { height: 1080 },
+      resolution: { height: 1080, width: null },
       seasonNumber: 3,
       episodeNumber: [12],
       coding: [],
@@ -158,10 +158,10 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
     },
   },
   {
-    // - mixed names in parent directories
-    // - "avatar tlok" doesn't have search results on imdb
-    // - "2012-2014" year ranges have to be handled properly
-    // - "part 3 of 3" is not a valid season&episode format, so we handle it as best we can.
+    // mixed names in parent directories
+    // "avatar tlok" doesn't have search results on imdb
+    // "2012-2014" year ranges have to be handled properly
+    // "part 3 of 3" is not a valid season&episode format, so we handle it as best we can.
     id: "tt1695360",
     input:
       "Z:\\torrents\\completed\\AVATAR Series (2005-2014) - COMPLETE The Last Airbender, 2010 Movie, Legend of Korra - 1080p BluRay x264\\2. The Legend of Korra (2012-14)\\Book 2a - Republic City Hustle (2013)\\Avatar (TLoK) - Republic City Hustle, Part 3 of 3 (1080p).mp4",
@@ -171,10 +171,10 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
       audio: [],
       collection: false,
       languages: [],
-      resolution: { height: 1080 },
+      resolution: { height: 1080, width: null },
       episodeNumber: [3],
       startYear: 2013,
-      quality: "BluRay",
+      quality: Quality.BLU_RAY,
       coding: [],
       type: IMDBTitleType.EPISODE,
       title: "The Legend of Korra",
@@ -191,11 +191,11 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
       audio: [],
       collection: false,
       languages: [],
-      resolution: { height: 1080 },
+      resolution: { height: 1080, width: null },
       seasonNumber: 4,
       episodeNumber: [10],
       startYear: 2014,
-      quality: "BluRay",
+      quality: Quality.BLU_RAY,
       coding: [],
       type: IMDBTitleType.EPISODE,
       title: "The Legend of Korra",
@@ -211,17 +211,17 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
       audio: ["ac3", "ac3"],
       collection: false,
       languages: [],
-      resolution: { height: 720 },
+      resolution: { height: 720, width: null },
       startYear: 1997,
-      quality: "BluRay",
+      quality: Quality.BLU_RAY,
       coding: ["x264", "x264"],
       type: IMDBTitleType.MOVIE,
       title: "Con Air",
     },
   },
   {
-    // - "part 2", that single "2" character is the only difference between the hunger games part 1 & 2 and could be matched incorrectly as part 1.
-    // - this is just generally a great test with the "republic city hustle" test to make sure we don't accidentally start eating "part 2" thinking it's episode 2.
+    // "part 2", that single "2" character is the only difference between the hunger games part 1 & 2 and could be matched incorrectly as part 1.
+    // this is just generally a great test with the "republic city hustle" test to make sure we don't accidentally start eating "part 2" thinking it's episode 2.
     id: "tt1951266",
     input:
       "Z:\\torrents\\completed\\The Hunger Games 4 Film Complete Collection 1080p BluRay 5.1Ch x265 HEVC SUJAIDR\\The Hunger Games Mockingjay Part 2 (2015) 1080p BluRay 5.1Ch x265 HEVC SUJAIDR.mkv",
@@ -231,9 +231,9 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
       audio: [],
       collection: false,
       languages: [],
-      resolution: { height: 1080 },
+      resolution: { height: 1080, width: null },
       startYear: 2015,
-      quality: "BluRay",
+      quality: Quality.BLU_RAY,
       coding: ["x265", "HEVC"],
       type: IMDBTitleType.MOVIE,
       title: "The Hunger Games: Mockingjay - Part 2",
@@ -250,17 +250,16 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
       audio: [],
       collection: false,
       languages: [],
-      resolution: { height: 1080 },
+      resolution: { height: 1080, width: null },
       startYear: 2009,
-      quality: "BluRay",
+      quality: Quality.BLU_RAY,
       coding: ["x264"],
       type: IMDBTitleType.MOVIE,
       title: "2012",
     },
   },
   {
-    // this just generally seemed like a good test.
-    // also the prefix, [TorrentCouch.com] borked things a little at times.
+    // the prefix [TorrentCouch.com] gets in the way sometimes.
     id: "tt2575988",
     input:
       "Z:\\torrents\\completed\\[TorrentCouch.com].Silicon.Valley.S05.Complete.720p.BRRip.x264.ESubs.[1.6GB].[Season.5.Full]\\[TorrentCouch.com].Silicon.Valley.S05E01.720p.BRRip.x264.ESubs.mkv",
@@ -270,10 +269,10 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
       audio: [],
       collection: false,
       languages: [],
-      resolution: { height: 720 },
+      resolution: { height: 720, width: null },
       seasonNumber: 5,
       episodeNumber: [1],
-      quality: "BluRay",
+      quality: Quality.BLU_RAY,
       coding: ["x264"],
       type: IMDBTitleType.EPISODE,
       title: "Silicon Valley",
@@ -309,9 +308,9 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
       audio: [],
       collection: false,
       languages: [],
-      resolution: { height: 1080 },
+      resolution: { height: 1080, width: null },
       startYear: 2017,
-      quality: "BluRay",
+      quality: Quality.BLU_RAY,
       coding: ["x264"],
       type: IMDBTitleType.MOVIE,
       title: "Logan",
@@ -349,7 +348,7 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
       audio: ["dd5.1", "dd5.1"],
       collection: false,
       languages: ["ITA", "ENG", "ITA", "ENG"],
-      resolution: { height: 1080 },
+      resolution: { height: 1080, width: null },
       seasonNumber: 1,
       episodeNumber: [1],
       coding: ["x264", "x264"],
@@ -367,10 +366,10 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
       audio: [],
       collection: false,
       languages: [],
-      resolution: { height: 720 },
+      resolution: { height: 720, width: null },
       seasonNumber: 1,
       episodeNumber: [1],
-      quality: "WEB-DL",
+      quality: Quality.WEB_DL,
       coding: ["x264"],
       type: IMDBTitleType.EPISODE,
       title: "Watchmen",
@@ -406,7 +405,7 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
       audio: [],
       collection: false,
       languages: ["ITA", "ENG"],
-      resolution: { height: 1080 },
+      resolution: { height: 1080, width: null },
       seasonNumber: 1,
       episodeNumber: [5],
       coding: ["x264"],
@@ -424,9 +423,9 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
       audio: ["6ch"],
       collection: false,
       languages: [],
-      resolution: { height: 1080 },
+      resolution: { height: 1080, width: null },
       startYear: 1995,
-      quality: "BluRay",
+      quality: Quality.BLU_RAY,
       coding: ["10bit", "HEVC"],
       type: IMDBTitleType.MOVIE,
       title: "Se7en",
@@ -443,10 +442,10 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
       audio: ["mp3", "5.1"],
       collection: false,
       languages: [],
-      resolution: { height: 1080 },
+      resolution: { height: 1080, width: null },
       seasonNumber: 17,
       episodeNumber: [16],
-      quality: "WEB-DL",
+      quality: Quality.WEB_DL,
       coding: ["x265"],
       type: IMDBTitleType.EPISODE,
       title: "Family Guy",
@@ -462,10 +461,10 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
       audio: [],
       collection: false,
       languages: [],
-      resolution: { height: 1080 },
+      resolution: { height: 1080, width: null },
       seasonNumber: 1,
       episodeNumber: [1],
-      quality: "WEB-DL",
+      quality: Quality.WEB_DL,
       coding: ["H264", "H264"],
       type: IMDBTitleType.EPISODE,
       title: "The Mandalorian",
@@ -480,9 +479,9 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
       audio: [],
       collection: false,
       languages: [],
-      resolution: { height: 1080 },
+      resolution: { height: 1080, width: null },
       startYear: 2016,
-      quality: "BluRay",
+      quality: Quality.BLU_RAY,
       coding: ["x264"],
       type: IMDBTitleType.MOVIE,
       title: "Deadpool",
@@ -498,7 +497,7 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
       audio: [],
       collection: false,
       languages: [],
-      resolution: { height: 1080 },
+      resolution: { height: 1080, width: null },
       seasonNumber: 28,
       episodeNumber: [12, 13],
       seasons: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29],
@@ -539,11 +538,11 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
       audio: ["aac", "5.1"],
       collection: false,
       languages: [],
-      resolution: { height: 1080 },
+      resolution: { height: 1080, width: null },
       seasonNumber: 1,
       episodeNumber: [2],
       startYear: 2014,
-      quality: "BluRay",
+      quality: Quality.BLU_RAY,
       coding: ["x265", "HEVC", "10bit", "x265"],
       type: IMDBTitleType.EPISODE,
       title: "BoJack Horseman",
@@ -557,8 +556,8 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
     output: undefined,
   },
   {
-    // - the `_` instead of dots or actual spaces can be confusing
-    // - for whatever reason, the path at the start confuses title extraction.
+    // the `_` instead of dots or actual spaces can be confusing
+    // for whatever reason, the path at the start confuses title extraction.
     id: "tt2442560",
     input: "/mnt/vtfs/torrents/completed/Peaky_Blinders_S01E01_x265_1080p_BluRay_30nama_30NAMA.mkv",
     output: {
@@ -567,10 +566,10 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
       audio: [],
       collection: false,
       languages: [],
-      resolution: { height: 1080 },
+      resolution: { height: 1080, width: null },
       seasonNumber: 1,
       episodeNumber: [1],
-      quality: "BluRay",
+      quality: Quality.BLU_RAY,
       coding: ["x265"],
       type: IMDBTitleType.EPISODE,
       title: "Peaky Blinders",
@@ -586,7 +585,7 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
       audio: [],
       collection: false,
       languages: [],
-      resolution: { height: 1080 },
+      resolution: { height: 1080, width: null },
       seasonNumber: 9,
       episodeNumber: [5],
       coding: ["HEVC"],
@@ -604,7 +603,7 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
       audio: [],
       collection: false,
       languages: [],
-      resolution: { height: 1080 },
+      resolution: { height: 1080, width: null },
       seasonNumber: 9,
       episodeNumber: [5],
       coding: ["HEVC"],
@@ -627,9 +626,9 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
       audio: ["5.1"],
       collection: true,
       languages: [],
-      resolution: { height: 1080 },
+      resolution: { height: 1080, width: null },
       seasons: [1, 2, 3, 4, 5, 6, 7],
-      quality: "BluRay",
+      quality: Quality.BLU_RAY,
       coding: ["10bit", "x265", "HEVC"],
       type: IMDBTitleType.SERIES,
       title: "The Walking Dead",

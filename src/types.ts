@@ -1,5 +1,6 @@
 import { IMDBTitlePartial, IMDBTitleType } from "@ryanke/imdb-api";
 import { Logger } from "tslog";
+import { Quality } from "./data";
 
 export enum FileType {
   MEDIA = "MEDIA",
@@ -21,8 +22,8 @@ export namespace apollo {
   }
 
   export interface Resolution {
-    height?: number;
-    width?: number;
+    height: number | null;
+    width: number | null;
   }
 
   export interface Parsed {
@@ -40,7 +41,7 @@ export namespace apollo {
     languages: string[];
     audio: string[];
     coding: string[];
-    quality?: string;
+    quality?: Quality;
     date?: Date;
     imdb?: IMDBTitlePartial;
     resolution?: Resolution;
