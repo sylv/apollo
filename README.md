@@ -1,10 +1,10 @@
 # apollo
 
-Apollo is a tool to organise your media library. It's intended to be a faster, more reliable alternative to [FileBot](https://filebot.net). Using the undocumented IMDb search API, we can do fast title searches and get accurate results without having to guess at the title name or depend on slower APIs.
+A tool to organise your media library fastly, using the undocumented IMDb search APi for extremely fast lookups regardless of location without having to download an entire database of media. In most circumstances, this is faster and more reliable than [FileBot](https://filebot.net/) with the drawback of not having nearly as many features.
 
 # installation
 
-_Apollo still has a lot of bugs to iron out. Stick with the default symlinking behaviour and double-check that it moved everything. If you find a problem, please open an issue._
+_there are still lots of bugs to iron out. Stick with the default symlinking behaviour and double-check that it moved everything. If you find a problem, please open an issue._
 
 Requires the current [Node.js](https://nodejs.org/en/) LTS
 
