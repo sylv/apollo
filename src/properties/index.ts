@@ -7,7 +7,7 @@ import { PropertySeasonEpisode } from "./season-episode.property";
 import { PropertySeasons } from "./seasons.property";
 import { PropertyYear } from "./year.property";
 import { PropertyQuality } from "./quality.property";
-import { PropertyCoding } from "./coding.property.ts";
+import { PropertyCoding } from "./coding.property";
 import { PropertyDate } from "./date.property";
 
 export const properties = [

@@ -1,13 +1,13 @@
 {
   "name": "@ryanke/apollo",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Convert your downloaded media files into a structured directory for Plex",
   "main": "./dist/index.js",
+  "types": "dist/index.d.ts",
   "repository": "http://github.com/NotSylver/apollo",
   "author": "Ryan <ryan@sylver.me>",
   "license": "GPL-3.0",
   "private": false,
-  "types": "dist/index.d.ts",
   "keywords": [
     "torrent",
     "parse torrent"
@@ -19,7 +19,8 @@
     "generate": "esno scripts/generate-qualities.ts"
   },
   "files": [
-    "dist"
+    "dist",
+    "src"
   ],
   "bin": {
     "apollo": "dist/cli.js"
