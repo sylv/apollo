@@ -89,3 +89,4 @@ console.log(output);
 - [ ] Customisable output directory structure, instead of the default `Movies/Movie (year)/Movie (year).ext`
 - [ ] Extraction of episode names. Shouldn't be hard with the current title extraction.
 - [ ] Option to preserve file names instead of converting them to a standard format as some programs require the original file names.
+- [ ] Support IMDb datasets for faster and more reliable searches. Relying on an internal API is a bad idea.

@@ -4,7 +4,7 @@ import { cleanFilePath } from "../helpers/cleanFilePath";
 import { cleanRawTitle } from "../helpers/cleanRawTitle";
 import { Logger } from "tslog";
 import { properties } from "../properties/index";
-import { apollo } from "../types";
+import { apollo, FileType } from "../types";
 import { ALL_EXTENSIONS, SUBTITLE_FILE_EXTENSIONS } from "../constants";
 import { getAllMatches } from "../helpers/getAllMatches";
 
@@ -24,7 +24,7 @@ export class ApolloParser {
    */
   public async parse(input: string, parentData?: Partial<apollo.Parsed>): Promise<apollo.Parsed | undefined> {
     const extension = parentData ? parentData.extension : ALL_EXTENSIONS.find((ext) => input.endsWith(ext));
-    const fileType = extension && SUBTITLE_FILE_EXTENSIONS.includes(extension) ? apollo.FileType.SUBTITLE : apollo.FileType.MEDIA;
+    const fileType = extension && SUBTITLE_FILE_EXTENSIONS.includes(extension) ? FileType.SUBTITLE : FileType.MEDIA;
     const data: Partial<apollo.Parsed> = Object.assign({}, parentData, { extension, fileType });
     const inputWithoutExt = extension && input.endsWith(extension) ? input.slice(0, -extension.length) : input;
     const cleanPath = cleanFilePath(inputWithoutExt);

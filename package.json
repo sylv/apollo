@@ -24,6 +24,7 @@
     "apollo": "dist/cli.js"
   },
   "devDependencies": {
+    "@sucrase/jest-plugin": "^2.1.0",
     "@types/fs-extra": "^9.0.10",
     "@types/jest": "^26.0.22",
     "@types/meow": "^5.0.0",
@@ -50,5 +51,11 @@
     "sanitize-filename": "^1.6.3",
     "title-case": "^3.0.3",
     "tslog": "^3.1.2"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "transform": {
+      ".(js|jsx|ts|tsx)": "@sucrase/jest-plugin"
+    }
   }
 }

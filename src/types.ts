@@ -1,12 +1,12 @@
 import { IMDBTitlePartial, IMDBTitleType } from "@ryanke/imdb-api";
 import { Logger } from "tslog";
 
-export namespace apollo {
-  export const enum FileType {
-    MEDIA = "MEDIA",
-    SUBTITLE = "SUBTITLE",
-  }
+export enum FileType {
+  MEDIA = "MEDIA",
+  SUBTITLE = "SUBTITLE",
+}
 
+export namespace apollo {
   export interface Options extends ParserOptions {
     input: string;
     output: string;

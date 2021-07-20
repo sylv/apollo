@@ -1,5 +1,5 @@
 import { IMDBTitleType } from "@ryanke/imdb-api";
-import { apollo, ApolloParser } from "../src";
+import { apollo, ApolloParser, FileType } from "../src";
 
 // todo: we need a test for endYear
 // todo: should add tests for mythbusters because they do "Season 2016" etc
@@ -13,7 +13,7 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
     input: "BigBuckBunny_640x360.m4v",
     output: {
       extension: ".m4v",
-      fileType: apollo.FileType.MEDIA,
+      fileType: FileType.MEDIA,
       audio: [],
       collection: false,
       languages: [],
@@ -29,7 +29,7 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
       "The Simpsons (1989-2018) Seasons 01-29 & Movie [1080p] [Ultimate Batch] [HEVC] [x265] [pseudo]/Season 07/The Simpsons - S07E25 - Summer of 4 Ft 2 [1080p] [x265] [pseudo].mkv",
     output: {
       extension: ".mkv",
-      fileType: apollo.FileType.MEDIA,
+      fileType: FileType.MEDIA,
       audio: [],
       collection: false,
       languages: [],
@@ -51,7 +51,7 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
     input: "Bob's Burgers 2011 SE 1 - 8 Complete Eng Only Burntodisc/SE1/02 Human Flesh.mp4",
     output: {
       extension: ".mp4",
-      fileType: apollo.FileType.MEDIA,
+      fileType: FileType.MEDIA,
       audio: [],
       collection: true,
       languages: [],
@@ -72,7 +72,7 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
       "The Hobbit & The Lord of The Rings Extended Trilogy 1080p 10bit BluRay x265 HEVC MRN/The Lord of The Rings Trilogy Extended Cut 1080p 10bit BluRay x265 HEVC 6CH -MRN/1-Fellowship.of.The.Ring.2001.Extended.Cut.1080p.10bit.BluRay.x265.HEVC.6CH-MRN.mkv",
     output: {
       extension: ".mkv",
-      fileType: apollo.FileType.MEDIA,
+      fileType: FileType.MEDIA,
       audio: ["6ch"],
       collection: false,
       languages: [],
@@ -90,7 +90,7 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
     input: "Z:\\torrents\\completed\\The EXPANSE - Complete Season 3 S03 (2018) - 1080p AMZN Web-DL x264\\The EXPANSE - S03 E11 - Fallen World (1080p - AMZN Web-DL).mp4",
     output: {
       extension: ".mp4",
-      fileType: apollo.FileType.MEDIA,
+      fileType: FileType.MEDIA,
       audio: [],
       collection: false,
       languages: [],
@@ -111,7 +111,7 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
     input: "/mnt/z/torrents/completed/American Dad S01 - S13/Season 13/American Dad! - 13x04 - N.S.A. (No Snoops Allowed).mkv",
     output: {
       extension: ".mkv",
-      fileType: apollo.FileType.MEDIA,
+      fileType: FileType.MEDIA,
       audio: [],
       collection: false,
       languages: [],
@@ -128,7 +128,7 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
     input: "/mnt/z/torrents/completed/American Dad S01 - S13/Season 10/American Dad! - 10x04 - Crotchwalkers.mkv",
     output: {
       extension: ".mkv",
-      fileType: apollo.FileType.MEDIA,
+      fileType: FileType.MEDIA,
       audio: [],
       collection: false,
       languages: [],
@@ -145,7 +145,7 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
     input: "Avatar (TLoK) - S03 E12 - Enter the Void (1080p - BluRay).mp4",
     output: {
       extension: ".mp4",
-      fileType: apollo.FileType.MEDIA,
+      fileType: FileType.MEDIA,
       audio: [],
       collection: false,
       languages: [],
@@ -167,7 +167,7 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
       "Z:\\torrents\\completed\\AVATAR Series (2005-2014) - COMPLETE The Last Airbender, 2010 Movie, Legend of Korra - 1080p BluRay x264\\2. The Legend of Korra (2012-14)\\Book 2a - Republic City Hustle (2013)\\Avatar (TLoK) - Republic City Hustle, Part 3 of 3 (1080p).mp4",
     output: {
       extension: ".mp4",
-      fileType: apollo.FileType.MEDIA,
+      fileType: FileType.MEDIA,
       audio: [],
       collection: false,
       languages: [],
@@ -187,7 +187,7 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
       "AVATAR Series (2005-2014) - COMPLETE The Last Airbender, 2010 Movie, Legend of Korra - 1080p BluRay x264\\2. The Legend of Korra (2012-14)\\Book 4a - Balance (2014)\\Avatar (TLoK) - S04 E10 - Operation Beifong (1080p - BluRay).mp4",
     output: {
       extension: ".mp4",
-      fileType: apollo.FileType.MEDIA,
+      fileType: FileType.MEDIA,
       audio: [],
       collection: false,
       languages: [],
@@ -207,7 +207,7 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
     input: "/mnt/z/torrents/completed/ConAir.1997.720p.BluRay.x264.AC3-RiPRG/ConAir.1997.720p.BluRay.x264.AC3-RiPRG.mkv",
     output: {
       extension: ".mkv",
-      fileType: apollo.FileType.MEDIA,
+      fileType: FileType.MEDIA,
       audio: ["ac3", "ac3"],
       collection: false,
       languages: [],
@@ -227,7 +227,7 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
       "Z:\\torrents\\completed\\The Hunger Games 4 Film Complete Collection 1080p BluRay 5.1Ch x265 HEVC SUJAIDR\\The Hunger Games Mockingjay Part 2 (2015) 1080p BluRay 5.1Ch x265 HEVC SUJAIDR.mkv",
     output: {
       extension: ".mkv",
-      fileType: apollo.FileType.MEDIA,
+      fileType: FileType.MEDIA,
       audio: [],
       collection: false,
       languages: [],
@@ -246,7 +246,7 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
     input: "Z:\\torrents\\completed\\2012 (2009) [1080p]\\2012.2009.BluRay.1080p.x264.YIFY.mp4",
     output: {
       extension: ".mp4",
-      fileType: apollo.FileType.MEDIA,
+      fileType: FileType.MEDIA,
       audio: [],
       collection: false,
       languages: [],
@@ -266,7 +266,7 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
       "Z:\\torrents\\completed\\[TorrentCouch.com].Silicon.Valley.S05.Complete.720p.BRRip.x264.ESubs.[1.6GB].[Season.5.Full]\\[TorrentCouch.com].Silicon.Valley.S05E01.720p.BRRip.x264.ESubs.mkv",
     output: {
       extension: ".mkv",
-      fileType: apollo.FileType.MEDIA,
+      fileType: FileType.MEDIA,
       audio: [],
       collection: false,
       languages: [],
@@ -285,7 +285,7 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
     input: "/mnt/z/torrents/completed/Top Gear UK 1-17/Top Gear - Season 7/Top Gear - [07x06] - 2005.12.27 [GOTHiC].avi",
     output: {
       extension: ".avi",
-      fileType: apollo.FileType.MEDIA,
+      fileType: FileType.MEDIA,
       audio: [],
       collection: false,
       languages: [],
@@ -305,7 +305,7 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
     input: "/mnt/z/torrents/completed/Logan (2017) [1080p] [YTS.AG]/Logan.2017.1080p.BluRay.x264-[YTS.AG].mp4",
     output: {
       extension: ".mp4",
-      fileType: apollo.FileType.MEDIA,
+      fileType: FileType.MEDIA,
       audio: [],
       collection: false,
       languages: [],
@@ -323,7 +323,7 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
     input: "/mnt/z/torrents/completed/Top Gear UK 1-17/Top Gear - Season 10/(auto) Top Gear - 10.07.2008 - [10x01] - [Greatest road in EU].avi",
     output: {
       extension: ".avi",
-      fileType: apollo.FileType.MEDIA,
+      fileType: FileType.MEDIA,
       audio: [],
       collection: false,
       languages: [],
@@ -345,7 +345,7 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
       "/mnt/z/torrents/completed/Love.Death.and.Robots.S01.ITA.ENG.1080p.NF.WEB-DLMux.DD5.1.x264-Morpheus/Love.Death.and.Robots.1x01.Il.Vantaggio.di.Sonnie.ITA.ENG.1080p.NF.WEB-DLMux.DD5.1.x264-Morpheus.mkv",
     output: {
       extension: ".mkv",
-      fileType: apollo.FileType.MEDIA,
+      fileType: FileType.MEDIA,
       audio: ["dd5.1", "dd5.1"],
       collection: false,
       languages: ["ITA", "ENG", "ITA", "ENG"],
@@ -363,7 +363,7 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
     input: "/mnt/z/torrents/completed/Watchmen.S01.COMPLETE.720p.AMZN.WEBRip.x264-GalaxySERIES[TGx]/Watchmen.S01E01.720p.AMZN.WEBRip.x264-GalaxySERIES.mkv",
     output: {
       extension: ".mkv",
-      fileType: apollo.FileType.MEDIA,
+      fileType: FileType.MEDIA,
       audio: [],
       collection: false,
       languages: [],
@@ -382,7 +382,7 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
     input: "/mnt/z/torrents/completed/Top Gear UK 1-17/Top Gear - Season 11/(auto) Top Gear - 2008 - [11x01] - 2008.06.22 [$1k cop car].avi",
     output: {
       extension: ".avi",
-      fileType: apollo.FileType.MEDIA,
+      fileType: FileType.MEDIA,
       audio: [],
       collection: false,
       languages: [],
@@ -402,7 +402,7 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
     input: "/mnt/z/Archer S01e01-10/Archer.1x05.Honeypot.1080p.BDMux.ITA.ENG.Subs.x264-Fratposa.mkv",
     output: {
       extension: ".mkv",
-      fileType: apollo.FileType.MEDIA,
+      fileType: FileType.MEDIA,
       audio: [],
       collection: false,
       languages: ["ITA", "ENG"],
@@ -420,7 +420,7 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
     input: "Se7en.1995.REMASTERED.1080p.BluRay.10bit.HEVC.6CH.MkvCage.ws.mkv",
     output: {
       extension: ".mkv",
-      fileType: apollo.FileType.MEDIA,
+      fileType: FileType.MEDIA,
       audio: ["6ch"],
       collection: false,
       languages: [],
@@ -439,7 +439,7 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
     input: "/home/ryan/clone/Family Guy - Complete H265/Season 17 [1080p x265][MP3 5.1]/Family.Guy.S17E16 [1080p Web x265][MP3 5.1].mp4",
     output: {
       extension: ".mp4",
-      fileType: apollo.FileType.MEDIA,
+      fileType: FileType.MEDIA,
       audio: ["mp3", "5.1"],
       collection: false,
       languages: [],
@@ -458,7 +458,7 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
     input: "Z:\\clone\\www.Torrenting.org       The Mandalorian S01E01 INTERNAL 1080p WEB H264-DEFLATE\\The.Mandalorian.S01E01.INTERNAL.1080p.WEB.H264-DEFLATE.mkv",
     output: {
       extension: ".mkv",
-      fileType: apollo.FileType.MEDIA,
+      fileType: FileType.MEDIA,
       audio: [],
       collection: false,
       languages: [],
@@ -476,7 +476,7 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
     input: "Y:\\completed\\Deadpool 2016 1080p BluRay x264 DTS-JYK\\Subs\\French.srt",
     output: {
       extension: ".srt",
-      fileType: apollo.FileType.SUBTITLE,
+      fileType: FileType.SUBTITLE,
       audio: [],
       collection: false,
       languages: [],
@@ -494,7 +494,7 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
       "The Simpsons (1989-2018) Seasons 01-29 & Movie [1080p] [Ultimate Batch] [HEVC] [x265] [pseudo]/Season 28/The Simpsons - S28E12E13 - The Great Phatsby [1080p] [x265] [pseudo].mkv",
     output: {
       extension: ".mkv",
-      fileType: apollo.FileType.MEDIA,
+      fileType: FileType.MEDIA,
       audio: [],
       collection: false,
       languages: [],
@@ -515,7 +515,7 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
     input: "/mnt/z/completed/Top Gear UK 1-17/Top Gear - Season 16/Top Gear - [16x00] The_Three_Wise_Men_Christmas.avi",
     output: {
       extension: ".avi",
-      fileType: apollo.FileType.MEDIA,
+      fileType: FileType.MEDIA,
       audio: [],
       collection: false,
       languages: [],
@@ -535,7 +535,7 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
       "Y:\\media\\BoJack Horseman (2014) Season 1 S01 + Extras (1080p BluRay x265 HEVC 10bit AAC 5.1 RCVR)\\BoJack Horseman (2014) - S01E02 - BoJack Hates The Troops (1080p BluRay x265 RCVR).mkv",
     output: {
       extension: ".mkv",
-      fileType: apollo.FileType.MEDIA,
+      fileType: FileType.MEDIA,
       audio: ["aac", "5.1"],
       collection: false,
       languages: [],
@@ -563,7 +563,7 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
     input: "/mnt/vtfs/torrents/completed/Peaky_Blinders_S01E01_x265_1080p_BluRay_30nama_30NAMA.mkv",
     output: {
       extension: ".mkv",
-      fileType: apollo.FileType.MEDIA,
+      fileType: FileType.MEDIA,
       audio: [],
       collection: false,
       languages: [],
@@ -582,7 +582,7 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
     input: "/mnt/vtfs/torrents/completed/Trailer Park Boys Season 9 [1080p] [HEVC]/S09E05 The Motel Can't Live at the Motel.mkv",
     output: {
       extension: ".mkv",
-      fileType: apollo.FileType.MEDIA,
+      fileType: FileType.MEDIA,
       audio: [],
       collection: false,
       languages: [],
@@ -600,7 +600,7 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
     input: "/mnt/vtfs/torrents/completed/Trailer.Park.Boys.Season.9.[1080p].[HEVC]/S09E05.The.Motel.Can't.Live.at.the.Motel.mkv",
     output: {
       extension: ".mkv",
-      fileType: apollo.FileType.MEDIA,
+      fileType: FileType.MEDIA,
       audio: [],
       collection: false,
       languages: [],
@@ -623,7 +623,7 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
     input: "The.Walking.Dead.S01-S07.Season.1-7.1080p.10bit.BluRay.5.1.x265.HEVC",
     output: {
       extension: undefined,
-      fileType: apollo.FileType.MEDIA,
+      fileType: FileType.MEDIA,
       audio: ["5.1"],
       collection: true,
       languages: [],
@@ -645,7 +645,7 @@ const tests: Array<{ id: string | undefined; input: string; output: Partial<apol
     input: "Rick and Morty/Season 5/Episode 3.mp4",
     output: {
       extension: ".mp4",
-      fileType: apollo.FileType.MEDIA,
+      fileType: FileType.MEDIA,
       audio: [],
       collection: false,
       languages: [],
