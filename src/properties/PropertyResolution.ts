@@ -2,15 +2,28 @@ import { PART_END_PATTERN, PART_START_PATTERN } from "../constants";
 import { ApolloParser } from "../classes/ApolloParser";
 import { Property } from "./Property";
 
-const PROPERTY_PATTERN = `${PART_START_PATTERN}([0-9]{3,4})(?:p)${PART_END_PATTERN}`;
-const PROPERTY_REGEX = new RegExp(PROPERTY_PATTERN, "gi");
+// 1080p
+const HEIGHT_PATTERN = `${PART_START_PATTERN}(?<height>[0-9]{3,4})(?:p)${PART_END_PATTERN}`;
+const HEIGHT_REGEX = new RegExp(HEIGHT_PATTERN, "gi");
+// 640x360
+const WIDTH_HEIGHT_PATTERN = `${PART_START_PATTERN}(?<width>[0-9]{3,})x(?<height>[0-9]{3,})${PART_END_PATTERN}`;
+const WIDTH_HEIGHT_REGEX = new RegExp(WIDTH_HEIGHT_PATTERN, "gi");
+
+const RESOLUTION_REGEX = [HEIGHT_REGEX, WIDTH_HEIGHT_REGEX];
 
 export class PropertyResolution extends Property<"resolution"> {
   readonly key = "resolution";
 
   extract(cleanPath: string, parser: ApolloParser) {
-    const match = parser.getMatch(cleanPath, PROPERTY_REGEX, false);
-    if (!match) return;
-    return +match[1];
+    for (const regex of RESOLUTION_REGEX) {
+      const match = parser.getMatch(cleanPath, regex, false);
+      if (match) {
+        const { width, height } = match.groups!;
+        return {
+          width: width ? +width : undefined,
+          height: height ? +height : undefined,
+        };
+      }
+    }
   }
 }

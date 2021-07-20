@@ -1,6 +1,6 @@
 # apollo
 
-Apollo is a tool to organise your media library. It's intended to be a faster, more reliable alternative to [FileBot](https://filebot.net). Using the undocumented IMDb search API, we can do fast title searches and get accurate results without having to guess at the title name or depend on slower APIs. 
+Apollo is a tool to organise your media library. It's intended to be a faster, more reliable alternative to [FileBot](https://filebot.net). Using the undocumented IMDb search API, we can do fast title searches and get accurate results without having to guess at the title name or depend on slower APIs.
 
 # installation
 
@@ -31,23 +31,20 @@ yarn add @ryanke/apollo
 ```
 
 ```ts
-import { ApolloParser } from '@ryanke/apollo';
+import { ApolloParser } from "@ryanke/apollo";
 
-const parsed = []
-const input = [
-    'The.Walking.Dead.S01-S07.Season.1-7.1080p.10bit.BluRay.5.1.x265.HEVC', 
-    "Bob's Burgers 2011 SE 1 - 8 Complete WEBRIP/SE1/09 Spaghetti Western and Meatballs.mp4"
-]
+const parsed = [];
+const input = ["The.Walking.Dead.S01-S07.Season.1-7.1080p.10bit.BluRay.5.1.x265.HEVC", "Bob's Burgers 2011 SE 1 - 8 Complete WEBRIP/SE1/09 Spaghetti Western and Meatballs.mp4"];
 
 for (const title of input) {
-    // creating a new instance of the parser on each run is important
-    // there is match data attached to the parser instance once you run .parse()
-    const parser = new ApolloParser()
-    const output = await parser.parse(title)
-    parsed.push(output)
+  // creating a new instance of the parser on each run is important
+  // there is match data attached to the parser instance once you run .parse()
+  const parser = new ApolloParser();
+  const output = await parser.parse(title);
+  parsed.push(output);
 }
 
-console.log(output)
+console.log(output);
 
 // The output of the above script will look similar to this
 // [{
@@ -55,7 +52,7 @@ console.log(output)
 //     audio: [ '5.1' ],
 //     collection: true,
 //     languages: [],
-//     resolution: 1080,
+//     resolution: { height: 1080 },
 //     seasons: [
 //         1, 2, 3, 4,
 //         5, 6, 7
@@ -91,3 +88,4 @@ console.log(output)
 - [ ] Directories with multiple subtitles in different languages for the same file like `movie.mp4`, `movie.eng.sub`, `movie.rus.sub` aren't handled correctly and will move the subtitle file we first see as `movie.sub` and leave the rest behind. We could handle this by using something like the `languagedetect` library on the subtitles, as well as trying to extract a title code from the file.
 - [ ] Customisable output directory structure, instead of the default `Movies/Movie (year)/Movie (year).ext`
 - [ ] Extraction of episode names. Shouldn't be hard with the current title extraction.
+- [ ] Option to preserve file names instead of converting them to a standard format as some programs require the original file names.

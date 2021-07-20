@@ -10,12 +10,16 @@ const PREFIX_REGEX = /^ ?(\[|\]|\(|\)|[0-9]-|-|\/)/g;
 const SUFFIX_REGEX = /(\[|\]|\(|\)|-|\.|\/) ?$/g;
 const SPECIAL_CHARACTER_REGEX = /^[\W ]+$/;
 
+// matches after each "B" in "BigBuckBunny" so we can separate
+// each title part, while not matching "O" in "IO"
+const UPPERCASE_CHAR_REGEX = /(?=[A-Z])(?<=[^A-Z])/g;
+
 /**
  * strip information that was incorrectly included in a title.
  * @example "(auto) Infinity War Movie 1 (" -> "Infinity War"
  */
 export function cleanRawTitle(title: string) {
-  const clean = title
+  let clean = title
     // remove tags like [1080p]
     .replace(TITLE_TAG_REGEX, " ")
     // remove release group suffixes like -QxR
@@ -31,6 +35,11 @@ export function cleanRawTitle(title: string) {
     .replace(PREFIX_REGEX, "")
     .replace(SUFFIX_REGEX, "")
     .trim();
+
+  if (!clean.includes(" ")) {
+    // "BigBuckBunny" > "Big Buck Bunny"
+    clean = clean.replace(UPPERCASE_CHAR_REGEX, " ");
+  }
 
   // if after cleaning the title is empty or is in IGNORE, it's useless
   if (!clean || IGNORE_TITLES.has(clean.toLowerCase())) return;

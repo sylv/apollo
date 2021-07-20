@@ -20,9 +20,13 @@ export namespace apollo {
     disableLookup?: boolean;
   }
 
+  export interface Resolution {
+    height?: number;
+    width?: number;
+  }
+
   export interface Parsed {
     title?: string;
-    resolution?: number;
     type?: IMDBTitleType;
     fileType: FileType;
     collection: boolean;
@@ -39,5 +43,6 @@ export namespace apollo {
     quality?: string;
     date?: Date;
     imdb?: IMDBTitlePartial;
+    resolution?: Resolution;
   }
 }
