@@ -7,14 +7,14 @@ import { getAllMatches } from "../helpers/getAllMatches";
 const SEASON_EPISODE_PATTERNS = [
   // matches "1x1"
   // not "1x1t", "1x1-1x2"
-  new RegExp(`${PART_START_PATTERN}(?<season>[0-9]{1,2})x(?<episode>[0-9]{1,2})${PART_END_PATTERN}`, "gi"),
+  new RegExp(`${PART_START_PATTERN}(?<season>[0-9]{1,4})x(?<episode>[0-9]{1,2})${PART_END_PATTERN}`, "gi"),
   // matches "Season 1 Episode 02", "Season 01"
-  new RegExp(`${PART_START_PATTERN}Season.(?<season>[0-9]{1,2})(?:.Episode.(?<episode>[0-9]{1,2}))?${PART_END_PATTERN}`, "gi"),
+  new RegExp(`${PART_START_PATTERN}Season.(?<season>[0-9]{1,4})(?:.Episode.(?<episode>[0-9]{1,2}))?${PART_END_PATTERN}`, "gi"),
   // matches "SE1/01"
-  new RegExp(`${PART_START_PATTERN}(?:SE|S)(?<season>[0-9]{1,2})\\/(?<episode>[0-9]{1,2})${PART_END_PATTERN}`, "gi"),
+  new RegExp(`${PART_START_PATTERN}(?:SE|S)(?<season>[0-9]{1,4})\\/(?<episode>[0-9]{1,2})${PART_END_PATTERN}`, "gi"),
   // matches "SE01E01", "S01E01", "S01 E01", "S01"
   // not "Se7en" or "S01e01-10"
-  new RegExp(`${PART_START_PATTERN}(?:SE|S)(?<season>[0-9]{1,2})${SPACE_REGEX}?(?<episode>(?:(?:EP|E)[0-9]{1,2})+)?${PART_END_PATTERN}`, "gi"),
+  new RegExp(`${PART_START_PATTERN}(?:SE|S)(?<season>[0-9]{1,4})${SPACE_REGEX}?(?<episode>(?:(?:EP|E)[0-9]{1,2})+)?${PART_END_PATTERN}`, "gi"),
   // matches "Part 3 of 3" if we're really desparate
   new RegExp(`${PART_START_PATTERN}Part (?<episode>[0-9]) of [0-9]${PART_END_PATTERN}`, "gi"),
 ];

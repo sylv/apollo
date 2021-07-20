@@ -1,9 +1,31 @@
+/* cSpell:disable */
 import { IMDBTitleType } from "@ryanke/imdb-api";
 import { apollo, ApolloParser, FileType, Quality } from "../src";
 
-/* cSpell:disable */
-// todo: should add tests for MythBusters because they do "Season 2016" etc
 const tests: Array<{ id: string | undefined; input: string; output: Partial<apollo.Parsed> | undefined }> = [
+  {
+    // "S2003" is a straight up weird format for season numbers.
+    // todo: we should be able to interpret "DD+2.0" as an audio format.
+    id: "tt0383126",
+    input: "Mythbusters.S2003.576p.PAL.AUS.AMZN.WEB-DL.DD+2.0.H.264-SmartIdiot",
+    output: {
+      title: "MythBusters",
+      seasonNumber: 2003,
+      episodeNumber: undefined,
+      languages: [],
+      audio: [],
+      collection: false,
+      extension: undefined,
+      fileType: FileType.MEDIA,
+      quality: Quality.WEB_DL,
+      coding: ["H264"],
+      type: IMDBTitleType.SERIES,
+      resolution: {
+        width: null,
+        height: 576,
+      },
+    },
+  },
   {
     // "m4v" isn't a common extension
     // there are no IMDb search results for this title, meaning we cant rely on it for more info
