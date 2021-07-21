@@ -75,7 +75,7 @@ async function main() {
   }
 
   if (!hasSufficientPermissions && !cli.flags.move) {
-    log.error(`Administrator privileges are required to use symlinks on Windows. Alternatively, try with --move.`);
+    log.error(`Administrator privileges are required to use symlinks on Windows.`);
     process.exit(1);
   }
 

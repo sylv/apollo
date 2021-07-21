@@ -1,8 +1,8 @@
-import { apollo } from "../types";
 import { Property } from "./property";
 import { ApolloParser } from "../classes/apollo-parser";
 import { PART_END_PATTERN, PART_START_PATTERN, SPACE_REGEX } from "../constants";
 import { getAllMatches } from "../helpers/get-all-matches";
+import { ApolloOutput } from "../types";
 
 const SEASON_EPISODE_PATTERNS = [
   // matches "1x1"
@@ -20,7 +20,7 @@ const SEASON_EPISODE_PATTERNS = [
 ];
 
 export class PropertySeasonEpisode extends Property<"episodes" | "seasons"> {
-  write(cleanPath: string, parsed: Partial<apollo.Parsed>, parser: ApolloParser) {
+  write(cleanPath: string, parsed: Partial<ApolloOutput>, parser: ApolloParser) {
     let seasonNumber: number | undefined;
     let episodes: number[] = [];
 

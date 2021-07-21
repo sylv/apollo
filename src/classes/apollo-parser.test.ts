@@ -1,10 +1,16 @@
 /* cSpell:disable */
 import { TitleType } from "@ryanke/imdb-api";
 import { Quality } from "../data/qualities.data";
-import { apollo, FileType } from "../types";
+import { ApolloOutput, FileType } from "../types";
 import { ApolloParser } from "./apollo-parser";
 
-const tests: Array<{ id: string | undefined; input: string; output: Partial<apollo.Parsed> | undefined }> = [
+interface ApolloTest {
+  id: string | undefined;
+  input: string;
+  output: Partial<ApolloOutput> | undefined;
+}
+
+const tests: Array<ApolloTest> = [
   {
     // "S2003" is a straight up weird format for season numbers.
     // todo: we should be able to interpret "DD+2.0" as an audio format.

@@ -1,11 +1,11 @@
 import { ApolloParser } from "../classes/apollo-parser";
-import { apollo } from "../types";
+import { ApolloOutput } from "../types";
 
-export abstract class Property<Key extends keyof apollo.Parsed> {
+export abstract class Property<Key extends keyof ApolloOutput> {
   readonly key?: Key;
 
-  extract?(cleanPath: string, parser: ApolloParser): apollo.Parsed[Key] | undefined;
-  write(cleanPath: string, data: Partial<apollo.Parsed>, parser: ApolloParser): Partial<apollo.Parsed> {
+  extract?(cleanPath: string, parser: ApolloParser): ApolloOutput[Key] | undefined;
+  write(cleanPath: string, data: Partial<ApolloOutput>, parser: ApolloParser): Partial<ApolloOutput> {
     if (!this.key) throw new Error(`Missing "key" on ${this.constructor.name}`);
     if (!this.extract) throw new Error(`Missing "extract" on ${this.constructor.name} with default "write"`);
     const output = this.extract(cleanPath, parser);

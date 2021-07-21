@@ -1,19 +1,23 @@
-import { SearchResult, TitleType, search } from "@ryanke/imdb-api";
+import { search, SearchResult, TitleType } from "@ryanke/imdb-api";
 import mem from "mem";
+import { ALL_EXTENSIONS, SUBTITLE_FILE_EXTENSIONS } from "../constants";
 import { cleanFilePath } from "../helpers/clean-file-path";
 import { cleanRawTitle } from "../helpers/clean-raw-title";
-import { Logger } from "tslog";
-import { apollo, FileType } from "../types";
-import { ALL_EXTENSIONS, SUBTITLE_FILE_EXTENSIONS } from "../constants";
 import { getAllMatches } from "../helpers/get-all-matches";
 import { properties } from "../properties";
+import { ApolloLogger, ApolloOutput, ApolloParserOptions, FileType } from "../types";
+
+export interface ApolloMatch {
+  start: number;
+  end: number;
+}
 
 export class ApolloParser {
-  protected matchIndexes: { start: number; end: number }[] = [];
   protected search = mem(search);
-  protected log?: Logger;
-  readonly options: apollo.ParserOptions;
-  constructor(options: apollo.ParserOptions = {}) {
+  protected log?: ApolloLogger;
+  readonly matchIndexes: ApolloMatch[] = [];
+  readonly options: ApolloParserOptions;
+  constructor(options: ApolloParserOptions = {}) {
     this.options = options;
     this.log = this.options.logger;
   }
@@ -21,10 +25,10 @@ export class ApolloParser {
   /**
    * Parse a torrent name or complete path.
    */
-  public async parse(input: string, parentData?: Partial<apollo.Parsed>): Promise<apollo.Parsed | undefined> {
+  public async parse(input: string, parentData?: Partial<ApolloOutput>): Promise<ApolloOutput | undefined> {
     const extension = parentData ? parentData.extension : ALL_EXTENSIONS.find((ext) => input.endsWith(ext));
     const fileType = extension && SUBTITLE_FILE_EXTENSIONS.includes(extension) ? FileType.SUBTITLE : FileType.MEDIA;
-    const data: Partial<apollo.Parsed> = Object.assign({}, parentData, { extension, fileType });
+    const data: Partial<ApolloOutput> = Object.assign({}, parentData, { extension, fileType });
     const inputWithoutExt = extension && input.endsWith(extension) ? input.slice(0, -extension.length) : input;
     const cleanPath = cleanFilePath(inputWithoutExt);
     if (!cleanPath) {
@@ -68,13 +72,13 @@ export class ApolloParser {
       }
     }
 
-    return data as apollo.Parsed;
+    return data as ApolloOutput;
   }
 
   /**
    * Run property parsers in the properties/ directory and add the extracted data to the provided data object.
    */
-  protected parseProperties(cleanPath: string, data: Partial<apollo.Parsed>) {
+  protected parseProperties(cleanPath: string, data: Partial<ApolloOutput>) {
     for (const property of properties) property.write(cleanPath, data, this);
     return data;
   }
@@ -83,7 +87,7 @@ export class ApolloParser {
    * Parse the type of title based on extracted properties.
    * data.type will be undefined if the type is unclear.
    */
-  protected parseType(data: Partial<apollo.Parsed>) {
+  protected parseType(data: Partial<ApolloOutput>) {
     if (data.episodeNumber?.length) data.type = TitleType.EPISODE;
     else if (data.seasons?.length || data.episodes?.length || data.seasonNumber !== undefined) data.type = TitleType.SERIES;
     else if (data.startYear && !data.endYear) data.type = TitleType.MOVIE;
@@ -167,7 +171,7 @@ export class ApolloParser {
    * Get the best search result for the given title.
    * For episodes we will look up the series title, TitleType.EPISODE is aliased to TitleType.SERIES.
    */
-  protected async getIMDBResult(data: Partial<apollo.Parsed>): Promise<SearchResult | undefined> {
+  protected async getIMDBResult(data: Partial<ApolloOutput>): Promise<SearchResult | undefined> {
     if (!data.title) throw new Error('Missing "data.title"');
     if (data.type === undefined) {
       this.log?.debug(`Cannot search without resolved title type.`);

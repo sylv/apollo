@@ -2,18 +2,17 @@ import fs from "fs-extra";
 import path from "path";
 import rrdir from "rrdir";
 import sanitize from "sanitize-filename";
-import { Logger } from "tslog";
 import { SUBTITLE_FILE_EXTENSIONS } from "../constants";
+import { ApolloLogger, ApolloOptions, ApolloOutput } from "../types";
 import { ApolloParser } from "./apollo-parser";
-import { apollo } from "../types";
 
 export class Apollo {
-  protected readonly options: apollo.Options;
-  protected readonly log?: Logger;
+  protected readonly options: ApolloOptions;
+  protected readonly log?: ApolloLogger;
   protected createdDirectories = new Set();
   protected handledFiles = new Set();
 
-  constructor(options: apollo.Options) {
+  constructor(options: ApolloOptions) {
     this.options = options;
     this.log = options.logger;
     if (this.options.disableLookup) {
@@ -87,7 +86,7 @@ export class Apollo {
   /**
    * Get the path a parsed title should be outputted to.
    */
-  protected getFileOutputPath(parsed: apollo.Parsed) {
+  protected getFileOutputPath(parsed: ApolloOutput) {
     if (!parsed.title) throw new Error(`Missing title on input`);
     const title = sanitize(parsed.title);
     let outputPath: string;

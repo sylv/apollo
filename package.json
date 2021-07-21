@@ -1,6 +1,6 @@
 {
   "name": "@ryanke/apollo",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "Convert your downloaded media files into a structured directory for Plex",
   "license": "GPL-3.0",
   "author": "Ryan <ryan@sylver.me>",
