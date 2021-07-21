@@ -1,4 +1,4 @@
-import { IMDBTitlePartial, IMDBTitleType } from "@ryanke/imdb-api";
+import { SearchResult, TitleType } from "@ryanke/imdb-api";
 import { Logger } from "tslog";
 import { Quality } from "./data/qualities.data";
 
@@ -28,7 +28,7 @@ export namespace apollo {
 
   export interface Parsed {
     title?: string;
-    type?: IMDBTitleType;
+    type?: TitleType;
     fileType: FileType;
     collection: boolean;
     seasonNumber?: number;
@@ -43,7 +43,7 @@ export namespace apollo {
     coding: string[];
     quality?: Quality;
     date?: Date;
-    imdb?: IMDBTitlePartial;
+    imdb?: SearchResult;
     resolution?: Resolution;
   }
 }

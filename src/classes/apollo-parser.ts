@@ -1,4 +1,4 @@
-import { IMDB, IMDBTitlePartial, IMDBTitleType } from "@ryanke/imdb-api";
+import { SearchResult, TitleType, search } from "@ryanke/imdb-api";
 import mem from "mem";
 import { cleanFilePath } from "../helpers/clean-file-path";
 import { cleanRawTitle } from "../helpers/clean-raw-title";
@@ -10,8 +10,7 @@ import { properties } from "../properties";
 
 export class ApolloParser {
   protected matchIndexes: { start: number; end: number }[] = [];
-  protected imdb = new IMDB();
-  protected search = mem(this.imdb.search);
+  protected search = mem(search);
   protected log?: Logger;
   readonly options: apollo.ParserOptions;
   constructor(options: apollo.ParserOptions = {}) {
@@ -61,7 +60,7 @@ export class ApolloParser {
     if (data.title && !this.options.disableLookup) {
       const result = await this.getIMDBResult(data);
       if (result) {
-        this.log?.debug(`Resolved "${data.title}" to "${result.name}" ${result.link}`);
+        this.log?.debug(`Resolved "${data.title}" to "${result.name}" https://imdb.com/title/${result.id}`);
         data.title = result.name;
         data.imdb = result;
       } else {
@@ -85,9 +84,9 @@ export class ApolloParser {
    * data.type will be undefined if the type is unclear.
    */
   protected parseType(data: Partial<apollo.Parsed>) {
-    if (data.episodeNumber?.length) data.type = IMDBTitleType.EPISODE;
-    else if (data.seasons?.length || data.episodes?.length || data.seasonNumber !== undefined) data.type = IMDBTitleType.SERIES;
-    else if (data.startYear && !data.endYear) data.type = IMDBTitleType.MOVIE;
+    if (data.episodeNumber?.length) data.type = TitleType.EPISODE;
+    else if (data.seasons?.length || data.episodes?.length || data.seasonNumber !== undefined) data.type = TitleType.SERIES;
+    else if (data.startYear && !data.endYear) data.type = TitleType.MOVIE;
     else this.log?.debug(`Cannot resolve title type based on parsed properties.`);
   }
 
@@ -95,7 +94,7 @@ export class ApolloParser {
    * Try extract the title from the cleaned file path.
    * This basically works by finding the longest string between matches,
    * so we have to match as much data as possible for accurate title extraction.
-   * it will also try extact an episode name.
+   * it will also try extract an episode name.
    */
   protected extractTitleFromPath(cleanPath: string): string | undefined {
     let previous = 0;
@@ -133,7 +132,7 @@ export class ApolloParser {
   }
 
   /**
-   * Get a match from a string. This automatically handles pushiung to this.matchIndexes and
+   * Get a match from a string. This automatically handles pushing to this.matchIndexes and
    * multiple matches for you and most of the time should be preferred over string.match or RegExp.exec.
    */
   public getMatch(target: string, pattern: RegExp, returnAll: true): RegExpExecArray[];
@@ -166,9 +165,9 @@ export class ApolloParser {
 
   /**
    * Get the best search result for the given title.
-   * For episodes we will look up the series title, IMDBTitleType.EPISODE is aliased to IMDBTitleType.SERIES.
+   * For episodes we will look up the series title, TitleType.EPISODE is aliased to TitleType.SERIES.
    */
-  protected async getIMDBResult(data: Partial<apollo.Parsed>): Promise<IMDBTitlePartial | undefined> {
+  protected async getIMDBResult(data: Partial<apollo.Parsed>): Promise<SearchResult | undefined> {
     if (!data.title) throw new Error('Missing "data.title"');
     if (data.type === undefined) {
       this.log?.debug(`Cannot search without resolved title type.`);
@@ -177,13 +176,13 @@ export class ApolloParser {
 
     this.log?.debug(`Searching IMDb for "${data.title}"`);
     const results = await this.search(data.title);
-    const filtered: IMDBTitlePartial[] = [];
-    const expectType = data.type === IMDBTitleType.EPISODE ? IMDBTitleType.SERIES : data.type;
+    const filtered: SearchResult[] = [];
+    const expectType = data.type === TitleType.EPISODE ? TitleType.SERIES : data.type;
     for (const result of results) {
       // ignore titles that don't match the expected type
       if (expectType !== result.type) continue;
       // ignore movies that don't match the extracted year (if any)
-      if (data.type === IMDBTitleType.MOVIE && data.startYear && result.year && result.year !== data.startYear) continue;
+      if (data.type === TitleType.MOVIE && data.startYear && result.year && result.year !== data.startYear) continue;
       // imdb tends to return random results with extremely long names
       // when it has no clue what you're after. this avoids those results.
       // its *3 because *2 might not match "the fellowship of the ring" to "the lord of the rings: the fellowship of the ring"
