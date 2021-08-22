@@ -1,6 +1,6 @@
 # apollo
 
-A tool to organise your media library fastly, using the undocumented IMDb search APi for extremely fast lookups regardless of location without having to download an entire database of media. In most circumstances, this is faster and more reliable than [FileBot](https://filebot.net/) with the drawback of not having nearly as many features.
+A tool to organise your media library fastly, using the undocumented IMDb search API for extremely fast lookups regardless of location without having to download an entire database of media. In most circumstances, this is faster and more reliable than [FileBot](https://filebot.net/) with the drawback of not having nearly as many features.
 
 # installation
 
