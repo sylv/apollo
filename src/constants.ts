@@ -3,6 +3,7 @@
 export const PART_START_PATTERN = "(?<=^|\\W|\\/)";
 export const PART_END_PATTERN = "(?=$|\\W|\\/)";
 export const SPACE_REGEX = "(?:\\.| )";
-export const SUPPORTED_MEDIA_EXTENSIONS = [".mp4", ".m4v", ".3gp", ".mkv", ".mov", ".wmv", ".ogg", ".flv", ".avi", ".hdv", ".webm"];
-export const SUBTITLE_FILE_EXTENSIONS = [".srt", ".sub"];
-export const ALL_EXTENSIONS = [...SUPPORTED_MEDIA_EXTENSIONS, ...SUBTITLE_FILE_EXTENSIONS];
+
+export const VIDEO_EXTENSIONS = [".mp4", ".m4v", ".3gp", ".mkv", ".mov", ".wmv", ".ogg", ".flv", ".avi", ".hdv", ".webm"];
+export const IMAGE_EXTENSIONS = [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".webp"];
+export const SUBTITLE_EXTENSIONS = [".srt", ".sub"];

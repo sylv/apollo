@@ -1,6 +1,6 @@
 import { search, SearchResult, TitleType } from "@ryanke/imdb-api";
 import mem from "mem";
-import { ALL_EXTENSIONS, SUBTITLE_FILE_EXTENSIONS } from "../constants";
+import { IMAGE_EXTENSIONS, SUBTITLE_EXTENSIONS, VIDEO_EXTENSIONS } from "../constants";
 import { cleanFilePath } from "../helpers/clean-file-path";
 import { cleanRawTitle } from "../helpers/clean-raw-title";
 import { getAllMatches } from "../helpers/get-all-matches";
@@ -24,10 +24,12 @@ export class ApolloParser {
 
   /**
    * Parse a torrent name or complete path.
+   * @param parentData internal
    */
   public async parse(input: string, parentData?: Partial<ApolloOutput>): Promise<ApolloOutput | undefined> {
-    const extension = parentData ? parentData.extension : ALL_EXTENSIONS.find((ext) => input.endsWith(ext));
-    const fileType = extension && SUBTITLE_FILE_EXTENSIONS.includes(extension) ? FileType.SUBTITLE : FileType.MEDIA;
+    const extractedExt = this.getExtensionAndFileType(input);
+    const extension = parentData?.extension ?? extractedExt?.extension;
+    const fileType = extractedExt?.fileType;
     const data: Partial<ApolloOutput> = Object.assign({}, parentData, { extension, fileType });
     const inputWithoutExt = extension && input.endsWith(extension) ? input.slice(0, -extension.length) : input;
     const cleanPath = cleanFilePath(inputWithoutExt);
@@ -39,7 +41,7 @@ export class ApolloParser {
     }
 
     this.parseProperties(cleanPath, data);
-    this.parseType(data);
+    this.parseTitleType(data);
 
     // with collections, the top-most title might be for the whole series.
     // trusting the file name alone is more reliable, though will mean we get less information overall.
@@ -87,11 +89,17 @@ export class ApolloParser {
    * Parse the type of title based on extracted properties.
    * data.type will be undefined if the type is unclear.
    */
-  protected parseType(data: Partial<ApolloOutput>) {
-    if (data.episodeNumber?.length) data.type = TitleType.EPISODE;
-    else if (data.seasons?.length || data.episodes?.length || data.seasonNumber !== undefined) data.type = TitleType.SERIES;
-    else if (data.startYear && !data.endYear) data.type = TitleType.MOVIE;
-    else this.log?.debug(`Cannot resolve title type based on parsed properties.`);
+  protected parseTitleType(data: Partial<ApolloOutput>) {
+    if (data.episodeNumber?.length) data.titleType = TitleType.EPISODE;
+    else if (data.seasons?.length || data.episodes?.length || data.seasonNumber !== undefined) data.titleType = TitleType.SERIES;
+    else if (data.startYear && !data.endYear) data.titleType = TitleType.MOVIE;
+    else {
+      this.log?.debug(`Cannot resolve title type based on parsed properties.`);
+    }
+
+    if (data.titleType !== undefined && !data.fileType) {
+      data.fileType = FileType.Video;
+    }
   }
 
   /**
@@ -173,7 +181,7 @@ export class ApolloParser {
    */
   protected async getIMDBResult(data: Partial<ApolloOutput>): Promise<SearchResult | undefined> {
     if (!data.title) throw new Error('Missing "data.title"');
-    if (data.type === undefined) {
+    if (data.titleType === undefined) {
       this.log?.debug(`Cannot search without resolved title type.`);
       return;
     }
@@ -181,12 +189,12 @@ export class ApolloParser {
     this.log?.debug(`Searching IMDb for "${data.title}"`);
     const results = await this.search(data.title);
     const filtered: SearchResult[] = [];
-    const expectType = data.type === TitleType.EPISODE ? TitleType.SERIES : data.type;
+    const expectType = data.titleType === TitleType.EPISODE ? TitleType.SERIES : data.titleType;
     for (const result of results) {
       // ignore titles that don't match the expected type
       if (expectType !== result.type) continue;
       // ignore movies that don't match the extracted year (if any)
-      if (data.type === TitleType.MOVIE && data.startYear && result.year && result.year !== data.startYear) continue;
+      if (data.titleType === TitleType.MOVIE && data.startYear && result.year && result.year !== data.startYear) continue;
       // imdb tends to return random results with extremely long names
       // when it has no clue what you're after. this avoids those results.
       // its *3 because *2 might not match "the fellowship of the ring" to "the lord of the rings: the fellowship of the ring"
@@ -206,5 +214,23 @@ export class ApolloParser {
     }
 
     return filtered.shift();
+  }
+
+  private getExtensionAndFileType(input: string): { extension: string; fileType: FileType } | undefined {
+    const haystack = input.toLowerCase();
+    const videoExtension = VIDEO_EXTENSIONS.find((ext) => haystack.endsWith(ext));
+    if (videoExtension) {
+      return { extension: videoExtension, fileType: FileType.Video };
+    }
+
+    const imageExtension = IMAGE_EXTENSIONS.find((ext) => haystack.endsWith(ext));
+    if (imageExtension) {
+      return { extension: imageExtension, fileType: FileType.Image };
+    }
+
+    const subtitleExtension = SUBTITLE_EXTENSIONS.find((ext) => haystack.endsWith(ext));
+    if (subtitleExtension) {
+      return { extension: subtitleExtension, fileType: FileType.Subtitle };
+    }
   }
 }

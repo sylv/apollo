@@ -1,7 +1,7 @@
 {
   "name": "@ryanke/apollo",
-  "version": "0.2.7",
-  "description": "Convert your downloaded media files into a structured directory for Plex",
+  "version": "0.2.8",
+  "description": "File name parser",
   "license": "GPL-3.0",
   "author": "Ryan <ryan@sylver.me>",
   "repository": "http://github.com/NotSylver/apollo",
@@ -10,7 +10,9 @@
   "types": "dist/index.d.ts",
   "keywords": [
     "torrent",
-    "parse torrent"
+    "parse torrent",
+    "parse filename",
+    "parser"
   ],
   "scripts": {
     "test": "jest",
@@ -47,7 +49,7 @@
     "typescript": "^4.2.3"
   },
   "dependencies": {
-    "@ryanke/imdb-api": "^0.0.11",
+    "@ryanke/imdb-api": "^0.0.12",
     "fs-extra": "^9.1.0",
     "is-admin": "^3.0.0",
     "mem": "^8.1.0",

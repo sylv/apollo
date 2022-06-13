@@ -1,6 +1,6 @@
 # apollo
 
-A tool to organise your media library fastly, using the undocumented IMDb search APi for extremely fast lookups regardless of location without having to download an entire database of media. In most circumstances, this is faster and more reliable than [FileBot](https://filebot.net/) with the drawback of not having nearly as many features.
+A library to parse file names into structured data. Optionally it can rename files like [filebot](https://www.filebot.net/).
 
 # installation
 
@@ -17,8 +17,8 @@ npm install -g @ryanke/apollo
 ```bash
 # list options
 apollo --help
-# scan ./torrents and create symlinks to media in ./library
-apollo ./torrents ./library
+# scan ./downloads and create symlinks to media in ./library
+apollo ./downloads ./library
 ```
 
 ## programmatic

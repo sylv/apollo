@@ -2,7 +2,7 @@ import fs from "fs-extra";
 import path from "path";
 import rrdir from "rrdir";
 import sanitize from "sanitize-filename";
-import { SUBTITLE_FILE_EXTENSIONS } from "../constants";
+import { SUBTITLE_EXTENSIONS } from "../constants";
 import { ApolloLogger, ApolloOptions, ApolloOutput } from "../types";
 import { ApolloParser } from "./apollo-parser";
 
@@ -29,7 +29,7 @@ export class Apollo {
 
     for await (const file of rrdir(this.options.input, { stats: true })) {
       if (file.directory) continue;
-      const isSubtitle = SUBTITLE_FILE_EXTENSIONS.some((ext) => file.path.endsWith(ext));
+      const isSubtitle = SUBTITLE_EXTENSIONS.some((ext) => file.path.endsWith(ext));
       if (!isSubtitle && file.stats!.size < this.options.minSize) {
         this.log?.debug(`Skipping "${file.path}" as it is too small and not a subtitle file`);
         continue;
@@ -67,16 +67,16 @@ export class Apollo {
         this.log?.info(`${action} "${file.path}" -> "${output.path}"`);
         this.handledFiles.add(output.path);
         newCount += 1;
-      } catch (e) {
-        if (e.code === "EPERM") {
+      } catch (error: any) {
+        if (error.code === "EPERM") {
           this.log?.error(`EPERM: permission error ${action} "${file.path}" -> "${output.path}".`);
           return process.exit(1);
-        } else if (e.code === "EEXIST") {
+        } else if (error.code === "EEXIST") {
           this.log?.debug(`Failed ${action} "${output.path}" as the destination already exists.`);
           continue;
         }
 
-        throw e;
+        throw error;
       }
     }
 

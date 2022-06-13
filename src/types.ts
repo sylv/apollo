@@ -1,9 +1,11 @@
 import { search, SearchResult, TitleType } from "@ryanke/imdb-api";
 import { Quality } from "./data/qualities.data";
+import { IdType } from "./properties/ids.property";
 
 export enum FileType {
-  MEDIA = "MEDIA",
-  SUBTITLE = "SUBTITLE",
+  Video = "VIDEO",
+  Image = "IMAGE",
+  Subtitle = "SUBTITLE",
 }
 
 export interface ApolloOptions extends ApolloParserOptions {
@@ -29,7 +31,7 @@ export interface ApolloLogger {
 
 export interface ApolloOutput {
   title?: string;
-  type?: TitleType;
+  titleType?: TitleType;
   fileType: FileType;
   collection: boolean;
   seasonNumber?: number;
@@ -45,6 +47,8 @@ export interface ApolloOutput {
   quality?: Quality;
   date?: Date;
   imdb?: SearchResult;
+  index?: number;
+  ids?: { type: IdType; id: string }[];
   resolution?: ApolloOutputResolution;
 }
 
