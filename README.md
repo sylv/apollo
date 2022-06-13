@@ -1,6 +1,6 @@
 # apollo
 
-A library to parse file names into structured data. Optionally it can rename files like [filebot](https://www.filebot.net/).
+A library to parse file names into structured data, optionally renaming files like [filebot](https://www.filebot.net/).
 
 # installation
 
