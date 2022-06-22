@@ -48,7 +48,7 @@ export interface ApolloOutput {
   date?: Date;
   imdb?: SearchResult;
   index?: number;
-  ids?: { type: IdType; id: string }[];
+  ids?: { type: IdType; id: string; url?: string }[];
   resolution?: ApolloOutputResolution;
 }
 

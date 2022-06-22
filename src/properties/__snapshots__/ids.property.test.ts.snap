@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should extract ids 1`] = `
+Array [
+  Object {
+    "id": "t3_vavr7h",
+    "type": "REDDIT",
+    "url": "https://www.reddit.com/comments/t3_vavr7h",
+  },
+]
+`;
+
+exports[`should extract ids 2`] = `
+Array [
+  Object {
+    "id": "1525508539468419074",
+    "type": "TWITTER",
+    "url": "https://twitter.com/i/status/1525508539468419074",
+  },
+]
+`;
+
+exports[`should extract ids 3`] = `
+Array [
+  Object {
+    "id": "1525508539468419074",
+    "type": "TWITTER",
+    "url": "https://twitter.com/i/status/1525508539468419074",
+  },
+]
+`;
+
+exports[`should extract ids 4`] = `
+Array [
+  Object {
+    "id": "ph5d48409d154c4",
+    "type": "PORNHUB",
+    "url": "https://www.pornhub.com/view_video.php?viewkey=ph5d48409d154c4",
+  },
+]
+`;
+
+exports[`should extract ids 5`] = `
+Array [
+  Object {
+    "id": "ph5d48409d154c4",
+    "type": "PORNHUB",
+    "url": "https://www.pornhub.com/view_video.php?viewkey=ph5d48409d154c4",
+  },
+]
+`;

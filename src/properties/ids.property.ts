@@ -7,13 +7,13 @@ export enum IdType {
   Reddit = "REDDIT",
   PornHub = "PORNHUB",
   Twitter = "TWITTER",
-  Discord = "DISCORD",
-  IMDBTitle = "IMDB_TITLE",
+  IMDB = "IMDB",
 }
 
 export interface IdPattern {
   type: IdType;
   pattern: RegExp;
+  toUrl?: (id: string, type: IdType) => string;
   refine?: (cleanPath: string, match: RegExpExecArray) => Partial<NonNullable<ApolloOutput["ids"]>[0]> | undefined;
 }
 
@@ -21,27 +21,26 @@ const ID_PATTERNS: IdPattern[] = [
   {
     // t3_vavr7h
     type: IdType.Reddit,
-    pattern: /\bt3_[0-9a-zA-Z]+\b/g,
+    pattern: /(?<=\b|_)t3_[0-9a-zA-Z]+(?=\b|_)/g,
+    toUrl: (id: string) => `https://www.reddit.com/comments/${id}`,
   },
   {
     // ph5d48409d154c4
     type: IdType.PornHub,
-    pattern: /\bph[0-9a-zA-Z]{10,16}\b/g,
+    pattern: /(?<=\b|_)ph[0-9a-zA-Z]{12,14}(?=\b|_)/g,
+    toUrl: (id: string) => `https://www.pornhub.com/view_video.php?viewkey=${id}`,
   },
   {
     // tt3230854
-    type: IdType.IMDBTitle,
-    pattern: /\btt[0-9]{7,10}\b/g,
+    type: IdType.IMDB,
+    pattern: /(?<=\b|_)tt[0-9]{7,10}(?=\b|_)/g,
+    toUrl: (id: string) => `https://www.imdb.com/title/${id}`,
   },
   {
-    // 532902669220839426 (discord snowflake)
-    // 1525508539468419074 (twitter snowflake)
-    type: IdType.UNKNOWN,
-    pattern: /\b[0-9]{14,20}\b/g,
-    refine: (cleanPath: string) => {
-      if (cleanPath.toLowerCase().includes("discord")) return { type: IdType.Discord };
-      return { type: IdType.Twitter };
-    },
+    // 1525508539468419074
+    type: IdType.Twitter,
+    pattern: /(?<=\b|_)[0-9]{14,20}(?=\b|_)/g,
+    toUrl: (id: string) => `https://twitter.com/i/status/${id}`,
   },
   {
     // [id=xxx]
@@ -57,12 +56,13 @@ export class PropertyIds extends Property<"ids"> {
 
   extract(cleanPath: string, parser: ApolloParser) {
     const ids: ApolloOutput["ids"] = [];
-    for (const { type, pattern, refine } of ID_PATTERNS) {
+    for (const { type, pattern, toUrl, refine } of ID_PATTERNS) {
       const matches = parser.getMatch(cleanPath, pattern, true);
       for (const match of matches) {
         const id = match.groups?.id ?? match[0];
         const refined = refine && refine(cleanPath, match);
-        ids.push({ type, id, ...refined });
+        const url = toUrl && toUrl(id, type);
+        ids.push({ type, id, url, ...refined });
       }
     }
 
