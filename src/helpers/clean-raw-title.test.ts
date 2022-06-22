@@ -22,10 +22,17 @@ it("should not remove capitalisation of already-capitalised strings", () => {
   expect(cleanRawTitle("Fellowship of The Ring")).toBe("Fellowship of The Ring");
 });
 
-it('should remove " _ "', () => {
-  // this is a bit of a gamble but some tools will replace things like : with _
-  // sometimes they also do that for other things though like | so eh
+it('should replace " _ "', () => {
+  // some tools replace | and : and some other characters with " _ " for some unknown mystical reason
+  // if its further along in the title we use `|` because thats fairly common, otherwise we use : because
+  // closer to the start thats more common. or something. it just feels right
   expect(cleanRawTitle("A Movie _ Test Title")).toBe("A Movie: Test Title");
+  expect(cleanRawTitle("Really Long Titles Should Use Pipes Instead _ Because That Makes More Sense")).toBe(
+    "Really Long Titles Should Use Pipes Instead | Because That Makes More Sense"
+  );
+  expect(cleanRawTitle("A Movie _ The Adventures Of A Really Long Title That Is Difficult To Come Up With _ The Prequel")).toBe(
+    "A Movie: The Adventures Of A Really Long Title That Is Difficult To Come Up With | The Prequel"
+  );
 });
 
 it("should remove repetitive segments", () => {

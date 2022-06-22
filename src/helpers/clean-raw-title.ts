@@ -35,7 +35,10 @@ export function cleanRawTitle(title: string) {
     // strip the "[" in "[ Title" etc
     .replace(PREFIX_REGEX, "")
     .replace(SUFFIX_REGEX, "")
-    .replace(PLACEHOLDER_UNDERSCORE_REGEX, ": ")
+    .replace(PLACEHOLDER_UNDERSCORE_REGEX, (_match, index) => {
+      if (index > 20) return " | ";
+      return ": ";
+    })
     .trim();
 
   if (!clean.includes(" ")) {
