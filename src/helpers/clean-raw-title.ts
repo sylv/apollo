@@ -9,6 +9,7 @@ const TITLE_BRACKETS_PREFIX_REGEX = /^\([A-z0-9]+\) ?/;
 const PREFIX_REGEX = /^ ?(\[|\]|\(|\)|[0-9]-|-|\/)/g;
 const SUFFIX_REGEX = /(\[|\]|\(|\)|-|\.|\/) ?$/g;
 const SPECIAL_CHARACTER_REGEX = /^[\W ]+$/;
+const PLACEHOLDER_UNDERSCORE_REGEX = / _ /g;
 
 // matches after each "B" in "BigBuckBunny" so we can separate
 // each title part, while not matching "O" in "IO"
@@ -34,6 +35,7 @@ export function cleanRawTitle(title: string) {
     // strip the "[" in "[ Title" etc
     .replace(PREFIX_REGEX, "")
     .replace(SUFFIX_REGEX, "")
+    .replace(PLACEHOLDER_UNDERSCORE_REGEX, ": ")
     .trim();
 
   if (!clean.includes(" ")) {

@@ -21,3 +21,9 @@ it("should not remove capitalisation of already-capitalised strings", () => {
   expect(cleanRawTitle("IO")).toBe("IO");
   expect(cleanRawTitle("Fellowship of The Ring")).toBe("Fellowship of The Ring");
 });
+
+it('should remove " _ "', () => {
+  // this is a bit of a gamble but some tools will replace things like : with _
+  // sometimes they also do that for other things though like | so eh
+  expect(cleanRawTitle("A Movie _ Test Title")).toBe("A Movie: Test Title");
+});
