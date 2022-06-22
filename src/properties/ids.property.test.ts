@@ -5,7 +5,7 @@ let parser: ApolloParser;
 
 beforeEach(() => (parser = new ApolloParser()));
 
-test("should extract ids", () => {
+it("should extract ids", () => {
   const extractor = new PropertyIds();
   expect(extractor.extract("[id=t3_vavr7h]", parser)).toMatchSnapshot();
   expect(extractor.extract("1525508539468419074_1", parser)).toMatchSnapshot();

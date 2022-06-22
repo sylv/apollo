@@ -10,6 +10,7 @@ import { ApolloLogger, ApolloOutput, ApolloParserOptions, FileType } from "../ty
 export interface ApolloMatch {
   start: number;
   end: number;
+  countForChildFiltering: boolean;
 }
 
 export class ApolloParser {
@@ -62,7 +63,7 @@ export class ApolloParser {
       }
     }
 
-    data.title = this.extractTitleFromPath(cleanPath);
+    data.title = this.extractTitleFromPath(cleanPath, data.titleType);
     if (data.title && !this.options.disableLookup) {
       const result = await this.getIMDBResult(data);
       if (result) {
@@ -108,53 +109,49 @@ export class ApolloParser {
    * so we have to match as much data as possible for accurate title extraction.
    * it will also try extract an episode name.
    */
-  protected extractTitleFromPath(cleanPath: string): string | undefined {
-    let previous = 0;
-    const parts = [];
-    const matches = this.matchIndexes.sort((a, b) => a.start - b.start);
-    // we add an extra +1 because otherwise episode names won't be extracted if there isn't a match after them.
-    // basically we have to do a final loop that extracts from the last match to the end of the string if
-    // there isn't a match at the very end.
-    for (let i = 0; i < matches.length + 1; i++) {
-      const match = matches[i];
-      const start = match?.start ?? cleanPath.length;
-      const end = match?.end ?? cleanPath.length;
-      if (previous >= start) {
-        previous = end;
+  protected extractTitleFromPath(cleanPath: string, titleType?: TitleType): string | undefined {
+    const titleCandidates: string[] = [];
+    this.matchIndexes.sort((a, b) => a.start - b.start);
+    for (let matchIndex = 0; matchIndex < this.matchIndexes.length; matchIndex++) {
+      const match = this.matchIndexes[matchIndex];
+      const previousMatch = this.matchIndexes[matchIndex - 1];
+      const between = cleanPath.substring(previousMatch?.end ?? 0, match.start);
+      if (!between.trim()) {
         continue;
       }
 
-      const raw = cleanPath.substring(previous, start);
-      const index = cleanPath.indexOf(raw);
-      const title = cleanRawTitle(raw);
-      // titles not near the start likely aren't relevant and are just random gibberish like
-      // an episode name.
-      // todo: extracting the episode name would actually be very poggers.
-      if (index > 5) continue;
-      if (title) parts.push({ index, title });
-      previous = end;
+      const clean = cleanRawTitle(between);
+      if (clean) {
+        titleCandidates.push(clean);
+      }
     }
 
-    // todo: at the moment we're just using the first one as it works pretty much every time
-    // with collection handling that skips some parts of the path so we don't mismatch names.
-    // it might be worth making this a bit more elaborate? maybe picking the most popular
-    // result or something?
-    this.log?.debug(`Extracted title candidates`, parts);
-    return parts.shift()?.title;
+    this.log?.debug(`Extracted title candidates`, titleCandidates);
+    if (!titleCandidates[0]) return;
+    if (titleType === TitleType.MOVIE) {
+      // for movies, there is no episode name that might get confused for a title,
+      // so returning the furthest-right match is probably gonna be fine.
+      const longest = titleCandidates.reduce((a, b) => (a.length > b.length ? a : b));
+      const last = titleCandidates[titleCandidates.length - 1];
+      if (longest.length >= last.length * 2) return longest;
+      return last;
+    }
+
+    return titleCandidates[0];
   }
 
   /**
    * Get a match from a string. This automatically handles pushing to this.matchIndexes and
    * multiple matches for you and most of the time should be preferred over string.match or RegExp.exec.
    */
-  public getMatch(target: string, pattern: RegExp, returnAll: true): RegExpExecArray[];
-  public getMatch(target: string, pattern: RegExp, returnAll: false): RegExpExecArray | undefined;
-  public getMatch(target: string, pattern: RegExp, returnAll: boolean): RegExpExecArray | RegExpExecArray[] | undefined {
+  public getMatch(target: string, pattern: RegExp, returnAll: true, countForChildFiltering?: boolean): RegExpExecArray[];
+  public getMatch(target: string, pattern: RegExp, returnAll: false, countForChildFiltering?: boolean): RegExpExecArray | undefined;
+  public getMatch(target: string, pattern: RegExp, returnAll: boolean, countForChildFiltering = true): RegExpExecArray | RegExpExecArray[] | undefined {
     const matches = getAllMatches(target, pattern);
     for (const match of matches) {
       const startIndex = match.index ? match.index : target.lastIndexOf(match[0]);
       if (startIndex === -1) continue;
-      this.matchIndexes.push({ start: startIndex, end: startIndex + match[0].length });
+      this.matchIndexes.push({ start: startIndex, end: startIndex + match[0].length, countForChildFiltering });
     }
 
     if (returnAll) return matches;
@@ -172,7 +169,7 @@ export class ApolloParser {
     if (afterIndex === undefined) return this.matchIndexes[0]?.start;
     // checking the end here is important and intentional, otherwise
     // for example file name extraction might fail if a match crosses path parts.
-    return this.matchIndexes.find((m) => afterIndex < m.end)?.start;
+    return this.matchIndexes.find((m) => m.countForChildFiltering && afterIndex < m.end)?.start;
   }
 
   /**

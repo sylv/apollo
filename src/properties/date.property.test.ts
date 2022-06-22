@@ -5,7 +5,7 @@ let parser: ApolloParser;
 
 beforeEach(() => (parser = new ApolloParser()));
 
-test("should parse formats like 20070631", () => {
+it("should parse formats like 20070631", () => {
   const extractor = new PropertyDate();
   expect(extractor.extract("20071231", parser)).toEqual(new Date(2007, 11, 31));
 

@@ -29,7 +29,7 @@ afterEach(() => {
 });
 
 describe("Apollo CLI", () => {
-  test("Should move files as expected", async () => {
+  it("should move files as expected", async () => {
     const apollo = new Apollo({
       input: "/mnt/Downloads-2",
       output: "/mnt/media",

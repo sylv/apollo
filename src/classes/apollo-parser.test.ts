@@ -103,6 +103,7 @@ const tests: Array<ApolloTest> = [
     output: {
       extension: ".mkv",
       fileType: FileType.Video,
+      index: 1,
       audio: ["6ch"],
       collection: false,
       languages: [],
