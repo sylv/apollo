@@ -4,7 +4,7 @@ import { IGNORE_TITLES } from "../data/ignore.data";
 const TITLE_TAG_REGEX = /\[.*?\]/g;
 const TITLE_RELEASE_GROUP_REGEX = /-[a-z]{2,}(?=$|\/)/gi;
 const TITLE_TRAILING_TAG_REGEX = / ?(?:\(|\[|\-) ?$/g;
-const TITLE_URL_REGEX = /(www(?:\.| ))?[a-z0-9]+(?:\.| )(?:com|org|me|se|info)/i;
+const TITLE_URL_REGEX = /\b(www(?:\.| ))?[a-z0-9]+(?:\.| )(?:com|org|me|se|info)\b/i;
 const TITLE_BRACKETS_PREFIX_REGEX = /^\([A-z0-9]+\) ?/;
 const PREFIX_REGEX = /^ ?(\[|\]|\(|\)|[0-9]-|-|\/)/g;
 const SUFFIX_REGEX = /(\[|\]|\(|\)|-|\.|\/) ?$/g;

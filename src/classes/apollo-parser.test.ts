@@ -716,6 +716,21 @@ const tests: Array<ApolloTest> = [
       title: "Group Trip - Some Interesting Video",
     },
   },
+  {
+    // - no regex matches which would normally cause no title to be extracted
+    // - "group com" was being stripped as it looked like a group.com link
+    id: undefined,
+    input: "/home/videos/Test Group/videos/Test Group compilation.mp4",
+    output: {
+      extension: ".mp4",
+      fileType: FileType.Video,
+      audio: [],
+      collection: false,
+      languages: [],
+      coding: [],
+      title: "Test Group Compilation",
+    },
+  },
 ];
 
 describe("ApolloParser", () => {

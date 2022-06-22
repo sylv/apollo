@@ -127,7 +127,11 @@ export class ApolloParser {
     }
 
     this.log?.debug(`Extracted title candidates`, titleCandidates);
-    if (!titleCandidates[0]) return;
+    if (!titleCandidates[0]) {
+      if (!this.matchIndexes[0]) return cleanRawTitle(cleanPath);
+      return;
+    }
+
     if (titleType === TitleType.MOVIE) {
       // for movies, there is no episode name that might get confused for a title,
       // so returning the furthest-right match is probably gonna be fine.
