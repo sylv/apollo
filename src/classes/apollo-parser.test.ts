@@ -686,6 +686,36 @@ const tests: Array<ApolloTest> = [
       title: "Rick and Morty",
     },
   },
+  {
+    // ensure we're extracting "interesting" parts of the path
+    id: undefined,
+    input: "/home/data/readonly/Group Trip/videos/Some Interesting Video-1.mp4",
+    output: {
+      extension: ".mp4",
+      fileType: FileType.Video,
+      audio: [],
+      collection: false,
+      languages: [],
+      coding: [],
+      index: 1,
+      title: "Group Trip/Some Interesting Video",
+    },
+  },
+  {
+    // ensure we're not extracting redundant parts of the path
+    id: undefined,
+    input: "/home/data/readonly/Group Trip/videos/Group Trip - Some Interesting Video-1.mp4",
+    output: {
+      extension: ".mp4",
+      fileType: FileType.Video,
+      audio: [],
+      collection: false,
+      languages: [],
+      coding: [],
+      index: 1,
+      title: "Group Trip - Some Interesting Video",
+    },
+  },
 ];
 
 describe("ApolloParser", () => {

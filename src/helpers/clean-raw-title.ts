@@ -46,6 +46,22 @@ export function cleanRawTitle(title: string) {
   // if after cleaning the title is empty or is in IGNORE, it's useless
   if (!clean || IGNORE_TITLES.has(clean.toLowerCase())) return;
 
+  // remove redundant parts, like "Group Trip" in "Group Trip/Group Trip - Day One"
+  const parts = clean.split("/");
+  if (parts[1]) {
+    const longestPart = parts.reduce((a, b) => (a.length > b.length ? a : b));
+    const trimmedParts: string[] = [];
+    for (const part of parts) {
+      if (longestPart !== part && longestPart.toLowerCase().includes(part.toLowerCase())) {
+        continue;
+      }
+
+      trimmedParts.push(part);
+    }
+
+    clean = trimmedParts.join("/");
+  }
+
   // the commented code below breaks on something like "Rick and Morty/Season 5/Episode 3"
   // and I can't think of anything to prevent that so fuck it let's just not.
   // // if the title includes path separators it's likely an invalid match.

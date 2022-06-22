@@ -27,3 +27,7 @@ it('should remove " _ "', () => {
   // sometimes they also do that for other things though like | so eh
   expect(cleanRawTitle("A Movie _ Test Title")).toBe("A Movie: Test Title");
 });
+
+it("should remove repetitive segments", () => {
+  expect(cleanRawTitle("My Group/My Group Day One")).toBe("My Group Day One");
+});
