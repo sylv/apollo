@@ -1,19 +1,10 @@
 {
-  "include": ["./src/"],
-  "exclude": ["**/*.test.ts"],
+  "extends": "@sylo-digital/scripts/tsconfig/base.json",
+  "exclude": ["node_modules"],
+  "include": ["src"],
   "compilerOptions": {
-    "target": "es2019",
-    "module": "commonjs",
-    "strict": true,
-    "esModuleInterop": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "declaration": true,
-    "sourceMap": true,
-    "outDir": "dist",
-    "baseUrl": ".",
-    "paths": {
-      "*": ["./types/*"]
-    }
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "resolveJsonModule": true
   }
 }

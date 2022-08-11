@@ -4,7 +4,15 @@ import { PART_END_PATTERN, PART_START_PATTERN, SPACE_REGEX } from "../constants"
 import { getAllMatches } from "../helpers/get-all-matches";
 import { ApolloOutput } from "../types";
 
+const STANDARD_SEASON_EPISODE_REGEX = new RegExp(
+  `${PART_START_PATTERN}(?:SE|S)(?<season>[0-9]{1,4})${SPACE_REGEX}?(?<episode>(?:(?:EP|E)[0-9]{1,2})+)?${PART_END_PATTERN}`,
+  "gi"
+);
+
 const SEASON_EPISODE_PATTERNS = [
+  // matches "SE01E01", "S01E01", "S01 E01", "S01"
+  // not "Se7en" or "S01e01-10"
+  STANDARD_SEASON_EPISODE_REGEX,
   // matches "1x1"
   // not "1x1t", "1x1-1x2"
   new RegExp(`${PART_START_PATTERN}(?<season>[0-9]{1,4})x(?<episode>[0-9]{1,2})${PART_END_PATTERN}`, "gi"),
@@ -12,11 +20,10 @@ const SEASON_EPISODE_PATTERNS = [
   new RegExp(`${PART_START_PATTERN}Season.(?<season>[0-9]{1,4})(?:.Episode.(?<episode>[0-9]{1,2}))?${PART_END_PATTERN}`, "gi"),
   // matches "SE1/01"
   new RegExp(`${PART_START_PATTERN}(?:SE|S)(?<season>[0-9]{1,4})\\/(?<episode>[0-9]{1,2})${PART_END_PATTERN}`, "gi"),
-  // matches "SE01E01", "S01E01", "S01 E01", "S01"
-  // not "Se7en" or "S01e01-10"
-  new RegExp(`${PART_START_PATTERN}(?:SE|S)(?<season>[0-9]{1,4})${SPACE_REGEX}?(?<episode>(?:(?:EP|E)[0-9]{1,2})+)?${PART_END_PATTERN}`, "gi"),
   // matches "Part 3 of 3" if we're really desparate
   new RegExp(`${PART_START_PATTERN}Part (?<episode>[0-9]) of [0-9]${PART_END_PATTERN}`, "gi"),
+  // matches "some_title_ep06.mp4" if we're even more desperate
+  /(?<=\b|_)ep(?<episode>[0-9]+)(?=\b|_)/gi,
 ];
 
 export class PropertySeasonEpisode extends Property<"episodes" | "seasons"> {
@@ -60,7 +67,7 @@ export class PropertySeasonEpisode extends Property<"episodes" | "seasons"> {
   private resolve(match?: string) {
     if (!match) return;
     const matches = getAllMatches(match, /[0-9]+/g);
-    const parsed = matches.map((match) => parseInt(match[0], 10)).filter((value) => !isNaN(value));
+    const parsed = matches.map((match) => +match[0]).filter((value) => !isNaN(value));
     if (parsed[0] === undefined) return;
     return parsed;
   }

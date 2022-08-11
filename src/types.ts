@@ -1,6 +1,12 @@
-import { search, SearchResult, TitleType } from "@ryanke/imdb-api";
-import { Quality } from "./data/qualities.data";
-import { IdType } from "./properties/ids.property";
+import { Quality } from "./data/qualities";
+
+export enum TitleType {
+  MOVIE,
+  SERIES,
+  SHORT,
+  EPISODE,
+  VIDEO,
+}
 
 export enum FileType {
   Video = "VIDEO",
@@ -8,32 +14,13 @@ export enum FileType {
   Subtitle = "SUBTITLE",
 }
 
-export interface ApolloOptions extends ApolloParserOptions {
-  input: string;
-  output: string;
-  move: boolean;
-  dryRun: boolean;
-  minSize: number;
-}
-
-export interface ApolloParserOptions {
-  disableLookup?: boolean;
-  searchMethod?: typeof search;
-  logger?: ApolloLogger;
-}
-
-export interface ApolloLogger {
-  debug: (...args: any[]) => void;
-  info: (...args: any[]) => void;
-  warn: (...args: any[]) => void;
-  error: (...args: any[]) => void;
-}
-
 export interface ApolloOutput {
-  title?: string;
+  name?: string;
   titleType?: TitleType;
   fileType: FileType;
   collection: boolean;
+  episodeId?: string;
+  episodeName?: string;
   seasonNumber?: number;
   episodeNumber?: number[];
   seasons?: number[];
@@ -46,9 +33,12 @@ export interface ApolloOutput {
   coding: string[];
   quality?: Quality;
   date?: Date;
-  imdb?: SearchResult;
   index?: number;
-  ids?: { type: IdType; id: string; url?: string }[];
+  imdbId?: string;
+  poster?: string;
+  contentRating?: string;
+  releaseGroup?: string;
+  links?: { name: string; id: string; url?: string }[];
   resolution?: ApolloOutputResolution;
 }
 

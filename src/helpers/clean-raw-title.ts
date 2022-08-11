@@ -1,5 +1,5 @@
 import { titleCase } from "title-case";
-import { IGNORE_TITLES } from "../data/ignore.data";
+import { IGNORE_TITLES } from "../data/ignore";
 
 const TITLE_TAG_REGEX = /\[.*?\]/g;
 const TITLE_RELEASE_GROUP_REGEX = /-[a-z]{2,}(?=$|\/)/gi;
@@ -23,8 +23,6 @@ export function cleanRawTitle(title: string) {
   let clean = title
     // remove tags like [1080p]
     .replace(TITLE_TAG_REGEX, " ")
-    // remove release group suffixes like -QxR
-    .replace(TITLE_RELEASE_GROUP_REGEX, "")
     // trim trailing ('s and -'s from e.g "Avatar - The Last Airbender Movie ("
     .replace(TITLE_TRAILING_TAG_REGEX, "")
     // remove urls that weren't in brackets

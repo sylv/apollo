@@ -1,11 +1,12 @@
-import { search, SearchResult, TitleType } from "@ryanke/imdb-api";
-import mem from "mem";
 import { IMAGE_EXTENSIONS, SUBTITLE_EXTENSIONS, VIDEO_EXTENSIONS } from "../constants";
 import { cleanFilePath } from "../helpers/clean-file-path";
 import { cleanRawTitle } from "../helpers/clean-raw-title";
+import { detectSubtitleLanguage } from "../helpers/detect-subtitle-language";
 import { getAllMatches } from "../helpers/get-all-matches";
+import { log } from "../log";
 import { properties } from "../properties";
-import { ApolloLogger, ApolloOutput, ApolloParserOptions, FileType } from "../types";
+import { getEpisode, search } from "../providers";
+import { ApolloOutput, FileType, TitleType } from "../types";
 
 export interface ApolloMatch {
   start: number;
@@ -13,21 +14,24 @@ export interface ApolloMatch {
   countForChildFiltering: boolean;
 }
 
+export interface ApolloParserOptions {
+  disableLookup?: boolean;
+  providers: string[];
+  detectSubtitleLanguage?: boolean;
+}
+
 export class ApolloParser {
-  protected search = mem(search);
-  protected log?: ApolloLogger;
   readonly matchIndexes: ApolloMatch[] = [];
   readonly options: ApolloParserOptions;
-  constructor(options: ApolloParserOptions = {}) {
+  constructor(options: ApolloParserOptions) {
     this.options = options;
-    this.log = this.options.logger;
   }
 
   /**
    * Parse a torrent name or complete path.
    * @param parentData internal
    */
-  public async parse(input: string, parentData?: Partial<ApolloOutput>): Promise<ApolloOutput | undefined> {
+  public async parse(input: string, absolutePath?: string, parentData?: Partial<ApolloOutput>): Promise<ApolloOutput | undefined> {
     const extractedExt = this.getExtensionAndFileType(input);
     const extension = parentData?.extension ?? extractedExt?.extension;
     const fileType = extractedExt?.fileType;
@@ -35,10 +39,10 @@ export class ApolloParser {
     const inputWithoutExt = extension && input.endsWith(extension) ? input.slice(0, -extension.length) : input;
     const cleanPath = cleanFilePath(inputWithoutExt);
     if (!cleanPath) {
-      this.log?.debug(`Skipping "${input}" as it contains undesirable keywords`);
+      log.debug(`Skipping "${input}" as it contains undesirable keywords`);
       return;
     } else {
-      this.log?.debug(`Cleaned path is "${cleanPath}"`);
+      log.debug(`Cleaned path is "${cleanPath}"`);
     }
 
     this.parseProperties(cleanPath, data);
@@ -58,20 +62,53 @@ export class ApolloParser {
       const fileName = cleanPath.substring(lastSep);
       const firstFileNameMatch = this.firstMatchIndex(lastSep);
       if (firstFileNameMatch !== undefined && firstFileNameMatch > lastSep + 1) {
-        const child = await this.parse(fileName, data);
+        const child = await this.parse(fileName, absolutePath, data);
         return Object.assign(data, child);
       }
     }
 
-    data.title = this.extractTitleFromPath(cleanPath, data.titleType);
-    if (data.title && !this.options.disableLookup) {
-      const result = await this.getIMDBResult(data);
+    data.name = this.extractTitleFromPath(cleanPath, data.titleType)?.trim();
+    if (data.name && data.titleType !== undefined && !this.options.disableLookup) {
+      const extractedId = data.links?.find((id) => id.name === "IMDb");
+      const result = await search(this.options.providers, {
+        name: data.name,
+        type: data.titleType,
+        year: data.startYear,
+        imdbId: data.imdbId || extractedId?.id,
+      });
+
       if (result) {
-        this.log?.debug(`Resolved "${data.title}" to "${result.name}" https://imdb.com/title/${result.id}`);
-        data.title = result.name;
-        data.imdb = result;
+        log.debug(`Resolved "${data.name}" to "${result.name}" https://imdb.com/title/${result.imdbId}`);
+        data.name = result.name;
+        data.imdbId = result.imdbId;
+        if (result.startYear) data.startYear = result.startYear;
+        if (result.endYear) data.endYear = result.endYear;
+        if (result.poster) data.poster = result.poster;
+        if (!extractedId) {
+          if (!data.links) data.links = [];
+          data.links.push({
+            name: "IMDb",
+            id: result.imdbId,
+            url: `https://imdb.com/title/${result.imdbId}`,
+          });
+        }
       } else {
-        this.log?.debug(`No valid results for "${data.title}"`);
+        log.debug(`Could not resolve title for "${data.name}"`);
+      }
+    }
+
+    if (data.imdbId && data.episodeNumber?.length === 1 && data.seasonNumber !== undefined) {
+      const episodeMeta = await getEpisode(this.options.providers, data.imdbId, data.seasonNumber, data.episodeNumber[0]);
+      if (episodeMeta) {
+        data.episodeName = episodeMeta.episodeName;
+        data.episodeId = episodeMeta.episodeId;
+      }
+    }
+
+    if (absolutePath && this.options.detectSubtitleLanguage && data.languages?.length !== 1 && data.fileType === FileType.Subtitle) {
+      const subtitleLanguage = await detectSubtitleLanguage(absolutePath);
+      if (subtitleLanguage) {
+        data.languages = [subtitleLanguage.languageCode];
       }
     }
 
@@ -95,7 +132,7 @@ export class ApolloParser {
     else if (data.seasons?.length || data.episodes?.length || data.seasonNumber !== undefined) data.titleType = TitleType.SERIES;
     else if (data.startYear && !data.endYear) data.titleType = TitleType.MOVIE;
     else {
-      this.log?.debug(`Cannot resolve title type based on parsed properties.`);
+      log.debug(`Cannot resolve title type based on parsed properties.`);
     }
 
     if (data.titleType !== undefined && !data.fileType) {
@@ -126,7 +163,7 @@ export class ApolloParser {
       }
     }
 
-    this.log?.debug(`Extracted title candidates`, titleCandidates);
+    log.debug(`Extracted title candidates`, titleCandidates);
     if (!titleCandidates[0]) {
       if (!this.matchIndexes[0]) return cleanRawTitle(cleanPath);
       return;
@@ -150,7 +187,12 @@ export class ApolloParser {
    */
   public getMatch(target: string, pattern: RegExp, returnAll: true, countForChildFiltering?: boolean): RegExpExecArray[];
   public getMatch(target: string, pattern: RegExp, returnAll: false, countForChildFiltering?: boolean): RegExpExecArray | undefined;
-  public getMatch(target: string, pattern: RegExp, returnAll: boolean, countForChildFiltering = true): RegExpExecArray | RegExpExecArray[] | undefined {
+  public getMatch(
+    target: string,
+    pattern: RegExp,
+    returnAll: boolean,
+    countForChildFiltering = true
+  ): RegExpExecArray | RegExpExecArray[] | undefined {
     const matches = getAllMatches(target, pattern);
     for (const match of matches) {
       const startIndex = match.index ? match.index : target.lastIndexOf(match[0]);
@@ -174,47 +216,6 @@ export class ApolloParser {
     // checking the end here is important and intentional, otherwise
     // for example file name extraction might fail if a match crosses path parts.
     return this.matchIndexes.find((m) => m.countForChildFiltering && afterIndex < m.end)?.start;
-  }
-
-  /**
-   * Get the best search result for the given title.
-   * For episodes we will look up the series title, TitleType.EPISODE is aliased to TitleType.SERIES.
-   */
-  protected async getIMDBResult(data: Partial<ApolloOutput>): Promise<SearchResult | undefined> {
-    if (!data.title) throw new Error('Missing "data.title"');
-    if (data.titleType === undefined) {
-      this.log?.debug(`Cannot search without resolved title type.`);
-      return;
-    }
-
-    this.log?.debug(`Searching IMDb for "${data.title}"`);
-    const results = await this.search(data.title);
-    const filtered: SearchResult[] = [];
-    const expectType = data.titleType === TitleType.EPISODE ? TitleType.SERIES : data.titleType;
-    for (const result of results) {
-      // ignore titles that don't match the expected type
-      if (expectType !== result.type) continue;
-      // ignore movies that don't match the extracted year (if any)
-      if (data.titleType === TitleType.MOVIE && data.startYear && result.year && result.year !== data.startYear) continue;
-      // imdb tends to return random results with extremely long names
-      // when it has no clue what you're after. this avoids those results.
-      // its *3 because *2 might not match "the fellowship of the ring" to "the lord of the rings: the fellowship of the ring"
-      if (result.name.length > data.title.length * 3) continue;
-      filtered.push(result);
-    }
-
-    if (!data.title.includes(" ")) {
-      // with single-word titles, i've found IMDb struggles sometimes,
-      // for example returning "Logan Lucky (2017)" before "Logan (2017)". This is a hacky way
-      // to get around that.
-      const haystack = filtered.slice(0, 4);
-      const lowerTitle = data.title.toLowerCase();
-      for (const item of haystack) {
-        if (item.name.toLowerCase() === lowerTitle) return item;
-      }
-    }
-
-    return filtered.shift();
   }
 
   private getExtensionAndFileType(input: string): { extension: string; fileType: FileType } | undefined {

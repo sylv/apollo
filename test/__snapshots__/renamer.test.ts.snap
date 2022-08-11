@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should allow reverting from snapshots 1`] = `
+Array [
+  "/mnt/Downloads-2",
+  "/mnt/media/Movies/Deadpool (2016) [imdbId=tt1431045]/Deadpool (2016).fr.srt",
+  "/mnt/media/TV Shows/The Crown (2016) [imdbId=tt4786824]/Season 1/The Crown - S01E01 - Wolferton Splash.mkv",
+  "/mnt/media/TV Shows/The Crown (2016) [imdbId=tt4786824]/Season 1/The Crown - S01E02 - Hyde Park Corner.mkv",
+  "/mnt/media/TV Shows/The Crown (2016) [imdbId=tt4786824]/Season 1/The Crown - S01E03 - Windsor.mkv",
+  "/mnt/media/TV Shows/The Crown (2016) [imdbId=tt4786824]/Season 1/The Crown - S01E04 - Act of God.mkv",
+  "/mnt/media/TV Shows/The Crown (2016) [imdbId=tt4786824]/Season 1/The Crown - S01E05 - Smoke and Mirrors.mkv",
+  "/mnt/media/TV Shows/The Crown (2016) [imdbId=tt4786824]/Season 1/The Crown - S01E06 - Gelignite.mkv",
+  "/mnt/media/TV Shows/The Crown (2016) [imdbId=tt4786824]/Season 1/The Crown - S01E07 - Scientia Potentia Est.mkv",
+  "/mnt/media/TV Shows/The Mandalorian (2019) [imdbId=tt8111088]/Season 1/The Mandalorian - S01E01 - Chapter 1 The Mandalorian.mkv",
+  "/mnt/media/TV Shows/The Mandalorian (2019) [imdbId=tt8111088]/Season 1/The Mandalorian - S01E01 - Chapter 1 The Mandalorian.en.srt",
+]
+`;
+
+exports[`should allow reverting from snapshots 2`] = `
+Array [
+  "/mnt/Downloads-2/Deadpool 2016 1080p BluRay x264 DTS-JYK/Subs/French.srt",
+  "/mnt/Downloads-2/The.Crown.S01.1080p.BluRay.x264-SHORTBREHD[rartv]/The.Crown.S01E01.1080p.BluRay.x264-SHORTBREHD.mkv",
+  "/mnt/Downloads-2/The.Crown.S01.1080p.BluRay.x264-SHORTBREHD[rartv]/The.Crown.S01E02.1080p.BluRay.x264-SHORTBREHD.mkv",
+  "/mnt/Downloads-2/The.Crown.S01.1080p.BluRay.x264-SHORTBREHD[rartv]/The.Crown.S01E03.1080p.BluRay.x264-SHORTBREHD.mkv",
+  "/mnt/Downloads-2/The.Crown.S01.1080p.BluRay.x264-SHORTBREHD[rartv]/The.Crown.S01E04.1080p.BluRay.x264-SHORTBREHD.mkv",
+  "/mnt/Downloads-2/The.Crown.S01.1080p.BluRay.x264-SHORTBREHD[rartv]/The.Crown.S01E05.1080p.BluRay.x264-SHORTBREHD.mkv",
+  "/mnt/Downloads-2/The.Crown.S01.1080p.BluRay.x264-SHORTBREHD[rartv]/The.Crown.S01E06.1080p.BluRay.x264-SHORTBREHD.mkv",
+  "/mnt/Downloads-2/The.Crown.S01.1080p.BluRay.x264-SHORTBREHD[rartv]/The.Crown.S01E07.1080p.BluRay.x264-SHORTBREHD.mkv",
+  "/mnt/Downloads-2/www.Torrenting.org       The Mandalorian S01E01 INTERNAL 1080p WEB H264-DEFLATE/The.Mandalorian.S01E01.INTERNAL.1080p.WEB.H264-DEFLATE.mkv",
+  "/mnt/Downloads-2/www.Torrenting.org       The Mandalorian S01E01 INTERNAL 1080p WEB H264-DEFLATE/The.Mandalorian.S01E01.INTERNAL.1080p.WEB.H264-DEFLATE.srt",
+  "/mnt/media/Movies/Deadpool (2016) [imdbId=tt1431045]",
+  "/mnt/media/TV Shows/The Crown (2016) [imdbId=tt4786824]/Season 1",
+  "/mnt/media/TV Shows/The Mandalorian (2019) [imdbId=tt8111088]/Season 1",
+]
+`;
+
+exports[`should move files as expected 1`] = `
+Array [
+  "/mnt/Downloads-2",
+  "/mnt/media/Movies/Deadpool (2016) [imdbId=tt1431045]/Deadpool (2016).fr.srt",
+  "/mnt/media/TV Shows/The Crown (2016) [imdbId=tt4786824]/Season 1/The Crown - S01E01 - Wolferton Splash.mkv",
+  "/mnt/media/TV Shows/The Crown (2016) [imdbId=tt4786824]/Season 1/The Crown - S01E02 - Hyde Park Corner.mkv",
+  "/mnt/media/TV Shows/The Crown (2016) [imdbId=tt4786824]/Season 1/The Crown - S01E03 - Windsor.mkv",
+  "/mnt/media/TV Shows/The Crown (2016) [imdbId=tt4786824]/Season 1/The Crown - S01E04 - Act of God.mkv",
+  "/mnt/media/TV Shows/The Crown (2016) [imdbId=tt4786824]/Season 1/The Crown - S01E05 - Smoke and Mirrors.mkv",
+  "/mnt/media/TV Shows/The Crown (2016) [imdbId=tt4786824]/Season 1/The Crown - S01E06 - Gelignite.mkv",
+  "/mnt/media/TV Shows/The Crown (2016) [imdbId=tt4786824]/Season 1/The Crown - S01E07 - Scientia Potentia Est.mkv",
+  "/mnt/media/TV Shows/The Mandalorian (2019) [imdbId=tt8111088]/Season 1/The Mandalorian - S01E01 - Chapter 1 The Mandalorian.mkv",
+  "/mnt/media/TV Shows/The Mandalorian (2019) [imdbId=tt8111088]/Season 1/The Mandalorian - S01E01 - Chapter 1 The Mandalorian.en.srt",
+]
+`;
+
+exports[`should not do anything with --dry-run enabled 1`] = `
+Array [
+  "/mnt/Downloads-2/Deadpool 2016 1080p BluRay x264 DTS-JYK/Subs/French.srt",
+  "/mnt/Downloads-2/The.Crown.S01.1080p.BluRay.x264-SHORTBREHD[rartv]/The.Crown.S01E01.1080p.BluRay.x264-SHORTBREHD.mkv",
+  "/mnt/Downloads-2/The.Crown.S01.1080p.BluRay.x264-SHORTBREHD[rartv]/The.Crown.S01E02.1080p.BluRay.x264-SHORTBREHD.mkv",
+  "/mnt/Downloads-2/The.Crown.S01.1080p.BluRay.x264-SHORTBREHD[rartv]/The.Crown.S01E03.1080p.BluRay.x264-SHORTBREHD.mkv",
+  "/mnt/Downloads-2/The.Crown.S01.1080p.BluRay.x264-SHORTBREHD[rartv]/The.Crown.S01E04.1080p.BluRay.x264-SHORTBREHD.mkv",
+  "/mnt/Downloads-2/The.Crown.S01.1080p.BluRay.x264-SHORTBREHD[rartv]/The.Crown.S01E05.1080p.BluRay.x264-SHORTBREHD.mkv",
+  "/mnt/Downloads-2/The.Crown.S01.1080p.BluRay.x264-SHORTBREHD[rartv]/The.Crown.S01E06.1080p.BluRay.x264-SHORTBREHD.mkv",
+  "/mnt/Downloads-2/The.Crown.S01.1080p.BluRay.x264-SHORTBREHD[rartv]/The.Crown.S01E07.1080p.BluRay.x264-SHORTBREHD.mkv",
+  "/mnt/Downloads-2/www.Torrenting.org       The Mandalorian S01E01 INTERNAL 1080p WEB H264-DEFLATE/The.Mandalorian.S01E01.INTERNAL.1080p.WEB.H264-DEFLATE.mkv",
+  "/mnt/Downloads-2/www.Torrenting.org       The Mandalorian S01E01 INTERNAL 1080p WEB H264-DEFLATE/The.Mandalorian.S01E01.INTERNAL.1080p.WEB.H264-DEFLATE.srt",
+]
+`;

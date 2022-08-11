@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should extract ids 1`] = `Promise {}`;
+
+exports[`should extract ids 2`] = `Promise {}`;
+
+exports[`should extract ids 3`] = `Promise {}`;
+
+exports[`should extract ids 4`] = `Promise {}`;
+
+exports[`should extract ids 5`] = `Promise {}`;

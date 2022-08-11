@@ -1,9 +1,11 @@
-import { parseTo } from "./util/parse-to";
+import { parse } from "../src/helpers/parse";
 
 it("should parse standard file names", async () => {
-  await parseTo("Test file name (22).JPG", {
-    title: "Test File Name",
-    index: 22,
-    extension: ".jpg",
-  });
+  expect(parse("Test file name (22).JPG")).resolves.toEqual(
+    expect.objectContaining({
+      name: "Test File Name",
+      index: 22,
+      extension: ".jpg",
+    })
+  );
 });

@@ -1,11 +1,8 @@
+import { execSync } from "child_process";
+import { constantCase } from "constant-case";
 import fetch from "node-fetch";
 import path from "path";
-import prettier from "prettier";
-import util from "util";
-import fs from "fs";
-import { constantCase } from "constant-case";
-import { Project, StructureKind, VariableDeclarationKind, SyntaxKind } from "ts-morph";
-import { execSync } from "child_process";
+import { Project, SyntaxKind, VariableDeclarationKind } from "ts-morph";
 
 const SOURCE_URL = "https://raw.githubusercontent.com/filebot/data/master/media-sources.txt";
 const OUTPUT_PATH = path.join(__dirname, "../src/data/qualities.data.ts");

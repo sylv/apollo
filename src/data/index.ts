@@ -1,2 +1,2 @@
-export * from "./ignore.data";
-export * from "./qualities.data";
+export * from "./ignore";
+export * from "./qualities";

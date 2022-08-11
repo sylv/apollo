@@ -4,11 +4,11 @@ import { ApolloOutput } from "../types";
 export abstract class Property<Key extends keyof ApolloOutput> {
   readonly key?: Key;
 
-  extract?(cleanPath: string, parser: ApolloParser): ApolloOutput[Key] | undefined;
+  extract?(cleanPath: string, parser: ApolloParser, data: Partial<ApolloOutput>): ApolloOutput[Key] | undefined;
   write(cleanPath: string, data: Partial<ApolloOutput>, parser: ApolloParser): Partial<ApolloOutput> {
     if (!this.key) throw new Error(`Missing "key" on ${this.constructor.name}`);
     if (!this.extract) throw new Error(`Missing "extract" on ${this.constructor.name} with default "write"`);
-    const output = this.extract(cleanPath, parser);
+    const output = this.extract(cleanPath, parser, data);
     if (output !== undefined) {
       // previously this assigned it regardless but if we set undefined values to undefined,
       // Object.assign will overwrite set values with undefined. This is bad when we handle collections,

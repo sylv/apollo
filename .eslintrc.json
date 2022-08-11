@@ -1,6 +1,0 @@
-{
-  "extends": ["airbnb-typescript/base"],
-  "rules": {
-    "import/extensions": [".js", ".json", ".jsx", ".ts", ".tsx"]
-  }
-}
