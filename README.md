@@ -2,13 +2,9 @@
 
 A library to parse file names into structured data. Also provides a cli to rename/symlink files based on the extracted data like [filebot](https://filebot.net).
 
-# installation
+## command line usage
 
 _there are still a lot of bugs with apollo, you should stick wtih symlinks when possible and always have snapshots enabled_
-
-Requires the current [Node.js](https://nodejs.org/en/) LTS
-
-## command line
 
 ```bash
 npm install -g @ryanke/apollo
@@ -30,13 +26,15 @@ apollo rollback ./downloads
 # for symlinks, all it does is unlink the destinations
 ```
 
-## programmatic
+## programmatic usage
 
 ```bash
 # with npm
 npm install @ryanke/apollo
 # with yarn
 yarn add @ryanke/apollo
+# with pnpm
+pnpm add @ryanke/apollo
 ```
 
 ```ts
