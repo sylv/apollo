@@ -11,11 +11,11 @@ import { ApolloOutput, FileType, TitleType } from "../types";
 export interface ApolloMatch {
   start: number;
   end: number;
+  propertyName?: string;
   countForChildFiltering: boolean;
 }
 
 export interface ApolloParserOptions {
-  disableLookup?: boolean;
   providers: string[];
   detectSubtitleLanguage?: boolean;
 }
@@ -23,6 +23,7 @@ export interface ApolloParserOptions {
 export class ApolloParser {
   readonly matchIndexes: ApolloMatch[] = [];
   readonly options: ApolloParserOptions;
+  private currentProperty?: string;
   constructor(options: ApolloParserOptions) {
     this.options = options;
   }
@@ -68,7 +69,7 @@ export class ApolloParser {
     }
 
     data.name = this.extractTitleFromPath(cleanPath, data.titleType)?.trim();
-    if (data.name && data.titleType !== undefined && !this.options.disableLookup) {
+    if (data.name && data.titleType !== undefined) {
       const extractedId = data.links?.find((id) => id.name === "IMDb");
       const result = await search(this.options.providers, {
         name: data.name,
@@ -119,7 +120,12 @@ export class ApolloParser {
    * Run property parsers in the properties/ directory and add the extracted data to the provided data object.
    */
   protected parseProperties(cleanPath: string, data: Partial<ApolloOutput>) {
-    for (const property of properties) property.write(cleanPath, data, this);
+    for (const property of properties) {
+      this.currentProperty = property.key;
+      property.write(cleanPath, data, this);
+      this.currentProperty = undefined;
+    }
+
     return data;
   }
 
@@ -197,7 +203,12 @@ export class ApolloParser {
     for (const match of matches) {
       const startIndex = match.index ? match.index : target.lastIndexOf(match[0]);
       if (startIndex === -1) continue;
-      this.matchIndexes.push({ start: startIndex, end: startIndex + match[0].length, countForChildFiltering });
+      this.matchIndexes.push({
+        start: startIndex,
+        end: startIndex + match[0].length,
+        propertyName: this.currentProperty,
+        countForChildFiltering,
+      });
     }
 
     if (returnAll) return matches;

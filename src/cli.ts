@@ -4,6 +4,8 @@ import isAdmin from "is-admin";
 import meow from "meow";
 import { resolve } from "path";
 import xbytes from "xbytes";
+import { ApolloParser } from "./classes/apollo-parser";
+import { coloriseResult } from "./helpers/colorise";
 import { rollback, snapshotDbPath } from "./helpers/snapshots";
 import { setLogger } from "./log";
 import { providers } from "./providers";
@@ -19,11 +21,13 @@ const cli = meow(
       $ apollo move D:\\Torrents E:\\Media
       $ apollo link D:\\Torrents E:\\Media
       $ apollo rollback ./torrents
+      $ apollo parse The.Walking.Dead.S05E01.720p.HDTV.x264-EVOLVE.mkv
 
       ${chalk.cyan.bold("Commands")}
       move          Move files from the input directory to the output directory.
       link          Link files from the input directory to the output directory.
-      rollback      Make a best-effort attempt to undo changes made by the move or link commands.      
+      rollback      Make a best-effort attempt to undo changes made by the move or link commands.   
+      parse         Parse the given input and show the result with colour coding.   
 
       ${chalk.cyan.bold("Options")}
       --debug                       Enable verbose logging
@@ -124,6 +128,11 @@ function resolveStrategy(input: string) {
   }
 }
 
+function resolveProviders(input: string) {
+  if (input === "false") return [];
+  return input.split(",");
+}
+
 async function main() {
   const cwd = process.cwd();
   if (cli.flags.debug) {
@@ -161,7 +170,7 @@ async function main() {
         mode: cli.input[0] === "move" ? ApolloMode.Move : ApolloMode.Symlink,
         useSnapshots: cli.flags.snapshot,
         strategy: resolveStrategy(cli.flags.strategy),
-        providers: cli.flags.providers !== "false" ? cli.flags.providers.split(",") : [],
+        providers: resolveProviders(cli.flags.providers),
         detectSubtitleLanguage: cli.flags.detectSubtitleLanguage,
         formats: {
           episode: cli.flags.episodeFormat,
@@ -197,6 +206,27 @@ async function main() {
       console.log(
         `${rolledBack.toLocaleString()} files rolled back from the last batch. There may be more files to roll back from other invocations.`
       );
+      break;
+    }
+    case "parse": {
+      const inputData = cli.input.slice(1).join(" ");
+      if (!inputData) {
+        throw cli.showHelp(1);
+      }
+
+      const parser = new ApolloParser({
+        providers: resolveProviders(cli.flags.providers),
+        detectSubtitleLanguage: cli.flags.detectSubtitleLanguage,
+      });
+
+      const result = await parser.parse(inputData);
+      if (!result) {
+        console.log("No matches found");
+        break;
+      }
+
+      const colorised = coloriseResult(inputData, result, parser);
+      console.log(colorised);
       break;
     }
     default:
