@@ -17,7 +17,12 @@ const toString = (input: unknown) => {
   }
 
   if (Array.isArray(input)) {
-    if (typeof input[0] === "number") return input.join("-");
+    if (typeof input[0] === "number") {
+      // todo: this assumes we're formatting season/episode indexes,
+      // so S08E01-02 works. this should not be handled this way
+      return input.map((item) => pad(item)).join("-");
+    }
+
     const deduped = [...new Set(input)];
     return deduped.join(" ");
   }

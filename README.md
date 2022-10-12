@@ -148,7 +148,6 @@ console.log(parsed);
 
 # todo
 
-- [ ] Automatically update data/titles.db (!)
 - [ ] Test for extracting languages from subtitle filenames more, maybe specific regex to match it.
 - [ ] Merge `seasons` and `seasonNumber` properties into `seasonNumbers`, a getter for `seasonNumber` that returns null when there is more than one season
 - [ ] Merge season+episode/season/episode property extractors into one extractor
@@ -160,3 +159,5 @@ console.log(parsed);
 - [ ] Process multiple files at once and make better assumptions about them.
   - We would have to ensure the names match across all files in the batch, this should only be useful with season packs.
   - Things like episode vs title names would be easier because episode names would change between files where titles would not, so we could have better confidence with episode names and other data.
+- [ ] Split extracted info into episode and title sections. For example, `startYear` and `poster` is ambiguous as to whether it belongs to the title or individual episode.
+- [ ] Support importing featurettes

@@ -1,3 +1,4 @@
+import { expect, it } from "vitest";
 import { TitleType } from "../types";
 import { parseType } from "./parse-type";
 

@@ -1,0 +1,5 @@
+// Vitest Snapshot v1
+
+exports[`should strip size info from urls 1`] = `"https://m.media-amazon.com/images/M/MV5BNzQwNTA5NzA1MF5BMl5BanBnXkFtZTgwMjEwNzI0MjE@._V1_.jpg"`;
+
+exports[`should strip size info from urls 2`] = `"https://m.media-amazon.com/images/M/MV5BNzQwNTA5NzA1MF5BMl5BanBnXkFtZTgwMjEwNzI0MjE@._V1_.jpg"`;

@@ -1,3 +1,4 @@
+import { expect, it } from "vitest";
 import { strip } from "./get-stripped-distance";
 
 it("should strip out non-english characters", () => {

@@ -5,7 +5,8 @@ import { detectSubtitleLanguage } from "../helpers/detect-subtitle-language";
 import { getAllMatches } from "../helpers/get-all-matches";
 import { log } from "../log";
 import { properties } from "../properties";
-import { getEpisode, search } from "../providers";
+import { getEpisode } from "../search/episode";
+import { search } from "../search/search";
 import { ApolloOutput, FileType, TitleType } from "../types";
 
 export interface ApolloMatch {
@@ -16,15 +17,15 @@ export interface ApolloMatch {
 }
 
 export interface ApolloParserOptions {
-  providers: string[];
   detectSubtitleLanguage?: boolean;
+  lookupEpisodeNames?: boolean;
 }
 
 export class ApolloParser {
   readonly matchIndexes: ApolloMatch[] = [];
   readonly options: ApolloParserOptions;
   private currentProperty?: string;
-  constructor(options: ApolloParserOptions) {
+  constructor(options: ApolloParserOptions = {}) {
     this.options = options;
   }
 
@@ -71,10 +72,11 @@ export class ApolloParser {
     data.name = this.extractTitleFromPath(cleanPath, data.titleType)?.trim();
     if (data.name && data.titleType !== undefined) {
       const extractedId = data.links?.find((id) => id.name === "IMDb");
-      const result = await search(this.options.providers, {
+      const result = await search({
         name: data.name,
         type: data.titleType,
-        year: data.startYear,
+        startYear: data.startYear,
+        endYear: undefined, // end year can be inaccurate for some titles, maybe its the end of the season or something
         imdbId: data.imdbId || extractedId?.id,
       });
 
@@ -98,11 +100,11 @@ export class ApolloParser {
       }
     }
 
-    if (data.imdbId && data.episodeNumber?.length === 1 && data.seasonNumber !== undefined) {
-      const episodeMeta = await getEpisode(this.options.providers, data.imdbId, data.seasonNumber, data.episodeNumber[0]);
+    if (this.options.lookupEpisodeNames !== false && data.imdbId && data.episodeNumber?.length === 1 && data.seasonNumber !== undefined) {
+      const episodeMeta = await getEpisode(data.imdbId, data.seasonNumber, data.episodeNumber[0]);
       if (episodeMeta) {
-        data.episodeName = episodeMeta.episodeName;
-        data.episodeId = episodeMeta.episodeId;
+        data.episodeName = episodeMeta.name;
+        data.episodeId = episodeMeta.id;
       }
     }
 

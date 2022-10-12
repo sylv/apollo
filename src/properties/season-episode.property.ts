@@ -1,74 +1,82 @@
-import { Property } from "./property";
 import { ApolloParser } from "../classes/apollo-parser";
-import { PART_END_PATTERN, PART_START_PATTERN, SPACE_REGEX } from "../constants";
-import { getAllMatches } from "../helpers/get-all-matches";
+import { parseRange } from "../helpers/parse-range";
 import { ApolloOutput } from "../types";
+import { Property } from "./property";
 
-const STANDARD_SEASON_EPISODE_REGEX = new RegExp(
-  `${PART_START_PATTERN}(?:SE|S)(?<season>[0-9]{1,4})${SPACE_REGEX}?(?<episode>(?:(?:EP|E)[0-9]{1,2})+)?${PART_END_PATTERN}`,
-  "gi"
-);
-
-const SEASON_EPISODE_PATTERNS = [
-  // matches "SE01E01", "S01E01", "S01 E01", "S01"
-  // not "Se7en" or "S01e01-10"
-  STANDARD_SEASON_EPISODE_REGEX,
-  // matches "1x1"
-  // not "1x1t", "1x1-1x2"
-  new RegExp(`${PART_START_PATTERN}(?<season>[0-9]{1,4})x(?<episode>[0-9]{1,2})${PART_END_PATTERN}`, "gi"),
-  // matches "Season 1 Episode 02", "Season 01"
-  new RegExp(`${PART_START_PATTERN}Season.(?<season>[0-9]{1,4})(?:.Episode.(?<episode>[0-9]{1,2}))?${PART_END_PATTERN}`, "gi"),
-  // matches "SE1/01"
-  new RegExp(`${PART_START_PATTERN}(?:SE|S)(?<season>[0-9]{1,4})\\/(?<episode>[0-9]{1,2})${PART_END_PATTERN}`, "gi"),
-  // matches "Part 3 of 3" if we're really desparate
-  new RegExp(`${PART_START_PATTERN}Part (?<episode>[0-9]) of [0-9]${PART_END_PATTERN}`, "gi"),
-  // matches "some_title_ep06.mp4" if we're even more desperate
-  /(?<=\b|_)ep(?<episode>[0-9]+)(?=\b|_)/gi,
+// patterns, in order of priority, lower = higher priority
+// higher priority matches will overwrite lower priority matches.
+const PATTERNS = [
+  // "Part 3 of 3", if we're really desperate
+  /Part (?<episodeNumber>[0-9]{1,2}) of (?<seasonNumber>[0-9]{1,2})/gi,
+  // "some_title_ep03.mp4"
+  /ep(?<episodeNumber>[0-9]{1,2})\b/gi,
+  // "SE1/01"
+  /SE?(?<seasonNumber>[0-9]{1,2})\/(?<episodeNumber>[0-9]{1,2})/gi,
+  // "season 1", "season 1 episode 1", "season 1/episode 1"
+  /Season (?<seasonNumber>[0-9]{1,2})(( |\/)Episode (?<episodeNumber>[0-9]{1,2}))?/gi,
+  // "1x1", "1x12"
+  /(\[|\(|\b)(?<seasonNumber>[0-9]{1,2})x(?<episodeNumber>[0-9]{1,2})(\]|\)|\b)/gi,
+  // "S01E01", "S01 E02", "SE01EP01"
+  /SE?(?<seasonNumber>[0-9]{1,3}) ?EP?(?<episodeNumber>[0-9]{1,3})/gi,
+  // "episodes 1-4", "ep1-4"
+  /\b(episodes?|ep|e) ?(?<episodeRangeExpand>[0-9-]{2,})\b/gi,
+  // "season 1-4", "se1-4", "Seasons 1-7", "S01-S02"
+  /\b(?:seasons|season|se|s) ?(?<seasonRangeExpand>[0-9]{1,2}(?:-S?[0-9]{1,2})+)/gi,
+  // "S01E01E02", "S01E01-E02", "S01E01 - E02", "S01E01-02"
+  /(?<=[0-9]|\b)EP?(?<episodeRange>[0-9]{1,2}(?:(?: ?- ?E?|E)[0-9]{1,2})+)/gi,
 ];
 
-export class PropertySeasonEpisode extends Property<"episodes" | "seasons"> {
+export class PropertySeasonEpisode extends Property<"episodeNumber" | "episodes" | "seasonNumber" | "seasons"> {
   write(cleanPath: string, parsed: Partial<ApolloOutput>, parser: ApolloParser) {
-    let seasonNumber: number | undefined;
-    let episodes: number[] = [];
+    const fileNameIndex = cleanPath.lastIndexOf("/");
+    for (const pattern of PATTERNS) {
+      const match = parser.getMatch(cleanPath, pattern, false);
+      if (!match) continue;
+      const matchIsInFileName = match.index > fileNameIndex;
+      // console.log({ matchIsInFileName });
 
-    for (const pattern of SEASON_EPISODE_PATTERNS) {
-      const matches = parser.getMatch(cleanPath, pattern, true);
-      for (const match of matches) {
-        if (!match.groups) continue;
-
-        // if the char at the start or end of the match is a dash,
-        // it indicates a season range that PropertySeason.ts will match,
-        // so we want to throw out those matches entirely.
-        const endIndex = match.index + match[0].length;
-        const charAfterMatch = cleanPath[endIndex];
-        const charBeforeMatch = cleanPath[match.index - 1];
-        if (charAfterMatch === "-" || charBeforeMatch === "-") continue;
-
-        const seasonMatch = this.resolve(match.groups.season);
-        const episodeMatch = this.resolve(match.groups.episode);
-        if (seasonMatch !== undefined && episodeMatch !== undefined) {
-          // if we have both, trust it more than separate parts we got.
-          // e.g, "Season 1\S02E02", this should give us S02E02 instead of S01E02
-          seasonNumber = seasonMatch[0];
-          episodes = episodeMatch;
-          break;
+      // handle "seasonRange" and "seasonRangeExpand" groups
+      // this becomes "seasons" if the match was before the file name and "seasonNumber"
+      // if the match was in the file name.
+      const seasonRange = match.groups!.seasonRange || match.groups!.seasonRangeExpand;
+      const parsedSeasonRange = seasonRange && parseRange(seasonRange, !!match.groups!.seasonRangeExpand);
+      if (parsedSeasonRange) {
+        if (matchIsInFileName && parsedSeasonRange.length === 1) {
+          parsed.seasonNumber = parsedSeasonRange[0];
+        } else {
+          parsed.seasons = parsedSeasonRange;
         }
+      }
 
-        if (seasonMatch !== undefined && !seasonNumber) seasonNumber = seasonMatch[0];
-        if (episodeMatch !== undefined && !episodes.length) episodes = episodeMatch;
+      // handle "episodeRange" and "episodeRangeExpand" groups
+      // this becomes "episodes" if the match was before the file name and "episodeNumber"
+      // if the match was in the file name.
+      const episodeRange = match.groups!.episodeRange || match.groups!.episodeRangeExpand;
+      const parsedEpisodeRange = episodeRange && parseRange(episodeRange, !!match.groups!.episodeRangeExpand);
+      if (parsedEpisodeRange) {
+        if (matchIsInFileName) parsed.episodeNumber = parsedEpisodeRange;
+        else parsed.episodes = parsedEpisodeRange;
+      }
+
+      // handle "episodeNumber" group
+      const episodeNumber = match.groups!.episodeNumber;
+      if (episodeNumber) {
+        const parsedEpisodeNumber = Number(episodeNumber);
+        if (!isNaN(parsedEpisodeNumber)) {
+          parsed.episodeNumber = [parsedEpisodeNumber];
+        }
+      }
+
+      // handle "seasonNumber" group
+      const seasonNumber = match.groups!.seasonNumber;
+      if (seasonNumber) {
+        const parsedSeasonNumber = Number(seasonNumber);
+        if (!isNaN(parsedSeasonNumber)) {
+          parsed.seasonNumber = parsedSeasonNumber;
+        }
       }
     }
 
-    if (seasonNumber) parsed.seasonNumber = seasonNumber;
-    if (episodes.length) parsed.episodeNumber = episodes;
-    return parsed;
-  }
-
-  private resolve(match?: string) {
-    if (!match) return;
-    const matches = getAllMatches(match, /[0-9]+/g);
-    const parsed = matches.map((match) => +match[0]).filter((value) => !isNaN(value));
-    if (parsed[0] === undefined) return;
     return parsed;
   }
 }

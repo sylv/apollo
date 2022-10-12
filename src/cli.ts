@@ -8,11 +8,8 @@ import { ApolloParser } from "./classes/apollo-parser";
 import { coloriseResult } from "./helpers/colorise";
 import { rollback, snapshotDbPath } from "./helpers/snapshots";
 import { setLogger } from "./log";
-import { providers } from "./providers";
 import { ApolloMode, ApolloStrategy, defaultEpisodeFormat, defaultMovieFormat, renameFiles, RenameOptions } from "./rename";
 
-const providerNames = [...providers.keys()];
-const providerList = `"${providerNames.join('", "')}"`;
 const cli = meow(
   `
       ${chalk.cyan.bold("Example")}
@@ -59,10 +56,6 @@ const cli = meow(
                                       "hybrid", the same as "filenames" but will only rename files if the season and 
                                                 episode format is not standard like S00E00. This maintains metadata 
                                                 like release info and may be better for sonarr/radarr.
-
-      --providers                   A comma-separated list of metadata providers. Defaults to "local,imdb". 
-                                    The order determines priority, "local,imdb" will use the local provider and fall back to IMDb if there are no matches.
-                                    Valid providers are ${providerList}. Set to "false" to disable entirely, using only metadata in the file name.
 `,
   {
     allowUnknownFlags: false,
@@ -128,11 +121,6 @@ function resolveStrategy(input: string) {
   }
 }
 
-function resolveProviders(input: string) {
-  if (input === "false") return [];
-  return input.split(",");
-}
-
 async function main() {
   const cwd = process.cwd();
   if (cli.flags.debug) {
@@ -170,7 +158,6 @@ async function main() {
         mode: cli.input[0] === "move" ? ApolloMode.Move : ApolloMode.Symlink,
         useSnapshots: cli.flags.snapshot,
         strategy: resolveStrategy(cli.flags.strategy),
-        providers: resolveProviders(cli.flags.providers),
         detectSubtitleLanguage: cli.flags.detectSubtitleLanguage,
         formats: {
           episode: cli.flags.episodeFormat,
@@ -215,7 +202,6 @@ async function main() {
       }
 
       const parser = new ApolloParser({
-        providers: resolveProviders(cli.flags.providers),
         detectSubtitleLanguage: cli.flags.detectSubtitleLanguage,
       });
 
