@@ -20,6 +20,9 @@ const PATTERNS: string[] = [
   // 1000kbps
   // todo: this should just be a generic "bitrate" property
   `[0-9]{3,}kbps`,
+  "dts-hd",
+  "dts",
+  "truehd",
 ];
 
 const AUDIO_PATTERN = `${PART_START_PATTERN}(${PATTERNS.join("|")})${PART_END_PATTERN}`;

@@ -1,9 +1,12 @@
 import { ApolloParser } from "../classes/apollo-parser";
 import { PropertyDate } from "./date.property";
+import { beforeEach, expect, it } from "vitest";
 
 let parser: ApolloParser;
 
-beforeEach(() => (parser = new ApolloParser()));
+beforeEach(() => {
+  parser = new ApolloParser();
+});
 
 it("should parse formats like 20070631", () => {
   const extractor = new PropertyDate();

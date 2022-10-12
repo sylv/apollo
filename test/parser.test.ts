@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import { ApolloParser } from "../src/classes/apollo-parser";
 
 const tests = [
@@ -116,12 +117,24 @@ const tests = [
   // some titles will use ep0 for specials, we need to make sure we support matching 0s for seasons and episodes
   // todo: this doesnt work
   "The Expanse S0E0.mp4",
+  // the russian section threw off matching
+  "Y:\\import\\Менталист\\The.Mentalist.s07.WEB-DL.720p.Rus.Eng\\The.Mentalist.s07e12-13.WEB-DL.720p.Rus.Eng.mkv",
+  // imdb says this started in 2006 but the torrent says 2005, which threw off matching
+  "Y:\\import\\30 Rock (2005) Season 1-7 S01-S07 (1080p BluRay x265 HEVC 10bit AAC 5.1 Silence)\\Season 1\\30 Rock - S01E01.mkv",
+  // season ranges in these formats would fuck with parsing
+  "Amphibia S01E21-E22 Grubhog Day & Hop Pop and Lock",
+  "Amphibia S01E21-22 Grubhog Day & Hop Pop and Lock",
+  // makes sure episodes 1-4 gets expanded to 1,2,3,4
+  "Amphibia episodes 1-4",
+  // this was matched as episodes [21] because [20,21,100] was invalid.
+  // this tests to make sure we differentiate the "100" out of "20-21 - 100" because it has a different separator.
+  "/mnt/y/import/30 Rock (2005) Season 1-7 S01-S07 (1080p BluRay x265 HEVC 10bit AAC 5.1 Silence)/Season 5/30 Rock (2005) - S05E20-E21 - 100 (1080p BluRay x265 Silence).mkv",
 ];
 
 describe("ApolloParser", () => {
   for (const input of tests) {
     it(`should parse "${input}"`, async () => {
-      const parser = new ApolloParser({ providers: ["local", "imdb"] });
+      const parser = new ApolloParser();
       const output = await parser.parse(input);
       expect(output).toMatchSnapshot();
     });

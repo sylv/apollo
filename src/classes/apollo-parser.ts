@@ -5,25 +5,27 @@ import { detectSubtitleLanguage } from "../helpers/detect-subtitle-language";
 import { getAllMatches } from "../helpers/get-all-matches";
 import { log } from "../log";
 import { properties } from "../properties";
-import { getEpisode, search } from "../providers";
+import { getEpisode } from "../search/episode";
+import { search } from "../search/search";
 import { ApolloOutput, FileType, TitleType } from "../types";
 
 export interface ApolloMatch {
   start: number;
   end: number;
+  propertyName?: string;
   countForChildFiltering: boolean;
 }
 
 export interface ApolloParserOptions {
-  disableLookup?: boolean;
-  providers: string[];
   detectSubtitleLanguage?: boolean;
+  lookupEpisodeNames?: boolean;
 }
 
 export class ApolloParser {
   readonly matchIndexes: ApolloMatch[] = [];
   readonly options: ApolloParserOptions;
-  constructor(options: ApolloParserOptions) {
+  private currentProperty?: string;
+  constructor(options: ApolloParserOptions = {}) {
     this.options = options;
   }
 
@@ -68,12 +70,13 @@ export class ApolloParser {
     }
 
     data.name = this.extractTitleFromPath(cleanPath, data.titleType)?.trim();
-    if (data.name && data.titleType !== undefined && !this.options.disableLookup) {
+    if (data.name && data.titleType !== undefined) {
       const extractedId = data.links?.find((id) => id.name === "IMDb");
-      const result = await search(this.options.providers, {
+      const result = await search({
         name: data.name,
         type: data.titleType,
-        year: data.startYear,
+        startYear: data.startYear,
+        endYear: undefined, // end year can be inaccurate for some titles, maybe its the end of the season or something
         imdbId: data.imdbId || extractedId?.id,
       });
 
@@ -97,11 +100,11 @@ export class ApolloParser {
       }
     }
 
-    if (data.imdbId && data.episodeNumber?.length === 1 && data.seasonNumber !== undefined) {
-      const episodeMeta = await getEpisode(this.options.providers, data.imdbId, data.seasonNumber, data.episodeNumber[0]);
+    if (this.options.lookupEpisodeNames !== false && data.imdbId && data.episodeNumber?.length === 1 && data.seasonNumber !== undefined) {
+      const episodeMeta = await getEpisode(data.imdbId, data.seasonNumber, data.episodeNumber[0]);
       if (episodeMeta) {
-        data.episodeName = episodeMeta.episodeName;
-        data.episodeId = episodeMeta.episodeId;
+        data.episodeName = episodeMeta.name;
+        data.episodeId = episodeMeta.id;
       }
     }
 
@@ -119,7 +122,12 @@ export class ApolloParser {
    * Run property parsers in the properties/ directory and add the extracted data to the provided data object.
    */
   protected parseProperties(cleanPath: string, data: Partial<ApolloOutput>) {
-    for (const property of properties) property.write(cleanPath, data, this);
+    for (const property of properties) {
+      this.currentProperty = property.key;
+      property.write(cleanPath, data, this);
+      this.currentProperty = undefined;
+    }
+
     return data;
   }
 
@@ -197,7 +205,12 @@ export class ApolloParser {
     for (const match of matches) {
       const startIndex = match.index ? match.index : target.lastIndexOf(match[0]);
       if (startIndex === -1) continue;
-      this.matchIndexes.push({ start: startIndex, end: startIndex + match[0].length, countForChildFiltering });
+      this.matchIndexes.push({
+        start: startIndex,
+        end: startIndex + match[0].length,
+        propertyName: this.currentProperty,
+        countForChildFiltering,
+      });
     }
 
     if (returnAll) return matches;

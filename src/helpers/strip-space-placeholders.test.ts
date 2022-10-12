@@ -1,3 +1,4 @@
+import { expect, it } from "vitest";
 import { stripSpacePlaceholders } from "./strip-space-placeholders";
 
 it("should leave strings alone that are likely not using other characters as spaces", () => {

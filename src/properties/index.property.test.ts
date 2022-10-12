@@ -1,9 +1,12 @@
+import { beforeEach, expect, it } from "vitest";
 import { ApolloParser } from "../classes/apollo-parser";
 import { PropertyIndex } from "./index.property";
 
 let parser: ApolloParser;
 
-beforeEach(() => (parser = new ApolloParser()));
+beforeEach(() => {
+  parser = new ApolloParser();
+});
 
 it("should parse indexes", () => {
   const extractor = new PropertyIndex();

@@ -1,3 +1,4 @@
+import { expect, it } from "vitest";
 import { replacePlaceholders } from "./replace-placeholders";
 
 it("should replace placeholders", () => {
@@ -23,7 +24,6 @@ it("should remove empty brackets if the placeholder is missing", () => {
 });
 
 it("should join arrays", () => {
-  const atPartEnd = "My File [{audio}]";
-  expect(replacePlaceholders(atPartEnd, { audio: ["AAC", "AC3"] })).toEqual("My File [AAC AC3]");
-  expect(replacePlaceholders(atPartEnd, { audio: [1, 2, 3] })).toEqual("My File [1-2-3]");
+  expect(replacePlaceholders("My File [{audio}]", { audio: ["AAC", "AC3"] })).toEqual("My File [AAC AC3]");
+  expect(replacePlaceholders("My File E{episodes}", { episodes: [1, 2, 3] })).toEqual("My File E01-02-03");
 });

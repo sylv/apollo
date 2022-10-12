@@ -1,4 +1,7 @@
+import { once } from "events";
 import { stat } from "fs/promises";
+import { Selectable } from "kysely";
+import PQueue from "p-queue";
 import { basename, dirname, join } from "path";
 import { ApolloParser, ApolloParserOptions } from "./classes/apollo-parser";
 import { SUBTITLE_EXTENSIONS } from "./constants";
@@ -6,7 +9,7 @@ import { deleteEmptyDirs } from "./helpers/delete-empty-dirs";
 import { moveFile } from "./helpers/move-file";
 import { recursiveReaddir } from "./helpers/recursive-readdir";
 import { replacePlaceholders } from "./helpers/replace-placeholders";
-import { createSnapshotJob } from "./helpers/snapshots";
+import { createSnapshotJob, JobTable } from "./helpers/snapshots";
 import { log } from "./log";
 import { ApolloOutput, FileType, TitleType } from "./types";
 
@@ -36,7 +39,6 @@ export interface RenameOptions extends ApolloParserOptions {
   };
 }
 
-export const defaultSnapshotFile = ".apollo-snapshot.json";
 export const defaultEpisodeFormat = `TV Shows/{name} ({startYear}) [imdbId={imdbId}]/Season {seasonNumber}/{name} - S{seasonNumber}E{episodeNumber} - {episodeName}.{extension}`;
 export const defaultMovieFormat = `Movies/{name} ({startYear}) [imdbId={imdbId}]/{name} ({startYear}).{extension}`;
 
@@ -82,39 +84,51 @@ function getFilePath(options: RenameOptions, filePath: string, parsed: ApolloOut
   }
 }
 
+export async function renameFile(filePath: string, job: Selectable<JobTable> | null, options: RenameOptions) {
+  const shortPath = filePath.slice(options.inputDirectory.length + 1);
+  const isSubtitle = SUBTITLE_EXTENSIONS.some((ext) => filePath.endsWith(ext));
+  if (!isSubtitle && options.minSize) {
+    const meta = await stat(filePath);
+    if (meta.size < options.minSize) {
+      console.debug(`Skipping "${shortPath}" because it's too small`);
+      return;
+    }
+  }
+
+  const strippedPath = filePath.slice(options.inputDirectory.length + 1);
+  const parser = new ApolloParser(options);
+  const parsed = await parser.parse(strippedPath, filePath);
+  const isValidMovie = parsed?.titleType === TitleType.MOVIE;
+  const isValidEpisode = parsed?.titleType === TitleType.EPISODE && parsed.seasonNumber !== undefined && parsed.episodeNumber?.length !== 0;
+
+  if (!parsed?.name || (!isValidMovie && !isValidEpisode)) {
+    log.warn(`Skipping "${shortPath}" as data could not be extracted`);
+    return;
+  }
+
+  const outputPath = getFilePath(options, filePath, parsed);
+  await moveFile({
+    dryRun: options.dryRun ?? false,
+    from: filePath,
+    to: outputPath,
+    symlink: options.mode === ApolloMode.Symlink,
+    job: job,
+  });
+}
+
+const renameQueue = new PQueue({ concurrency: 20 });
+
 export async function renameFiles(options: RenameOptions) {
   const job = options.useSnapshots ? await createSnapshotJob(options.inputDirectory, options.outputDirectory) : null;
   for await (const filePath of recursiveReaddir(options.inputDirectory)) {
-    const shortPath = filePath.slice(options.inputDirectory.length + 1);
-    const isSubtitle = SUBTITLE_EXTENSIONS.some((ext) => filePath.endsWith(ext));
-    if (!isSubtitle && options.minSize) {
-      const meta = await stat(filePath);
-      if (meta.size < options.minSize) {
-        console.debug(`Skipping "${shortPath}" because it's too small`);
-        continue;
-      }
+    // using a queue helps with slow network mounts where each stat might take a couple seconds
+    renameQueue.add(() => renameFile(filePath, job, options));
+    if (renameQueue.pending >= renameQueue.concurrency) {
+      // once we have the full queue running + a full queue pending we can pause
+      // and wait for more space in the queue. there is no reason to run ahead and queue more.
+      console.log("Waiting for rename queue to have free space");
+      await once(renameQueue, "next");
     }
-
-    const strippedPath = filePath.slice(options.inputDirectory.length + 1);
-    const parser = new ApolloParser(options);
-    const parsed = await parser.parse(strippedPath, filePath);
-    const isValidMovie = parsed?.titleType === TitleType.MOVIE;
-    const isValidEpisode =
-      parsed?.titleType === TitleType.EPISODE && parsed.seasonNumber !== undefined && parsed.episodeNumber?.length !== 0;
-
-    if (!parsed?.name || (!isValidMovie && !isValidEpisode)) {
-      log.warn(`Skipping "${shortPath}" as data could not be extracted`);
-      continue;
-    }
-
-    const outputPath = getFilePath(options, filePath, parsed);
-    await moveFile({
-      dryRun: options.dryRun ?? false,
-      from: filePath,
-      to: outputPath,
-      symlink: options.mode === ApolloMode.Symlink,
-      job: job,
-    });
   }
 
   if (options.deleteEmptyDirs) {

@@ -1,60 +1,61 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1
 
-exports[`ApolloParser should parse "/home/data/readonly/Group Trip/videos/Group Trip - Some Interesting Video-1.mp4" 1`] = `
-Object {
-  "audio": Array [],
-  "coding": Array [],
+exports[`ApolloParser > should parse "/home/data/readonly/Group Trip/videos/Group Trip - Some Interesting Video-1.mp4" 1`] = `
+{
+  "audio": [],
+  "coding": [],
   "collection": false,
   "extension": ".mp4",
   "fileType": "VIDEO",
   "index": 1,
-  "languages": Array [],
+  "languages": [],
   "name": "Group Trip - Some Interesting Video",
 }
 `;
 
-exports[`ApolloParser should parse "/home/data/readonly/Group Trip/videos/Some Interesting Video-1.mp4" 1`] = `
-Object {
-  "audio": Array [],
-  "coding": Array [],
+exports[`ApolloParser > should parse "/home/data/readonly/Group Trip/videos/Some Interesting Video-1.mp4" 1`] = `
+{
+  "audio": [],
+  "coding": [],
   "collection": false,
   "extension": ".mp4",
   "fileType": "VIDEO",
   "index": 1,
-  "languages": Array [],
+  "languages": [],
   "name": "Group Trip/Some Interesting Video",
 }
 `;
 
-exports[`ApolloParser should parse "/home/ryan/clone/Family Guy - Complete H265/Season 17 [1080p x265][MP3 5.1]/Family.Guy.S17E16 [1080p Web x265][MP3 5.1].mp4" 1`] = `
-Object {
-  "audio": Array [
+exports[`ApolloParser > should parse "/home/ryan/clone/Family Guy - Complete H265/Season 17 [1080p x265][MP3 5.1]/Family.Guy.S17E16 [1080p Web x265][MP3 5.1].mp4" 1`] = `
+{
+  "audio": [
     "mp3",
     "5.1",
   ],
-  "coding": Array [
+  "coding": [
     "x265",
   ],
   "collection": false,
   "episodeId": "tt9652794",
   "episodeName": "You Can't Handle the Booth",
-  "episodeNumber": Array [
+  "episodeNumber": [
     16,
   ],
   "extension": ".mp4",
   "fileType": "VIDEO",
   "imdbId": "tt0182576",
-  "languages": Array [],
-  "links": Array [
-    Object {
+  "languages": [],
+  "links": [
+    {
       "id": "tt0182576",
       "name": "IMDb",
       "url": "https://imdb.com/title/tt0182576",
     },
   ],
   "name": "Family Guy",
+  "poster": "https://m.media-amazon.com/images/M/MV5BODEwZjEzMjAtNjQxMy00Yjc4LWFlMDAtYjhjZTAxNDU3OTg3XkEyXkFqcGdeQXVyOTM2NTM4MjA@._V1_.jpg",
   "quality": "WEB-DL",
-  "resolution": Object {
+  "resolution": {
     "height": 1080,
     "width": null,
   },
@@ -64,46 +65,47 @@ Object {
 }
 `;
 
-exports[`ApolloParser should parse "/home/videos/Test Group/videos/Test Group compilation.mp4" 1`] = `
-Object {
-  "audio": Array [],
-  "coding": Array [],
+exports[`ApolloParser > should parse "/home/videos/Test Group/videos/Test Group compilation.mp4" 1`] = `
+{
+  "audio": [],
+  "coding": [],
   "collection": false,
   "extension": ".mp4",
   "fileType": "VIDEO",
-  "languages": Array [],
+  "languages": [],
   "name": "Test Group Compilation",
 }
 `;
 
-exports[`ApolloParser should parse "/mnt/vtfs/torrents/completed/Peaky_Blinders_S01E01_x265_1080p_BluRay_30nama_30NAMA.mkv" 1`] = `
-Object {
-  "audio": Array [],
-  "coding": Array [
+exports[`ApolloParser > should parse "/mnt/vtfs/torrents/completed/Peaky_Blinders_S01E01_x265_1080p_BluRay_30nama_30NAMA.mkv" 1`] = `
+{
+  "audio": [],
+  "coding": [
     "x265",
   ],
   "collection": false,
   "endYear": 2022,
   "episodeId": "tt2471500",
-  "episodeName": "Episode #1.1",
-  "episodeNumber": Array [
+  "episodeName": undefined,
+  "episodeNumber": [
     1,
   ],
   "extension": ".mkv",
   "fileType": "VIDEO",
   "imdbId": "tt2442560",
-  "languages": Array [],
-  "links": Array [
-    Object {
+  "languages": [],
+  "links": [
+    {
       "id": "tt2442560",
       "name": "IMDb",
       "url": "https://imdb.com/title/tt2442560",
     },
   ],
   "name": "Peaky Blinders",
+  "poster": "https://m.media-amazon.com/images/M/MV5BZjYzZDgzMmYtYjY5Zi00YTk1LThhMDYtNjFlNzM4MTZhYzgyXkEyXkFqcGdeQXVyMTE5NDQ1MzQ3._V1_.jpg",
   "quality": "BluRay",
   "releaseGroup": "30NAMA",
-  "resolution": Object {
+  "resolution": {
     "height": 1080,
     "width": null,
   },
@@ -113,32 +115,33 @@ Object {
 }
 `;
 
-exports[`ApolloParser should parse "/mnt/vtfs/torrents/completed/Trailer Park Boys Season 9 [1080p] [HEVC]/S09E05 The Motel Can't Live at the Motel.mkv" 1`] = `
-Object {
-  "audio": Array [],
-  "coding": Array [
+exports[`ApolloParser > should parse "/mnt/vtfs/torrents/completed/Trailer Park Boys Season 9 [1080p] [HEVC]/S09E05 The Motel Can't Live at the Motel.mkv" 1`] = `
+{
+  "audio": [],
+  "coding": [
     "HEVC",
   ],
   "collection": false,
   "endYear": 2018,
   "episodeId": "tt3757674",
   "episodeName": "The Motel Can't Live at the Motel",
-  "episodeNumber": Array [
+  "episodeNumber": [
     5,
   ],
   "extension": ".mkv",
   "fileType": "VIDEO",
   "imdbId": "tt0290988",
-  "languages": Array [],
-  "links": Array [
-    Object {
+  "languages": [],
+  "links": [
+    {
       "id": "tt0290988",
       "name": "IMDb",
       "url": "https://imdb.com/title/tt0290988",
     },
   ],
   "name": "Trailer Park Boys",
-  "resolution": Object {
+  "poster": "https://m.media-amazon.com/images/M/MV5BOTA0NTAwMTc1MF5BMl5BanBnXkFtZTgwODk2NjY0ODE@._V1_.jpg",
+  "resolution": {
     "height": 1080,
     "width": null,
   },
@@ -148,32 +151,33 @@ Object {
 }
 `;
 
-exports[`ApolloParser should parse "/mnt/vtfs/torrents/completed/Trailer.Park.Boys.Season.9.[1080p].[HEVC]/S09E05.The.Motel.Can't.Live.at.the.Motel.mkv" 1`] = `
-Object {
-  "audio": Array [],
-  "coding": Array [
+exports[`ApolloParser > should parse "/mnt/vtfs/torrents/completed/Trailer.Park.Boys.Season.9.[1080p].[HEVC]/S09E05.The.Motel.Can't.Live.at.the.Motel.mkv" 1`] = `
+{
+  "audio": [],
+  "coding": [
     "HEVC",
   ],
   "collection": false,
   "endYear": 2018,
   "episodeId": "tt3757674",
   "episodeName": "The Motel Can't Live at the Motel",
-  "episodeNumber": Array [
+  "episodeNumber": [
     5,
   ],
   "extension": ".mkv",
   "fileType": "VIDEO",
   "imdbId": "tt0290988",
-  "languages": Array [],
-  "links": Array [
-    Object {
+  "languages": [],
+  "links": [
+    {
       "id": "tt0290988",
       "name": "IMDb",
       "url": "https://imdb.com/title/tt0290988",
     },
   ],
   "name": "Trailer Park Boys",
-  "resolution": Object {
+  "poster": "https://m.media-amazon.com/images/M/MV5BOTA0NTAwMTc1MF5BMl5BanBnXkFtZTgwODk2NjY0ODE@._V1_.jpg",
+  "resolution": {
     "height": 1080,
     "width": null,
   },
@@ -183,37 +187,83 @@ Object {
 }
 `;
 
-exports[`ApolloParser should parse "/mnt/vtfs/torrents/completed/Trailer/Not a Show Season 9 [1080p] [HEVC]/S09E05.mkv" 1`] = `undefined`;
+exports[`ApolloParser > should parse "/mnt/vtfs/torrents/completed/Trailer/Not a Show Season 9 [1080p] [HEVC]/S09E05.mkv" 1`] = `undefined`;
 
-exports[`ApolloParser should parse "/mnt/z/Archer S01e01-10/Archer.1x05.Honeypot.1080p.BDMux.ITA.ENG.Subs.x264-Fratposa.mkv" 1`] = `
-Object {
-  "audio": Array [],
-  "coding": Array [
+exports[`ApolloParser > should parse "/mnt/y/import/30 Rock (2005) Season 1-7 S01-S07 (1080p BluRay x265 HEVC 10bit AAC 5.1 Silence)/Season 5/30 Rock (2005) - S05E20-E21 - 100 (1080p BluRay x265 Silence).mkv" 1`] = `
+{
+  "audio": [],
+  "coding": [
+    "x265",
+  ],
+  "collection": false,
+  "endYear": 2013,
+  "episodeNumber": [
+    20,
+    21,
+  ],
+  "extension": ".mkv",
+  "fileType": "VIDEO",
+  "imdbId": "tt0496424",
+  "languages": [],
+  "links": [
+    {
+      "id": "tt0496424",
+      "name": "IMDb",
+      "url": "https://imdb.com/title/tt0496424",
+    },
+  ],
+  "name": "30 Rock",
+  "poster": "https://m.media-amazon.com/images/M/MV5BMTQ4NDQ4OTUzOV5BMl5BanBnXkFtZTcwMjMzMTUyNw@@._V1_.jpg",
+  "quality": "BluRay",
+  "resolution": {
+    "height": 1080,
+    "width": null,
+  },
+  "seasonNumber": 5,
+  "seasons": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+  ],
+  "startYear": 2006,
+  "titleType": 3,
+}
+`;
+
+exports[`ApolloParser > should parse "/mnt/z/Archer S01e01-10/Archer.1x05.Honeypot.1080p.BDMux.ITA.ENG.Subs.x264-Fratposa.mkv" 1`] = `
+{
+  "audio": [],
+  "coding": [
     "x264",
   ],
   "collection": false,
-  "episodeId": "tt1598645",
-  "episodeName": "Honeypot",
-  "episodeNumber": Array [
-    5,
+  "episodeId": "tt1539157",
+  "episodeName": "Mole Hunt",
+  "episodeNumber": [
+    1,
   ],
   "extension": ".mkv",
   "fileType": "VIDEO",
   "imdbId": "tt1486217",
-  "languages": Array [
+  "languages": [
     "ITA",
     "ENG",
   ],
-  "links": Array [
-    Object {
+  "links": [
+    {
       "id": "tt1486217",
       "name": "IMDb",
       "url": "https://imdb.com/title/tt1486217",
     },
   ],
   "name": "Archer",
+  "poster": "https://m.media-amazon.com/images/M/MV5BMTg3NTMwMzY2OF5BMl5BanBnXkFtZTgwMDcxMjQ0NDE@._V1_.jpg",
   "releaseGroup": "Fratposa",
-  "resolution": Object {
+  "resolution": {
     "height": 1080,
     "width": null,
   },
@@ -223,116 +273,100 @@ Object {
 }
 `;
 
-exports[`ApolloParser should parse "/mnt/z/completed/Top Gear UK 1-17/Top Gear - Season 16/Top Gear - [16x00] The_Three_Wise_Men_Christmas.avi" 1`] = `
-Object {
-  "audio": Array [],
-  "coding": Array [],
+exports[`ApolloParser > should parse "/mnt/z/completed/Top Gear UK 1-17/Top Gear - Season 16/Top Gear - [16x00] The_Three_Wise_Men_Christmas.avi" 1`] = `
+{
+  "audio": [],
+  "coding": [],
   "collection": false,
   "episodeId": "tt1802727",
   "episodeName": "Middle East Special",
-  "episodeNumber": Array [
+  "episodeNumber": [
     0,
   ],
   "extension": ".avi",
   "fileType": "VIDEO",
   "imdbId": "tt1628033",
-  "languages": Array [],
-  "links": Array [
-    Object {
+  "languages": [],
+  "links": [
+    {
       "id": "tt1628033",
       "name": "IMDb",
       "url": "https://imdb.com/title/tt1628033",
     },
   ],
   "name": "Top Gear",
+  "poster": "https://m.media-amazon.com/images/M/MV5BYzkwZDgwZmQtOWE4Yy00ZjgyLTgxZTYtZTRiMTg5MWY4NTFiXkEyXkFqcGdeQXVyNTA4NzY1MzY@._V1_.jpg",
   "seasonNumber": 16,
-  "seasons": Array [
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    16,
-    17,
-  ],
   "startYear": 2002,
   "titleType": 3,
 }
 `;
 
-exports[`ApolloParser should parse "/mnt/z/torrents/completed/American Dad S01 - S13/Season 10/American Dad! - 10x04 - Crotchwalkers.mkv" 1`] = `
-Object {
-  "audio": Array [],
-  "coding": Array [],
+exports[`ApolloParser > should parse "/mnt/z/torrents/completed/American Dad S01 - S13/Season 10/American Dad! - 10x04 - Crotchwalkers.mkv" 1`] = `
+{
+  "audio": [],
+  "coding": [],
   "collection": false,
   "episodeId": "tt4134636",
   "episodeName": "Big Stan on Campus",
-  "episodeNumber": Array [
+  "episodeNumber": [
     4,
   ],
   "extension": ".mkv",
   "fileType": "VIDEO",
   "imdbId": "tt0397306",
-  "languages": Array [],
-  "links": Array [
-    Object {
+  "languages": [],
+  "links": [
+    {
       "id": "tt0397306",
       "name": "IMDb",
       "url": "https://imdb.com/title/tt0397306",
     },
   ],
   "name": "American Dad!",
+  "poster": "https://m.media-amazon.com/images/M/MV5BNDRkOWIyOTUtMjg5YS00OTJjLTgwNGYtMjgxMTA0NWQ2NGI3L2ltYWdlXkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1_.jpg",
   "seasonNumber": 10,
   "startYear": 2005,
   "titleType": 3,
 }
 `;
 
-exports[`ApolloParser should parse "/mnt/z/torrents/completed/American Dad S01 - S13/Season 13/American Dad! - 13x04 - N.S.A. (No Snoops Allowed).mkv" 1`] = `
-Object {
-  "audio": Array [],
-  "coding": Array [],
+exports[`ApolloParser > should parse "/mnt/z/torrents/completed/American Dad S01 - S13/Season 13/American Dad! - 13x04 - N.S.A. (No Snoops Allowed).mkv" 1`] = `
+{
+  "audio": [],
+  "coding": [],
   "collection": false,
   "episodeId": "tt7787730",
   "episodeName": "Shell Game",
-  "episodeNumber": Array [
+  "episodeNumber": [
     4,
   ],
   "extension": ".mkv",
   "fileType": "VIDEO",
   "imdbId": "tt0397306",
-  "languages": Array [],
-  "links": Array [
-    Object {
+  "languages": [],
+  "links": [
+    {
       "id": "tt0397306",
       "name": "IMDb",
       "url": "https://imdb.com/title/tt0397306",
     },
   ],
   "name": "American Dad!",
+  "poster": "https://m.media-amazon.com/images/M/MV5BNDRkOWIyOTUtMjg5YS00OTJjLTgwNGYtMjgxMTA0NWQ2NGI3L2ltYWdlXkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1_.jpg",
   "seasonNumber": 13,
   "startYear": 2005,
   "titleType": 3,
 }
 `;
 
-exports[`ApolloParser should parse "/mnt/z/torrents/completed/ConAir.1997.720p.BluRay.x264.AC3-RiPRG/ConAir.1997.720p.BluRay.x264.AC3-RiPRG.mkv" 1`] = `
-Object {
-  "audio": Array [
+exports[`ApolloParser > should parse "/mnt/z/torrents/completed/ConAir.1997.720p.BluRay.x264.AC3-RiPRG/ConAir.1997.720p.BluRay.x264.AC3-RiPRG.mkv" 1`] = `
+{
+  "audio": [
     "ac3",
     "ac3",
   ],
-  "coding": Array [
+  "coding": [
     "x264",
     "x264",
   ],
@@ -340,18 +374,19 @@ Object {
   "extension": ".mkv",
   "fileType": "VIDEO",
   "imdbId": "tt0118880",
-  "languages": Array [],
-  "links": Array [
-    Object {
+  "languages": [],
+  "links": [
+    {
       "id": "tt0118880",
       "name": "IMDb",
       "url": "https://imdb.com/title/tt0118880",
     },
   ],
   "name": "Con Air",
+  "poster": "https://m.media-amazon.com/images/M/MV5BMGZmNGIxMTYtMmVjMy00YzhkLWIyOTktNTExZGFiYjNiNzdlXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_.jpg",
   "quality": "BluRay",
   "releaseGroup": "RiPRG",
-  "resolution": Object {
+  "resolution": {
     "height": 720,
     "width": null,
   },
@@ -360,28 +395,29 @@ Object {
 }
 `;
 
-exports[`ApolloParser should parse "/mnt/z/torrents/completed/Logan (2017) [1080p] [YTS.AG]/Logan.2017.1080p.BluRay.x264-[YTS.AG].mp4" 1`] = `
-Object {
-  "audio": Array [],
-  "coding": Array [
+exports[`ApolloParser > should parse "/mnt/z/torrents/completed/Logan (2017) [1080p] [YTS.AG]/Logan.2017.1080p.BluRay.x264-[YTS.AG].mp4" 1`] = `
+{
+  "audio": [],
+  "coding": [
     "x264",
   ],
   "collection": false,
   "extension": ".mp4",
   "fileType": "VIDEO",
   "imdbId": "tt3315342",
-  "languages": Array [],
-  "links": Array [
-    Object {
+  "languages": [],
+  "links": [
+    {
       "id": "tt3315342",
       "name": "IMDb",
       "url": "https://imdb.com/title/tt3315342",
     },
   ],
   "name": "Logan",
+  "poster": "https://m.media-amazon.com/images/M/MV5BYzc5MTU4N2EtYTkyMi00NjdhLTg3NWEtMTY4OTEyMzJhZTAzXkEyXkFqcGdeQXVyNjc1NTYyMjg@._V1_.jpg",
   "quality": "BluRay",
   "releaseGroup": "YTS.AG",
-  "resolution": Object {
+  "resolution": {
     "height": 1080,
     "width": null,
   },
@@ -390,33 +426,33 @@ Object {
 }
 `;
 
-exports[`ApolloParser should parse "/mnt/z/torrents/completed/Love.Death.and.Robots.S01.ITA.ENG.1080p.NF.WEB-DLMux.DD5.1.x264-Morpheus/Love.Death.and.Robots.1x01.Il.Vantaggio.di.Sonnie.ITA.ENG.1080p.NF.WEB-DLMux.DD5.1.x264-Morpheus.mkv" 1`] = `
-Object {
-  "audio": Array [
+exports[`ApolloParser > should parse "/mnt/z/torrents/completed/Love.Death.and.Robots.S01.ITA.ENG.1080p.NF.WEB-DLMux.DD5.1.x264-Morpheus/Love.Death.and.Robots.1x01.Il.Vantaggio.di.Sonnie.ITA.ENG.1080p.NF.WEB-DLMux.DD5.1.x264-Morpheus.mkv" 1`] = `
+{
+  "audio": [
     "dd5.1",
     "dd5.1",
   ],
-  "coding": Array [
+  "coding": [
     "x264",
     "x264",
   ],
   "collection": false,
   "episodeId": "tt9781722",
   "episodeName": "Sonnie's Edge",
-  "episodeNumber": Array [
+  "episodeNumber": [
     1,
   ],
   "extension": ".mkv",
   "fileType": "VIDEO",
   "imdbId": "tt9561862",
-  "languages": Array [
+  "languages": [
     "ITA",
     "ENG",
     "ITA",
     "ENG",
   ],
-  "links": Array [
-    Object {
+  "links": [
+    {
       "id": "tt9561862",
       "name": "IMDb",
       "url": "https://imdb.com/title/tt9561862",
@@ -425,7 +461,7 @@ Object {
   "name": "Love, Death & Robots",
   "poster": "https://m.media-amazon.com/images/M/MV5BYTNiYTNkNTAtYzE3ZS00ZDQ1LWEwZTYtZjI1NzYzMWJjY2U4XkEyXkFqcGdeQXVyODk4OTc3MTY@._V1_.jpg",
   "releaseGroup": "Morpheus",
-  "resolution": Object {
+  "resolution": {
     "height": 1080,
     "width": null,
   },
@@ -435,180 +471,127 @@ Object {
 }
 `;
 
-exports[`ApolloParser should parse "/mnt/z/torrents/completed/Top Gear UK 1-17/Top Gear - Season 7/Top Gear - [07x06] - 2005.12.27 [GOTHiC].avi" 1`] = `
-Object {
-  "audio": Array [],
-  "coding": Array [],
+exports[`ApolloParser > should parse "/mnt/z/torrents/completed/Top Gear UK 1-17/Top Gear - Season 7/Top Gear - [07x06] - 2005.12.27 [GOTHiC].avi" 1`] = `
+{
+  "audio": [],
+  "coding": [],
   "collection": false,
   "date": 2005-12-26T16:00:00.000Z,
-  "episodeId": "tt729722",
+  "episodeId": "tt0729722",
   "episodeName": "Mazda MX-5 vs. Greyhound",
-  "episodeNumber": Array [
+  "episodeNumber": [
     6,
   ],
   "extension": ".avi",
   "fileType": "VIDEO",
   "imdbId": "tt1628033",
-  "languages": Array [],
-  "links": Array [
-    Object {
+  "languages": [],
+  "links": [
+    {
       "id": "tt1628033",
       "name": "IMDb",
       "url": "https://imdb.com/title/tt1628033",
     },
   ],
   "name": "Top Gear",
+  "poster": "https://m.media-amazon.com/images/M/MV5BYzkwZDgwZmQtOWE4Yy00ZjgyLTgxZTYtZTRiMTg5MWY4NTFiXkEyXkFqcGdeQXVyNTA4NzY1MzY@._V1_.jpg",
   "releaseGroup": "GOTHiC",
   "seasonNumber": 7,
-  "seasons": Array [
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    16,
-    17,
-  ],
   "startYear": 2002,
   "titleType": 3,
 }
 `;
 
-exports[`ApolloParser should parse "/mnt/z/torrents/completed/Top Gear UK 1-17/Top Gear - Season 10/(auto) Top Gear - 10.07.2008 - [10x01] - [Greatest road in EU].avi" 1`] = `
-Object {
-  "audio": Array [],
-  "coding": Array [],
+exports[`ApolloParser > should parse "/mnt/z/torrents/completed/Top Gear UK 1-17/Top Gear - Season 10/(auto) Top Gear - 10.07.2008 - [10x01] - [Greatest road in EU].avi" 1`] = `
+{
+  "audio": [],
+  "coding": [],
   "collection": false,
   "date": 2008-10-06T16:00:00.000Z,
   "episodeId": "tt1114654",
   "episodeName": "The Search for the Greatest Driving Road in the World",
-  "episodeNumber": Array [
+  "episodeNumber": [
     1,
   ],
   "extension": ".avi",
   "fileType": "VIDEO",
   "imdbId": "tt1628033",
-  "languages": Array [],
-  "links": Array [
-    Object {
+  "languages": [],
+  "links": [
+    {
       "id": "tt1628033",
       "name": "IMDb",
       "url": "https://imdb.com/title/tt1628033",
     },
   ],
   "name": "Top Gear",
+  "poster": "https://m.media-amazon.com/images/M/MV5BYzkwZDgwZmQtOWE4Yy00ZjgyLTgxZTYtZTRiMTg5MWY4NTFiXkEyXkFqcGdeQXVyNTA4NzY1MzY@._V1_.jpg",
   "releaseGroup": "EU",
   "seasonNumber": 10,
-  "seasons": Array [
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    16,
-    17,
-  ],
   "startYear": 2002,
   "titleType": 3,
 }
 `;
 
-exports[`ApolloParser should parse "/mnt/z/torrents/completed/Top Gear UK 1-17/Top Gear - Season 11/(auto) Top Gear - 2008 - [11x01] - 2008.06.22 [$1k cop car].avi" 1`] = `
-Object {
-  "audio": Array [],
-  "coding": Array [],
+exports[`ApolloParser > should parse "/mnt/z/torrents/completed/Top Gear UK 1-17/Top Gear - Season 11/(auto) Top Gear - 2008 - [11x01] - 2008.06.22 [$1k cop car].avi" 1`] = `
+{
+  "audio": [],
+  "coding": [],
   "collection": false,
   "date": 2008-06-21T16:00:00.000Z,
   "episodeId": "tt1248080",
   "episodeName": "Police Car Challenge",
-  "episodeNumber": Array [
+  "episodeNumber": [
     1,
   ],
   "extension": ".avi",
   "fileType": "VIDEO",
   "imdbId": "tt1628033",
-  "languages": Array [],
-  "links": Array [
-    Object {
+  "languages": [],
+  "links": [
+    {
       "id": "tt1628033",
       "name": "IMDb",
       "url": "https://imdb.com/title/tt1628033",
     },
   ],
   "name": "Top Gear",
+  "poster": "https://m.media-amazon.com/images/M/MV5BYzkwZDgwZmQtOWE4Yy00ZjgyLTgxZTYtZTRiMTg5MWY4NTFiXkEyXkFqcGdeQXVyNTA4NzY1MzY@._V1_.jpg",
   "seasonNumber": 11,
-  "seasons": Array [
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    16,
-    17,
-  ],
   "startYear": 2002,
   "titleType": 3,
 }
 `;
 
-exports[`ApolloParser should parse "/mnt/z/torrents/completed/Watchmen.S01.COMPLETE.720p.AMZN.WEBRip.x264-GalaxySERIES[TGx]/Watchmen.S01E01.720p.AMZN.WEBRip.x264-GalaxySERIES.mkv" 1`] = `
-Object {
-  "audio": Array [],
-  "coding": Array [
+exports[`ApolloParser > should parse "/mnt/z/torrents/completed/Watchmen.S01.COMPLETE.720p.AMZN.WEBRip.x264-GalaxySERIES[TGx]/Watchmen.S01E01.720p.AMZN.WEBRip.x264-GalaxySERIES.mkv" 1`] = `
+{
+  "audio": [],
+  "coding": [
     "x264",
   ],
   "collection": false,
   "endYear": 2019,
   "episodeId": "tt7401958",
   "episodeName": "It's Summer and We're Running Out of Ice",
-  "episodeNumber": Array [
+  "episodeNumber": [
     1,
   ],
   "extension": ".mkv",
   "fileType": "VIDEO",
   "imdbId": "tt7049682",
-  "languages": Array [],
-  "links": Array [
-    Object {
+  "languages": [],
+  "links": [
+    {
       "id": "tt7049682",
       "name": "IMDb",
       "url": "https://imdb.com/title/tt7049682",
     },
   ],
   "name": "Watchmen",
+  "poster": "https://m.media-amazon.com/images/M/MV5BYjhhZDE3NjgtMjkzNC00NzI3LWJhOTItMWQ5ZjljODA5NWNkXkEyXkFqcGdeQXVyMzQ2MDI5NjU@._V1_.jpg",
   "quality": "WEB-DL",
   "releaseGroup": "GalaxySERIES",
-  "resolution": Object {
+  "resolution": {
     "height": 720,
     "width": null,
   },
@@ -618,34 +601,38 @@ Object {
 }
 `;
 
-exports[`ApolloParser should parse "/test/[Beatrice-Raws] Fate Stay Night - Unlimited Blade Works TV-1 [BDRip 1920x1080 HEVC TrueHD]/NC/[Beatrice-Raws] Fate Stay Night - Unlimited Blade Works (Creditless ED_ep0) [BDRip 1920x1080 HEVC TrueHD].mkv" 1`] = `
-Object {
-  "audio": Array [],
-  "coding": Array [
+exports[`ApolloParser > should parse "/test/[Beatrice-Raws] Fate Stay Night - Unlimited Blade Works TV-1 [BDRip 1920x1080 HEVC TrueHD]/NC/[Beatrice-Raws] Fate Stay Night - Unlimited Blade Works (Creditless ED_ep0) [BDRip 1920x1080 HEVC TrueHD].mkv" 1`] = `
+{
+  "audio": [
+    "truehd",
+    "truehd",
+  ],
+  "coding": [
     "HEVC",
     "HEVC",
   ],
   "collection": false,
   "contentRating": "TV-1",
   "endYear": 2015,
-  "episodeNumber": Array [
+  "episodeNumber": [
     0,
   ],
   "extension": ".mkv",
   "fileType": "VIDEO",
   "imdbId": "tt3621796",
-  "languages": Array [],
-  "links": Array [
-    Object {
+  "languages": [],
+  "links": [
+    {
       "id": "tt3621796",
       "name": "IMDb",
       "url": "https://imdb.com/title/tt3621796",
     },
   ],
-  "name": "Fate/stay night: Unlimited Blade Works",
+  "name": "Fate/stay night [Unlimited Blade Works]",
+  "poster": "https://m.media-amazon.com/images/M/MV5BOTg5ZjI5ZTAtOWE2OS00MjY4LWI4ZDQtMzEzMDY4MTgzYWJlXkEyXkFqcGdeQXVyNjc3OTE4Nzk@._V1_.jpg",
   "quality": "BluRay",
   "releaseGroup": "TrueHD",
-  "resolution": Object {
+  "resolution": {
     "height": 1080,
     "width": 1920,
   },
@@ -654,31 +641,32 @@ Object {
 }
 `;
 
-exports[`ApolloParser should parse "AVATAR Series (2005-2014) - COMPLETE The Last Airbender, 2010 Movie, Legend of Korra - 1080p BluRay x264\\2. The Legend of Korra (2012-14)\\Book 4a - Balance (2014)\\Avatar (TLoK) - S04 E10 - Operation Beifong (1080p - BluRay).mp4" 1`] = `
-Object {
-  "audio": Array [],
-  "coding": Array [],
+exports[`ApolloParser > should parse "AVATAR Series (2005-2014) - COMPLETE The Last Airbender, 2010 Movie, Legend of Korra - 1080p BluRay x264\\2. The Legend of Korra (2012-14)\\Book 4a - Balance (2014)\\Avatar (TLoK) - S04 E10 - Operation Beifong (1080p - BluRay).mp4" 1`] = `
+{
+  "audio": [],
+  "coding": [],
   "collection": false,
   "endYear": 2014,
   "episodeId": "tt4122678",
   "episodeName": "Operation Beifong",
-  "episodeNumber": Array [
+  "episodeNumber": [
     10,
   ],
   "extension": ".mp4",
   "fileType": "VIDEO",
   "imdbId": "tt1695360",
-  "languages": Array [],
-  "links": Array [
-    Object {
+  "languages": [],
+  "links": [
+    {
       "id": "tt1695360",
       "name": "IMDb",
       "url": "https://imdb.com/title/tt1695360",
     },
   ],
   "name": "The Legend of Korra",
+  "poster": "https://m.media-amazon.com/images/M/MV5BYTZhNGY2ZDAtYWYxYy00YWNlLWI3NDUtNjBiM2NkMGVmODIxXkEyXkFqcGdeQXVyODUwNjEzMzg@._V1_.jpg",
   "quality": "BluRay",
-  "resolution": Object {
+  "resolution": {
     "height": 1080,
     "width": null,
   },
@@ -688,30 +676,120 @@ Object {
 }
 `;
 
-exports[`ApolloParser should parse "Avatar (TLoK) - S03 E12 - Enter the Void (1080p - BluRay).mp4" 1`] = `
-Object {
-  "audio": Array [],
-  "coding": Array [],
+exports[`ApolloParser > should parse "Amphibia S01E21-22 Grubhog Day & Hop Pop and Lock" 1`] = `
+{
+  "audio": [],
+  "coding": [],
+  "collection": false,
+  "endYear": 2022,
+  "episodeNumber": [
+    21,
+    22,
+  ],
+  "extension": undefined,
+  "fileType": "VIDEO",
+  "imdbId": "tt8050740",
+  "languages": [],
+  "links": [
+    {
+      "id": "tt8050740",
+      "name": "IMDb",
+      "url": "https://imdb.com/title/tt8050740",
+    },
+  ],
+  "name": "Amphibia",
+  "poster": "https://m.media-amazon.com/images/M/MV5BYTQyZDc3NTYtNzZlMy00ODFmLTkwZTEtZTRjODg0NTNhNDdiXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_.jpg",
+  "seasonNumber": 1,
+  "startYear": 2019,
+  "titleType": 3,
+}
+`;
+
+exports[`ApolloParser > should parse "Amphibia S01E21-E22 Grubhog Day & Hop Pop and Lock" 1`] = `
+{
+  "audio": [],
+  "coding": [],
+  "collection": false,
+  "endYear": 2022,
+  "episodeNumber": [
+    21,
+    22,
+  ],
+  "extension": undefined,
+  "fileType": "VIDEO",
+  "imdbId": "tt8050740",
+  "languages": [],
+  "links": [
+    {
+      "id": "tt8050740",
+      "name": "IMDb",
+      "url": "https://imdb.com/title/tt8050740",
+    },
+  ],
+  "name": "Amphibia",
+  "poster": "https://m.media-amazon.com/images/M/MV5BYTQyZDc3NTYtNzZlMy00ODFmLTkwZTEtZTRjODg0NTNhNDdiXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_.jpg",
+  "seasonNumber": 1,
+  "startYear": 2019,
+  "titleType": 3,
+}
+`;
+
+exports[`ApolloParser > should parse "Amphibia episodes 1-4" 1`] = `
+{
+  "audio": [],
+  "coding": [],
+  "collection": true,
+  "endYear": 2022,
+  "episodeNumber": [
+    1,
+    2,
+    3,
+    4,
+  ],
+  "extension": undefined,
+  "fileType": "VIDEO",
+  "imdbId": "tt8050740",
+  "index": 4,
+  "languages": [],
+  "links": [
+    {
+      "id": "tt8050740",
+      "name": "IMDb",
+      "url": "https://imdb.com/title/tt8050740",
+    },
+  ],
+  "name": "Amphibia",
+  "poster": "https://m.media-amazon.com/images/M/MV5BYTQyZDc3NTYtNzZlMy00ODFmLTkwZTEtZTRjODg0NTNhNDdiXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_.jpg",
+  "startYear": 2019,
+  "titleType": 3,
+}
+`;
+
+exports[`ApolloParser > should parse "Avatar (TLoK) - S03 E12 - Enter the Void (1080p - BluRay).mp4" 1`] = `
+{
+  "audio": [],
+  "coding": [],
   "collection": false,
   "endYear": 2014,
   "episodeId": "tt3865216",
   "episodeName": "Enter the Void",
-  "episodeNumber": Array [
+  "episodeNumber": [
     12,
   ],
   "extension": ".mp4",
   "fileType": "VIDEO",
   "imdbId": "tt1695360",
-  "languages": Array [],
-  "links": Array [
-    Object {
+  "languages": [],
+  "links": [
+    {
       "id": "tt1695360",
       "name": "IMDb",
       "url": "https://imdb.com/title/tt1695360",
     },
   ],
   "name": "The Legend of Korra",
-  "resolution": Object {
+  "poster": "https://m.media-amazon.com/images/M/MV5BYTZhNGY2ZDAtYWYxYy00YWNlLWI3NDUtNjBiM2NkMGVmODIxXkEyXkFqcGdeQXVyODUwNjEzMzg@._V1_.jpg",
+  "resolution": {
     "height": 1080,
     "width": null,
   },
@@ -721,38 +799,38 @@ Object {
 }
 `;
 
-exports[`ApolloParser should parse "BigBuckBunny_640x360.m4v" 1`] = `
-Object {
-  "audio": Array [],
-  "coding": Array [],
+exports[`ApolloParser > should parse "BigBuckBunny_640x360.m4v" 1`] = `
+{
+  "audio": [],
+  "coding": [],
   "collection": false,
   "extension": ".m4v",
   "fileType": "VIDEO",
-  "languages": Array [],
+  "languages": [],
   "name": "Big Buck Bunny",
-  "resolution": Object {
+  "resolution": {
     "height": 360,
     "width": 640,
   },
 }
 `;
 
-exports[`ApolloParser should parse "Bob's Burgers 2011 SE 1 - 8 Complete Eng Only Burntodisc/SE1/02 Human Flesh.mp4" 1`] = `
-Object {
-  "audio": Array [],
-  "coding": Array [],
+exports[`ApolloParser > should parse "Bob's Burgers 2011 SE 1 - 8 Complete Eng Only Burntodisc/SE1/02 Human Flesh.mp4" 1`] = `
+{
+  "audio": [],
+  "coding": [],
   "collection": true,
   "episodeId": "tt1646300",
   "episodeName": "Crawl Space",
-  "episodeNumber": Array [
+  "episodeNumber": [
     2,
   ],
   "extension": ".mp4",
   "fileType": "VIDEO",
   "imdbId": "tt1561755",
-  "languages": Array [],
-  "links": Array [
-    Object {
+  "languages": [],
+  "links": [
+    {
       "id": "tt1561755",
       "name": "IMDb",
       "url": "https://imdb.com/title/tt1561755",
@@ -761,214 +839,145 @@ Object {
   "name": "Bob's Burgers",
   "poster": "https://m.media-amazon.com/images/M/MV5BZGJiNmM1NDctNWUxYS00YzE4LWJjNTgtYTJhYzE0NjFmMTMwXkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1_.jpg",
   "seasonNumber": 1,
-  "seasons": Array [
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-  ],
   "startYear": 2011,
   "titleType": 3,
 }
 `;
 
-exports[`ApolloParser should parse "Mythbusters.S2003.576p.PAL.AUS.AMZN.WEB-DL.DD+2.0.H.264 [TestGroup].mp4" 1`] = `
-Object {
-  "audio": Array [],
-  "coding": Array [
+exports[`ApolloParser > should parse "Mythbusters.S2003.576p.PAL.AUS.AMZN.WEB-DL.DD+2.0.H.264 [TestGroup].mp4" 1`] = `
+{
+  "audio": [],
+  "coding": [
     "H264",
   ],
   "collection": false,
-  "endYear": 2018,
   "extension": ".mp4",
   "fileType": "VIDEO",
-  "imdbId": "tt0383126",
-  "languages": Array [],
-  "links": Array [
-    Object {
-      "id": "tt0383126",
-      "name": "IMDb",
-      "url": "https://imdb.com/title/tt0383126",
-    },
-  ],
-  "name": "MythBusters",
+  "languages": [],
+  "name": "Mythbusters S2003",
   "quality": "WEB-DL",
-  "resolution": Object {
+  "resolution": {
     "height": 576,
     "width": null,
   },
-  "seasonNumber": 2003,
-  "startYear": 2003,
-  "titleType": 1,
 }
 `;
 
-exports[`ApolloParser should parse "Mythbusters.S2003.576p.PAL.AUS.AMZN.WEB-DL.DD+2.0.H.264-[TestGroup]" 1`] = `
-Object {
-  "audio": Array [],
-  "coding": Array [
+exports[`ApolloParser > should parse "Mythbusters.S2003.576p.PAL.AUS.AMZN.WEB-DL.DD+2.0.H.264-[TestGroup]" 1`] = `
+{
+  "audio": [],
+  "coding": [
     "H264",
   ],
   "collection": false,
-  "endYear": 2018,
   "extension": undefined,
-  "fileType": "VIDEO",
-  "imdbId": "tt0383126",
-  "languages": Array [],
-  "links": Array [
-    Object {
-      "id": "tt0383126",
-      "name": "IMDb",
-      "url": "https://imdb.com/title/tt0383126",
-    },
-  ],
-  "name": "MythBusters",
+  "fileType": undefined,
+  "languages": [],
+  "name": "Mythbusters S2003",
   "quality": "WEB-DL",
   "releaseGroup": "TestGroup",
-  "resolution": Object {
+  "resolution": {
     "height": 576,
     "width": null,
   },
-  "seasonNumber": 2003,
-  "startYear": 2003,
-  "titleType": 1,
 }
 `;
 
-exports[`ApolloParser should parse "Mythbusters.S2003.576p.PAL.AUS.AMZN.WEB-DL.DD+2.0.H.264-[TestGroup].mp4" 1`] = `
-Object {
-  "audio": Array [],
-  "coding": Array [
+exports[`ApolloParser > should parse "Mythbusters.S2003.576p.PAL.AUS.AMZN.WEB-DL.DD+2.0.H.264-[TestGroup].mp4" 1`] = `
+{
+  "audio": [],
+  "coding": [
     "H264",
   ],
   "collection": false,
-  "endYear": 2018,
   "extension": ".mp4",
   "fileType": "VIDEO",
-  "imdbId": "tt0383126",
-  "languages": Array [],
-  "links": Array [
-    Object {
-      "id": "tt0383126",
-      "name": "IMDb",
-      "url": "https://imdb.com/title/tt0383126",
-    },
-  ],
-  "name": "MythBusters",
+  "languages": [],
+  "name": "Mythbusters S2003",
   "quality": "WEB-DL",
   "releaseGroup": "TestGroup",
-  "resolution": Object {
+  "resolution": {
     "height": 576,
     "width": null,
   },
-  "seasonNumber": 2003,
-  "startYear": 2003,
-  "titleType": 1,
 }
 `;
 
-exports[`ApolloParser should parse "Mythbusters.S2003.576p.PAL.AUS.AMZN.WEB-DL.DD+2.0.H.264-SmartIdiot" 1`] = `
-Object {
-  "audio": Array [],
-  "coding": Array [
+exports[`ApolloParser > should parse "Mythbusters.S2003.576p.PAL.AUS.AMZN.WEB-DL.DD+2.0.H.264-SmartIdiot" 1`] = `
+{
+  "audio": [],
+  "coding": [
     "H264",
   ],
   "collection": false,
-  "endYear": 2018,
   "extension": undefined,
-  "fileType": "VIDEO",
-  "imdbId": "tt0383126",
-  "languages": Array [],
-  "links": Array [
-    Object {
-      "id": "tt0383126",
-      "name": "IMDb",
-      "url": "https://imdb.com/title/tt0383126",
-    },
-  ],
-  "name": "MythBusters",
+  "fileType": undefined,
+  "languages": [],
+  "name": "Mythbusters S2003",
   "quality": "WEB-DL",
   "releaseGroup": "SmartIdiot",
-  "resolution": Object {
+  "resolution": {
     "height": 576,
     "width": null,
   },
-  "seasonNumber": 2003,
-  "startYear": 2003,
-  "titleType": 1,
 }
 `;
 
-exports[`ApolloParser should parse "Mythbusters.S2003.576p.PAL.AUS.AMZN.WEB-DL.DD+2.0.H.264-TestGroup" 1`] = `
-Object {
-  "audio": Array [],
-  "coding": Array [
+exports[`ApolloParser > should parse "Mythbusters.S2003.576p.PAL.AUS.AMZN.WEB-DL.DD+2.0.H.264-TestGroup" 1`] = `
+{
+  "audio": [],
+  "coding": [
     "H264",
   ],
   "collection": false,
-  "endYear": 2018,
   "extension": undefined,
-  "fileType": "VIDEO",
-  "imdbId": "tt0383126",
-  "languages": Array [],
-  "links": Array [
-    Object {
-      "id": "tt0383126",
-      "name": "IMDb",
-      "url": "https://imdb.com/title/tt0383126",
-    },
-  ],
-  "name": "MythBusters",
+  "fileType": undefined,
+  "languages": [],
+  "name": "Mythbusters S2003",
   "quality": "WEB-DL",
   "releaseGroup": "TestGroup",
-  "resolution": Object {
+  "resolution": {
     "height": 576,
     "width": null,
   },
-  "seasonNumber": 2003,
-  "startYear": 2003,
-  "titleType": 1,
 }
 `;
 
-exports[`ApolloParser should parse "Rick and Morty/Season 5/Episode 3.mp4" 1`] = `
-Object {
-  "audio": Array [],
-  "coding": Array [],
+exports[`ApolloParser > should parse "Rick and Morty/Season 5/Episode 3.mp4" 1`] = `
+{
+  "audio": [],
+  "coding": [],
   "collection": false,
   "episodeId": "tt14889192",
   "episodeName": "A Rickconvenient Mort",
-  "episodeNumber": Array [
+  "episodeNumber": [
     3,
   ],
   "extension": ".mp4",
   "fileType": "VIDEO",
   "imdbId": "tt2861424",
-  "languages": Array [],
-  "links": Array [
-    Object {
+  "languages": [],
+  "links": [
+    {
       "id": "tt2861424",
       "name": "IMDb",
       "url": "https://imdb.com/title/tt2861424",
     },
   ],
   "name": "Rick and Morty",
+  "poster": "https://m.media-amazon.com/images/M/MV5BZjRjOTFkOTktZWUzMi00YzMyLThkMmYtMjEwNmQyNzliYTNmXkEyXkFqcGdeQXVyNzQ1ODk3MTQ@._V1_.jpg",
   "seasonNumber": 5,
   "startYear": 2013,
   "titleType": 3,
 }
 `;
 
-exports[`ApolloParser should parse "Se7en.1995.REMASTERED.1080p.BluRay.10bit.HEVC.6CH.MkvCage.ws.mkv" 1`] = `
-Object {
-  "audio": Array [
+exports[`ApolloParser > should parse "Se7en.1995.REMASTERED.1080p.BluRay.10bit.HEVC.6CH.MkvCage.ws.mkv" 1`] = `
+{
+  "audio": [
     "6ch",
   ],
-  "coding": Array [
+  "coding": [
     "10bit",
     "HEVC",
   ],
@@ -976,18 +985,19 @@ Object {
   "extension": ".mkv",
   "fileType": "VIDEO",
   "imdbId": "tt0114369",
-  "languages": Array [],
-  "links": Array [
-    Object {
+  "languages": [],
+  "links": [
+    {
       "id": "tt0114369",
       "name": "IMDb",
       "url": "https://imdb.com/title/tt0114369",
     },
   ],
   "name": "Se7en",
+  "poster": "https://m.media-amazon.com/images/M/MV5BOTUwODM5MTctZjczMi00OTk4LTg3NWUtNmVhMTAzNTNjYjcyXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_.jpg",
   "quality": "BluRay",
   "releaseGroup": "MkvCage.ws",
-  "resolution": Object {
+  "resolution": {
     "height": 1080,
     "width": null,
   },
@@ -996,38 +1006,40 @@ Object {
 }
 `;
 
-exports[`ApolloParser should parse "The Expanse S0E0.mp4" 1`] = `
-Object {
-  "audio": Array [],
-  "coding": Array [],
+exports[`ApolloParser > should parse "The Expanse S0E0.mp4" 1`] = `
+{
+  "audio": [],
+  "coding": [],
   "collection": false,
   "endYear": 2022,
-  "episodeNumber": Array [
+  "episodeNumber": [
     0,
   ],
   "extension": ".mp4",
   "fileType": "VIDEO",
   "imdbId": "tt3230854",
-  "languages": Array [],
-  "links": Array [
-    Object {
+  "languages": [],
+  "links": [
+    {
       "id": "tt3230854",
       "name": "IMDb",
       "url": "https://imdb.com/title/tt3230854",
     },
   ],
   "name": "The Expanse",
+  "poster": "https://m.media-amazon.com/images/M/MV5BZDVmMDljM2QtZDkzZC00ZDg2LWFiMGItZjNiNjliZjg2MGEzXkEyXkFqcGdeQXVyMjkwOTAyMDU@._V1_.jpg",
+  "seasonNumber": 0,
   "startYear": 2015,
   "titleType": 3,
 }
 `;
 
-exports[`ApolloParser should parse "The Hobbit & The Lord of The Rings Extended Trilogy 1080p 10bit BluRay x265 HEVC MRN/The Lord of The Rings Trilogy Extended Cut 1080p 10bit BluRay x265 HEVC 6CH -MRN/1-Fellowship.of.The.Ring.2001.Extended.Cut.1080p.10bit.BluRay.x265.HEVC.6CH-MRN.mkv" 1`] = `
-Object {
-  "audio": Array [
+exports[`ApolloParser > should parse "The Hobbit & The Lord of The Rings Extended Trilogy 1080p 10bit BluRay x265 HEVC MRN/The Lord of The Rings Trilogy Extended Cut 1080p 10bit BluRay x265 HEVC 6CH -MRN/1-Fellowship.of.The.Ring.2001.Extended.Cut.1080p.10bit.BluRay.x265.HEVC.6CH-MRN.mkv" 1`] = `
+{
+  "audio": [
     "6ch",
   ],
-  "coding": Array [
+  "coding": [
     "10bit",
     "x265",
     "HEVC",
@@ -1037,18 +1049,19 @@ Object {
   "fileType": "VIDEO",
   "imdbId": "tt0120737",
   "index": 1,
-  "languages": Array [],
-  "links": Array [
-    Object {
+  "languages": [],
+  "links": [
+    {
       "id": "tt0120737",
       "name": "IMDb",
       "url": "https://imdb.com/title/tt0120737",
     },
   ],
   "name": "The Lord of the Rings: The Fellowship of the Ring",
+  "poster": "https://m.media-amazon.com/images/M/MV5BN2EyZjM3NzUtNWUzMi00MTgxLWI0NTctMzY4M2VlOTdjZWRiXkEyXkFqcGdeQXVyNDUzOTQ5MjY@._V1_.jpg",
   "quality": "BluRay",
   "releaseGroup": "MRN",
-  "resolution": Object {
+  "resolution": {
     "height": 1080,
     "width": null,
   },
@@ -1057,38 +1070,39 @@ Object {
 }
 `;
 
-exports[`ApolloParser should parse "The Simpsons (1989-2018) Seasons 01-29 & Movie [1080p] [Ultimate Batch] [HEVC] [x265] [pseudo]/Season 07/The Simpsons - S07E25 - Summer of 4 Ft 2 [1080p] [x265] [pseudo].mkv" 1`] = `
-Object {
-  "audio": Array [],
-  "coding": Array [
+exports[`ApolloParser > should parse "The Simpsons (1989-2018) Seasons 01-29 & Movie [1080p] [Ultimate Batch] [HEVC] [x265] [pseudo]/Season 07/The Simpsons - S07E25 - Summer of 4 Ft 2 [1080p] [x265] [pseudo].mkv" 1`] = `
+{
+  "audio": [],
+  "coding": [
     "x265",
   ],
   "collection": false,
   "endYear": 2018,
-  "episodeId": "tt701219",
+  "episodeId": "tt0701219",
   "episodeName": "Summer of 4'2\\"",
-  "episodeNumber": Array [
+  "episodeNumber": [
     25,
   ],
   "extension": ".mkv",
   "fileType": "VIDEO",
   "imdbId": "tt0096697",
-  "languages": Array [],
-  "links": Array [
-    Object {
+  "languages": [],
+  "links": [
+    {
       "id": "tt0096697",
       "name": "IMDb",
       "url": "https://imdb.com/title/tt0096697",
     },
   ],
   "name": "The Simpsons",
+  "poster": "https://m.media-amazon.com/images/M/MV5BYjFkMTlkYWUtZWFhNy00M2FmLThiOTYtYTRiYjVlZWYxNmJkXkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1_.jpg",
   "releaseGroup": "pseudo",
-  "resolution": Object {
+  "resolution": {
     "height": 1080,
     "width": null,
   },
   "seasonNumber": 7,
-  "seasons": Array [
+  "seasons": [
     1,
     2,
     3,
@@ -1124,37 +1138,38 @@ Object {
 }
 `;
 
-exports[`ApolloParser should parse "The Simpsons (1989-2018) Seasons 01-29 & Movie [1080p] [Ultimate Batch] [HEVC] [x265] [pseudo]/Season 28/The Simpsons - S28E12E13 - The Great Phatsby [1080p] [x265] [pseudo].mkv" 1`] = `
-Object {
-  "audio": Array [],
-  "coding": Array [
+exports[`ApolloParser > should parse "The Simpsons (1989-2018) Seasons 01-29 & Movie [1080p] [Ultimate Batch] [HEVC] [x265] [pseudo]/Season 28/The Simpsons - S28E12E13 - The Great Phatsby [1080p] [x265] [pseudo].mkv" 1`] = `
+{
+  "audio": [],
+  "coding": [
     "x265",
   ],
   "collection": false,
   "endYear": 2018,
-  "episodeNumber": Array [
+  "episodeNumber": [
     12,
     13,
   ],
   "extension": ".mkv",
   "fileType": "VIDEO",
   "imdbId": "tt0096697",
-  "languages": Array [],
-  "links": Array [
-    Object {
+  "languages": [],
+  "links": [
+    {
       "id": "tt0096697",
       "name": "IMDb",
       "url": "https://imdb.com/title/tt0096697",
     },
   ],
   "name": "The Simpsons",
+  "poster": "https://m.media-amazon.com/images/M/MV5BYjFkMTlkYWUtZWFhNy00M2FmLThiOTYtYTRiYjVlZWYxNmJkXkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1_.jpg",
   "releaseGroup": "pseudo",
-  "resolution": Object {
+  "resolution": {
     "height": 1080,
     "width": null,
   },
   "seasonNumber": 28,
-  "seasons": Array [
+  "seasons": [
     1,
     2,
     3,
@@ -1190,12 +1205,12 @@ Object {
 }
 `;
 
-exports[`ApolloParser should parse "The.Walking.Dead.S01-S07.Season.1-7.1080p.10bit.BluRay.5.1.x265.HEVC" 1`] = `
-Object {
-  "audio": Array [
+exports[`ApolloParser > should parse "The.Walking.Dead.S01-S07.Season.1-7.1080p.10bit.BluRay.5.1.x265.HEVC" 1`] = `
+{
+  "audio": [
     "5.1",
   ],
-  "coding": Array [
+  "coding": [
     "10bit",
     "x265",
     "HEVC",
@@ -1205,21 +1220,23 @@ Object {
   "extension": undefined,
   "fileType": "VIDEO",
   "imdbId": "tt1520211",
-  "languages": Array [],
-  "links": Array [
-    Object {
+  "languages": [],
+  "links": [
+    {
       "id": "tt1520211",
       "name": "IMDb",
       "url": "https://imdb.com/title/tt1520211",
     },
   ],
   "name": "The Walking Dead",
+  "poster": "https://m.media-amazon.com/images/M/MV5BZmU5NTcwNjktODIwMi00ZmZkLTk4ZWUtYzVjZWQ5ZTZjN2RlXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_.jpg",
   "quality": "BluRay",
-  "resolution": Object {
+  "resolution": {
     "height": 1080,
     "width": null,
   },
-  "seasons": Array [
+  "seasonNumber": 1,
+  "seasons": [
     1,
     2,
     3,
@@ -1233,30 +1250,33 @@ Object {
 }
 `;
 
-exports[`ApolloParser should parse "Y:\\completed\\Deadpool 2016 1080p BluRay x264 DTS-JYK\\Subs\\French.srt" 1`] = `
-Object {
-  "audio": Array [],
-  "coding": Array [
+exports[`ApolloParser > should parse "Y:\\completed\\Deadpool 2016 1080p BluRay x264 DTS-JYK\\Subs\\French.srt" 1`] = `
+{
+  "audio": [
+    "dts",
+  ],
+  "coding": [
     "x264",
   ],
   "collection": false,
   "extension": ".srt",
   "fileType": "SUBTITLE",
   "imdbId": "tt1431045",
-  "languages": Array [
+  "languages": [
     "fr",
   ],
-  "links": Array [
-    Object {
+  "links": [
+    {
       "id": "tt1431045",
       "name": "IMDb",
       "url": "https://imdb.com/title/tt1431045",
     },
   ],
   "name": "Deadpool",
+  "poster": "https://m.media-amazon.com/images/M/MV5BYzE5MjY1ZDgtMTkyNC00MTMyLThhMjAtZGI5OTE1NzFlZGJjXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_.jpg",
   "quality": "BluRay",
   "releaseGroup": "JYK",
-  "resolution": Object {
+  "resolution": {
     "height": 1080,
     "width": null,
   },
@@ -1265,13 +1285,91 @@ Object {
 }
 `;
 
-exports[`ApolloParser should parse "Y:\\media\\BoJack Horseman (2014) Season 1 S01 + Extras (1080p BluRay x265 HEVC 10bit AAC 5.1 RCVR)\\BoJack Horseman (2014) - S01E02 - BoJack Hates The Troops (1080p BluRay x265 RCVR).mkv" 1`] = `
-Object {
-  "audio": Array [
+exports[`ApolloParser > should parse "Y:\\import\\30 Rock (2005) Season 1-7 S01-S07 (1080p BluRay x265 HEVC 10bit AAC 5.1 Silence)\\Season 1\\30 Rock - S01E01.mkv" 1`] = `
+{
+  "audio": [],
+  "coding": [],
+  "collection": false,
+  "endYear": 2013,
+  "episodeId": "tt0849809",
+  "episodeName": "Pilot",
+  "episodeNumber": [
+    1,
+  ],
+  "extension": ".mkv",
+  "fileType": "VIDEO",
+  "imdbId": "tt0496424",
+  "languages": [],
+  "links": [
+    {
+      "id": "tt0496424",
+      "name": "IMDb",
+      "url": "https://imdb.com/title/tt0496424",
+    },
+  ],
+  "name": "30 Rock",
+  "poster": "https://m.media-amazon.com/images/M/MV5BMTQ4NDQ4OTUzOV5BMl5BanBnXkFtZTcwMjMzMTUyNw@@._V1_.jpg",
+  "quality": "BluRay",
+  "resolution": {
+    "height": 1080,
+    "width": null,
+  },
+  "seasonNumber": 1,
+  "seasons": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+  ],
+  "startYear": 2006,
+  "titleType": 3,
+}
+`;
+
+exports[`ApolloParser > should parse "Y:\\import\\Менталист\\The.Mentalist.s07.WEB-DL.720p.Rus.Eng\\The.Mentalist.s07e12-13.WEB-DL.720p.Rus.Eng.mkv" 1`] = `
+{
+  "audio": [],
+  "coding": [],
+  "collection": false,
+  "endYear": 2015,
+  "episodeNumber": [
+    12,
+    13,
+  ],
+  "extension": ".mkv",
+  "fileType": "VIDEO",
+  "imdbId": "tt1196946",
+  "languages": [],
+  "links": [
+    {
+      "id": "tt1196946",
+      "name": "IMDb",
+      "url": "https://imdb.com/title/tt1196946",
+    },
+  ],
+  "name": "The Mentalist",
+  "poster": "https://m.media-amazon.com/images/M/MV5BMTQ5OTgzOTczM15BMl5BanBnXkFtZTcwMDM2OTY4MQ@@._V1_.jpg",
+  "quality": "WEB-DL",
+  "resolution": {
+    "height": 720,
+    "width": null,
+  },
+  "seasonNumber": 7,
+  "startYear": 2008,
+  "titleType": 3,
+}
+`;
+
+exports[`ApolloParser > should parse "Y:\\media\\BoJack Horseman (2014) Season 1 S01 + Extras (1080p BluRay x265 HEVC 10bit AAC 5.1 RCVR)\\BoJack Horseman (2014) - S01E02 - BoJack Hates The Troops (1080p BluRay x265 RCVR).mkv" 1`] = `
+{
+  "audio": [
     "aac",
     "5.1",
   ],
-  "coding": Array [
+  "coding": [
     "x265",
     "HEVC",
     "10bit",
@@ -1281,23 +1379,24 @@ Object {
   "endYear": 2020,
   "episodeId": "tt3982374",
   "episodeName": "BoJack Hates the Troops",
-  "episodeNumber": Array [
+  "episodeNumber": [
     2,
   ],
   "extension": ".mkv",
   "fileType": "VIDEO",
   "imdbId": "tt3398228",
-  "languages": Array [],
-  "links": Array [
-    Object {
+  "languages": [],
+  "links": [
+    {
       "id": "tt3398228",
       "name": "IMDb",
       "url": "https://imdb.com/title/tt3398228",
     },
   ],
   "name": "BoJack Horseman",
+  "poster": "https://m.media-amazon.com/images/M/MV5BYWQwMDNkM2MtODU4OS00OTY3LTgwOTItNjE2Yzc0MzRkMDllXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_.jpg",
   "quality": "BluRay",
-  "resolution": Object {
+  "resolution": {
     "height": 1080,
     "width": null,
   },
@@ -1307,36 +1406,37 @@ Object {
 }
 `;
 
-exports[`ApolloParser should parse "Y:\\torrents\\BoJack Horseman (2014) Season 1 S01 + Extras (1080p BluRay x265 HEVC 10bit AAC 5.1 RCVR)\\Featurettes\\Side-by-side Animation Walk-Through.mkv" 1`] = `undefined`;
+exports[`ApolloParser > should parse "Y:\\torrents\\BoJack Horseman (2014) Season 1 S01 + Extras (1080p BluRay x265 HEVC 10bit AAC 5.1 RCVR)\\Featurettes\\Side-by-side Animation Walk-Through.mkv" 1`] = `undefined`;
 
-exports[`ApolloParser should parse "Z:\\clone\\www.Torrenting.org       The Mandalorian S01E01 INTERNAL 1080p WEB H264-DEFLATE\\The.Mandalorian.S01E01.INTERNAL.1080p.WEB.H264-DEFLATE.mkv" 1`] = `
-Object {
-  "audio": Array [],
-  "coding": Array [
+exports[`ApolloParser > should parse "Z:\\clone\\www.Torrenting.org       The Mandalorian S01E01 INTERNAL 1080p WEB H264-DEFLATE\\The.Mandalorian.S01E01.INTERNAL.1080p.WEB.H264-DEFLATE.mkv" 1`] = `
+{
+  "audio": [],
+  "coding": [
     "H264",
     "H264",
   ],
   "collection": false,
   "episodeId": "tt9095424",
   "episodeName": "Chapter 1: The Mandalorian",
-  "episodeNumber": Array [
+  "episodeNumber": [
     1,
   ],
   "extension": ".mkv",
   "fileType": "VIDEO",
   "imdbId": "tt8111088",
-  "languages": Array [],
-  "links": Array [
-    Object {
+  "languages": [],
+  "links": [
+    {
       "id": "tt8111088",
       "name": "IMDb",
       "url": "https://imdb.com/title/tt8111088",
     },
   ],
   "name": "The Mandalorian",
+  "poster": "https://m.media-amazon.com/images/M/MV5BZDhlMzY0ZGItZTcyNS00ZTAxLWIyMmYtZGQ2ODg5OWZiYmJkXkEyXkFqcGdeQXVyODkzNTgxMDg@._V1_.jpg",
   "quality": "WEB-DL",
   "releaseGroup": "DEFLATE",
-  "resolution": Object {
+  "resolution": {
     "height": 1080,
     "width": null,
   },
@@ -1346,10 +1446,10 @@ Object {
 }
 `;
 
-exports[`ApolloParser should parse "Z:\\torrents\\completed\\[TorrentCouch.com].Silicon.Valley.S05.Complete.720p.BRRip.x264.ESubs.[1.6GB].[Season.5.Full]\\[TorrentCouch.com].Silicon.Valley.S05E01.720p.BRRip.x264.ESubs.mkv" 1`] = `
-Object {
-  "audio": Array [],
-  "coding": Array [
+exports[`ApolloParser > should parse "Z:\\torrents\\completed\\[TorrentCouch.com].Silicon.Valley.S05.Complete.720p.BRRip.x264.ESubs.[1.6GB].[Season.5.Full]\\[TorrentCouch.com].Silicon.Valley.S05E01.720p.BRRip.x264.ESubs.mkv" 1`] = `
+{
+  "audio": [],
+  "coding": [
     "x264",
     "x264",
   ],
@@ -1357,24 +1457,25 @@ Object {
   "endYear": 2019,
   "episodeId": "tt6973218",
   "episodeName": "Grow Fast or Die Slow",
-  "episodeNumber": Array [
+  "episodeNumber": [
     1,
   ],
   "extension": ".mkv",
   "fileType": "VIDEO",
   "imdbId": "tt2575988",
-  "languages": Array [],
-  "links": Array [
-    Object {
+  "languages": [],
+  "links": [
+    {
       "id": "tt2575988",
       "name": "IMDb",
       "url": "https://imdb.com/title/tt2575988",
     },
   ],
   "name": "Silicon Valley",
+  "poster": "https://m.media-amazon.com/images/M/MV5BM2Q5YjNjZWMtYThmYy00N2ZjLWE2NDctNmZjMmZjYWE2NjEwXkEyXkFqcGdeQXVyMTAzMDM4MjM0._V1_.jpg",
   "quality": "BluRay",
   "releaseGroup": "TorrentCouch.com",
-  "resolution": Object {
+  "resolution": {
     "height": 720,
     "width": null,
   },
@@ -1384,28 +1485,29 @@ Object {
 }
 `;
 
-exports[`ApolloParser should parse "Z:\\torrents\\completed\\2012 (2009) [1080p]\\2012.2009.BluRay.1080p.x264.YIFY.mp4" 1`] = `
-Object {
-  "audio": Array [],
-  "coding": Array [
+exports[`ApolloParser > should parse "Z:\\torrents\\completed\\2012 (2009) [1080p]\\2012.2009.BluRay.1080p.x264.YIFY.mp4" 1`] = `
+{
+  "audio": [],
+  "coding": [
     "x264",
   ],
   "collection": false,
   "extension": ".mp4",
   "fileType": "VIDEO",
   "imdbId": "tt1190080",
-  "languages": Array [],
-  "links": Array [
-    Object {
+  "languages": [],
+  "links": [
+    {
       "id": "tt1190080",
       "name": "IMDb",
       "url": "https://imdb.com/title/tt1190080",
     },
   ],
   "name": "2012",
+  "poster": "https://m.media-amazon.com/images/M/MV5BMTY0MjEyODQzMF5BMl5BanBnXkFtZTcwMTczMjQ4Mg@@._V1_.jpg",
   "quality": "BluRay",
   "releaseGroup": "YIFY",
-  "resolution": Object {
+  "resolution": {
     "height": 1080,
     "width": null,
   },
@@ -1414,62 +1516,67 @@ Object {
 }
 `;
 
-exports[`ApolloParser should parse "Z:\\torrents\\completed\\AVATAR Series (2005-2014) - COMPLETE The Last Airbender, 2010 Movie, Legend of Korra - 1080p BluRay x264\\2. The Legend of Korra (2012-14)\\Book 2a - Republic City Hustle (2013)\\Avatar (TLoK) - Republic City Hustle, Part 3 of 3 (1080p).mp4" 1`] = `
-Object {
-  "audio": Array [],
-  "coding": Array [],
+exports[`ApolloParser > should parse "Z:\\torrents\\completed\\AVATAR Series (2005-2014) - COMPLETE The Last Airbender, 2010 Movie, Legend of Korra - 1080p BluRay x264\\2. The Legend of Korra (2012-14)\\Book 2a - Republic City Hustle (2013)\\Avatar (TLoK) - Republic City Hustle, Part 3 of 3 (1080p).mp4" 1`] = `
+{
+  "audio": [],
+  "coding": [],
   "collection": false,
   "endYear": 2014,
-  "episodeNumber": Array [
+  "episodeId": "tt3797656",
+  "episodeName": "The Earth Queen",
+  "episodeNumber": [
     3,
   ],
   "extension": ".mp4",
   "fileType": "VIDEO",
   "imdbId": "tt1695360",
-  "languages": Array [],
-  "links": Array [
-    Object {
+  "languages": [],
+  "links": [
+    {
       "id": "tt1695360",
       "name": "IMDb",
       "url": "https://imdb.com/title/tt1695360",
     },
   ],
   "name": "The Legend of Korra",
+  "poster": "https://m.media-amazon.com/images/M/MV5BYTZhNGY2ZDAtYWYxYy00YWNlLWI3NDUtNjBiM2NkMGVmODIxXkEyXkFqcGdeQXVyODUwNjEzMzg@._V1_.jpg",
   "quality": "BluRay",
-  "resolution": Object {
+  "resolution": {
     "height": 1080,
     "width": null,
   },
+  "seasonNumber": 3,
   "startYear": 2012,
   "titleType": 3,
 }
 `;
 
-exports[`ApolloParser should parse "Z:\\torrents\\completed\\The EXPANSE - Complete Season 3 S03 (2018) - 1080p AMZN Web-DL x264\\The EXPANSE - S03 E11 - Fallen World (1080p - AMZN Web-DL).mp4" 1`] = `
-Object {
-  "audio": Array [],
-  "coding": Array [],
+exports[`ApolloParser > should parse "Z:\\torrents\\completed\\The EXPANSE - Complete Season 3 S03 (2018) - 1080p AMZN Web-DL x264\\The EXPANSE - S03 E11 - Fallen World (1080p - AMZN Web-DL).mp4" 1`] = `
+{
+  "audio": [],
+  "coding": [],
   "collection": false,
   "endYear": 2022,
   "episodeId": "tt6665354",
   "episodeName": "Fallen World",
-  "episodeNumber": Array [
+  "episodeNumber": [
     11,
   ],
   "extension": ".mp4",
   "fileType": "VIDEO",
   "imdbId": "tt3230854",
-  "languages": Array [],
-  "links": Array [
-    Object {
+  "languages": [],
+  "links": [
+    {
       "id": "tt3230854",
       "name": "IMDb",
       "url": "https://imdb.com/title/tt3230854",
     },
   ],
   "name": "The Expanse",
+  "poster": "https://m.media-amazon.com/images/M/MV5BZDVmMDljM2QtZDkzZC00ZDg2LWFiMGItZjNiNjliZjg2MGEzXkEyXkFqcGdeQXVyMjkwOTAyMDU@._V1_.jpg",
   "quality": "WEB-DL",
-  "resolution": Object {
+  "resolution": {
     "height": 1080,
     "width": null,
   },
@@ -1479,10 +1586,10 @@ Object {
 }
 `;
 
-exports[`ApolloParser should parse "Z:\\torrents\\completed\\The Hunger Games 4 Film Complete Collection 1080p BluRay 5.1Ch x265 HEVC SUJAIDR\\The Hunger Games Mockingjay Part 2 (2015) 1080p BluRay 5.1Ch x265 HEVC SUJAIDR.mkv" 1`] = `
-Object {
-  "audio": Array [],
-  "coding": Array [
+exports[`ApolloParser > should parse "Z:\\torrents\\completed\\The Hunger Games 4 Film Complete Collection 1080p BluRay 5.1Ch x265 HEVC SUJAIDR\\The Hunger Games Mockingjay Part 2 (2015) 1080p BluRay 5.1Ch x265 HEVC SUJAIDR.mkv" 1`] = `
+{
+  "audio": [],
+  "coding": [
     "x265",
     "HEVC",
   ],
@@ -1490,9 +1597,9 @@ Object {
   "extension": ".mkv",
   "fileType": "VIDEO",
   "imdbId": "tt1951266",
-  "languages": Array [],
-  "links": Array [
-    Object {
+  "languages": [],
+  "links": [
+    {
       "id": "tt1951266",
       "name": "IMDb",
       "url": "https://imdb.com/title/tt1951266",
@@ -1502,7 +1609,7 @@ Object {
   "poster": "https://m.media-amazon.com/images/M/MV5BNjQzNDI2NTU1Ml5BMl5BanBnXkFtZTgwNTAyMDQ5NjE@._V1_.jpg",
   "quality": "BluRay",
   "releaseGroup": "SUJAIDR",
-  "resolution": Object {
+  "resolution": {
     "height": 1080,
     "width": null,
   },

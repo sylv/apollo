@@ -1,3 +1,4 @@
+import { expect, it } from "vitest";
 import { cleanFilePath } from "./clean-file-path";
 
 const title = `Avengers Infinity War (2018) [WEBRip] [1080p] [YTS.AM].mp4`;
@@ -14,6 +15,9 @@ it("should normalize path separators", () => {
 
 it("should not strip boring parts after interesting parts", () => {
   expect(cleanFilePath("/mnt/data/tv shows/Test file name (2016)/French.srt")).toBe("Test file name (2016)/French.srt");
+  expect(
+    cleanFilePath("/mnt/Downloads-2/import/Менталист/The.Mentalist.s07.WEB-DL.720p.Rus.Eng/The.Mentalist.s07e12-13.WEB-DL.720p.Rus.Eng.mkv")
+  ).toMatchSnapshot();
 });
 
 it("should maintain file extensions", () => {

@@ -1,0 +1,3 @@
+// Vitest Snapshot v1
+
+exports[`should not strip boring parts after interesting parts 1`] = `"Downloads-2/Менталист/The Mentalist s07 WEB-DL 720p Rus Eng/The Mentalist s07e12-13 WEB-DL 720p Rus Eng.mkv"`;

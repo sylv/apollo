@@ -2,7 +2,28 @@ import path from "path";
 import { ALL_EXTENSIONS, SUBTITLE_EXTENSIONS } from "../constants";
 import { stripSpacePlaceholders } from "./strip-space-placeholders";
 
-const EXPLICITLY_STRIP_PARTS = new Set(["tv shows", "videos", "movies", "shows", "series", "seasons"]);
+const EXPLICITLY_STRIP_PARTS = new Set([
+  "tv shows",
+  "videos",
+  "movies",
+  "shows",
+  "series",
+  "seasons",
+  "import",
+  "clean",
+  "data",
+  "library",
+  "media",
+  "mnt",
+  "downloads",
+  "active",
+  "complete",
+  "incomplete",
+  "downloading",
+  "torrents",
+  "torrent",
+]);
+
 const IGNORE_PATH_PART_REGEX = /^(?:[A-Z]:|[a-z]+)$/i;
 const EXCLUDE_BLACKLIST_REGEX = [
   /^lore$/i,

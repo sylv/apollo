@@ -1,3 +1,4 @@
+import { expect, it } from "vitest";
 import { cleanRawTitle } from "./clean-raw-title";
 
 it("should strip tags from titles", () => {

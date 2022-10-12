@@ -4,13 +4,12 @@ import isAdmin from "is-admin";
 import meow from "meow";
 import { resolve } from "path";
 import xbytes from "xbytes";
+import { ApolloParser } from "./classes/apollo-parser";
+import { coloriseResult } from "./helpers/colorise";
 import { rollback, snapshotDbPath } from "./helpers/snapshots";
 import { setLogger } from "./log";
-import { providers } from "./providers";
 import { ApolloMode, ApolloStrategy, defaultEpisodeFormat, defaultMovieFormat, renameFiles, RenameOptions } from "./rename";
 
-const providerNames = [...providers.keys()];
-const providerList = `"${providerNames.join('", "')}"`;
 const cli = meow(
   `
       ${chalk.cyan.bold("Example")}
@@ -19,11 +18,13 @@ const cli = meow(
       $ apollo move D:\\Torrents E:\\Media
       $ apollo link D:\\Torrents E:\\Media
       $ apollo rollback ./torrents
+      $ apollo parse The.Walking.Dead.S05E01.720p.HDTV.x264-EVOLVE.mkv
 
       ${chalk.cyan.bold("Commands")}
       move          Move files from the input directory to the output directory.
       link          Link files from the input directory to the output directory.
-      rollback      Make a best-effort attempt to undo changes made by the move or link commands.      
+      rollback      Make a best-effort attempt to undo changes made by the move or link commands.   
+      parse         Parse the given input and show the result with colour coding.   
 
       ${chalk.cyan.bold("Options")}
       --debug                       Enable verbose logging
@@ -55,10 +56,6 @@ const cli = meow(
                                       "hybrid", the same as "filenames" but will only rename files if the season and 
                                                 episode format is not standard like S00E00. This maintains metadata 
                                                 like release info and may be better for sonarr/radarr.
-
-      --providers                   A comma-separated list of metadata providers. Defaults to "local,imdb". 
-                                    The order determines priority, "local,imdb" will use the local provider and fall back to IMDb if there are no matches.
-                                    Valid providers are ${providerList}. Set to "false" to disable entirely, using only metadata in the file name.
 `,
   {
     allowUnknownFlags: false,
@@ -161,7 +158,6 @@ async function main() {
         mode: cli.input[0] === "move" ? ApolloMode.Move : ApolloMode.Symlink,
         useSnapshots: cli.flags.snapshot,
         strategy: resolveStrategy(cli.flags.strategy),
-        providers: cli.flags.providers !== "false" ? cli.flags.providers.split(",") : [],
         detectSubtitleLanguage: cli.flags.detectSubtitleLanguage,
         formats: {
           episode: cli.flags.episodeFormat,
@@ -197,6 +193,26 @@ async function main() {
       console.log(
         `${rolledBack.toLocaleString()} files rolled back from the last batch. There may be more files to roll back from other invocations.`
       );
+      break;
+    }
+    case "parse": {
+      const inputData = cli.input.slice(1).join(" ");
+      if (!inputData) {
+        throw cli.showHelp(1);
+      }
+
+      const parser = new ApolloParser({
+        detectSubtitleLanguage: cli.flags.detectSubtitleLanguage,
+      });
+
+      const result = await parser.parse(inputData);
+      if (!result) {
+        console.log("No matches found");
+        break;
+      }
+
+      const colorised = coloriseResult(inputData, result, parser);
+      console.log(colorised);
       break;
     }
     default:
