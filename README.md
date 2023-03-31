@@ -1,3 +1,6 @@
+> **Warning**
+> Apollo works, but with edge cases it can struggle a lot. I'm working on a different and more general approach using machine learning that can handle any path and extract clean, usable metadata but that's gonna take awhile. In the meantime, it does fine for most formats.
+
 # apollo
 
 A library to parse file names into structured data. Also provides a cli to rename/symlink files based on the extracted data like [filebot](https://filebot.net). You can see the inputs Apollo can handle and what it returns for them in [parser.test.ts.snap](./test/__snapshots__/parser.test.ts.snap).
