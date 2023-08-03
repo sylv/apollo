@@ -61,7 +61,7 @@
     "esno": "^0.7.3",
     "fastest-levenshtein": "^1.0.16",
     "is-admin": "^3.0.0",
-    "node-fetch": "^2.6.1",
+    "node-fetch": "^2.6.7",
     "prettier": "^2.7.1",
     "sanitize-filename": "^1.6.3",
     "title-case": "^3.0.3",
