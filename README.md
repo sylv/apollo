@@ -1,5 +1,5 @@
-> **Warning**
-> Apollo works, but with edge cases it can struggle a lot. I'm working on a different and more general approach using machine learning that can handle any path and extract clean, usable metadata but that's gonna take awhile. In the meantime, it does fine for most formats.
+> [!WARNING]
+> Apollo works, but with edge cases it can struggle a lot, a limitation of using regex for such varied inputs. I decided to use a [NER+regex hybrid approach](https://github.com/sylv/lyra/blob/ec0baf71119c10f33b10ab4b4a93b1a0a831076c/crates/lyra-parser/src/lib.rs) for similar parsers which works far better. I doubt anyone uses apollo but if you do, keep using it, its fine, it just fails on obscure edge cases. If you want something better, AI™
 
 # apollo
 
